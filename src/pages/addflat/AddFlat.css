@@ -1,0 +1,1242 @@
+
+.flats_container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+hr {
+  border: 1px solid #ccc;
+  margin: 15px 0;
+}
+
+.Add_flat_main_wrapper {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.Add_flat_main_wrapper h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.add_seheme_btn button {
+  background-color: #06a7b1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.add_seheme_btn button:hover {
+  background-color: #047d84;
+}
+
+/* Show All Residency Cards */
+.show_all_resigency_card_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+
+}
+
+.flatcontainer {
+  width: 320px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  /* cursor: pointer; */
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  box-shadow: 2px 0 25px #04847e48;
+
+}
+
+.flatcontainer:hover {
+  transform: scale(1.05);
+}
+
+.flatcontainer p {
+  margin: 5px 0;
+  color: #333;
+}
+
+.status {
+  font-size: 14px;
+  color: #777;
+}
+
+.span {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.show_book_count {
+  outline: 1px solid red;
+  color: rgb(0, 0, 0);
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  height: 50px;
+  width: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+}
+
+.show_available_count_available {
+  outline: 1px solid green;
+  color: rgb(0, 0, 0);
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  height: 50px;
+  width: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+}
+
+/* Add Scheme Form */
+.AddSchemeForm_wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.AddSchemeForm {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+}
+
+.AddSchemeForm select,
+.AddSchemeForm input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.AddSchemeForm_button {
+  width: 100%;
+  padding: 10px;
+  background-color: #06a7b1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.AddSchemeForm_button:hover {
+  background-color: #047d84;
+}
+
+.add_scheme_cross_button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  background-color: red;
+  height: 40px;
+  width: 40px;
+  border-radius: 50px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+@media screen and (max-width: 768px) {
+  .Add_flat_main_wrapper {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .show_all_resigency_card_wrapper {
+    /* flex-direction: column; */
+    gap: 15px;
+  }
+
+  .show_all_resigency_card_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 15px;
+    /* box-shadow: 2px 0 25px #04847e48 */
+  }
+
+  .flatcontainer {
+    width: 90%;
+    box-shadow: 2px 0 25px #04847e48;
+  }
+
+  .AddSchemeForm_wrapper {
+    padding: 10px;
+  }
+
+  .AddSchemeForm {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .add_seheme_btn button {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .AddSchemeForm_wrapper {
+    padding: 5px;
+  }
+
+  .flatcontainer {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .AddSchemeForm {
+    padding: 15px;
+  }
+
+  .add_seheme_btn button {
+    padding: 10px 15px;
+  }
+
+  .show_all_resigency_card_wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 15px;
+    /* box-shadow: 2px 0 25px #04847e48; */
+  }
+}
+
+/* flat list */
+
+/* Add Flat Button */
+.add_flat_button {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.add_flat_button button {
+  background-color: #06a7b1;
+  color: #fff;
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add_flat_button button:hover {
+  background-color: #0491a4;
+}
+
+.flat_number_container {
+  width: 100%;
+  /* background-color: #f9f9f9; */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
+  flex-wrap: wrap;
+  margin-top: 80px;
+  flex-direction: column;
+  /* overflow: auto; */
+}
+.delete_flat {
+  height: 35px;
+  width: 35px;
+  color: white;
+  background-color: red;
+  border: none;
+  border-radius: 50px;
+
+  margin-left: 92px;
+  margin-top: -93px;
+}
+
+.flat_numbers {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Booked Flats */
+.book {
+  background-color: #e74c3c;
+  color: white;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 120px;
+  outline: none;
+  border: none;
+}
+
+.book:hover {
+  background-color: #c0392b;
+}
+
+/* Available Flats */
+.available {
+  background-color: #27ae60;
+  color: white;
+  padding: 15px;
+  /* width: 100%; */
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 120px;
+  outline: none;
+  border: none;
+}
+
+.available:hover {
+  background-color: #2ecc71;
+}
+
+
+.delete_flat:hover {
+  background-color: #c0392b;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+  .flat_number_container {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .flat_numbers {
+    width: 120px;
+    height: 120px;
+  }
+
+  .flat_numbers p {
+    font-size: 16px;
+  }
+
+  .delete_flat {
+    font-size: 16px;
+    padding: 4px;
+    top: 209px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .flat_number_container {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .flat_numbers {
+    width: 100px;
+    height: 100px;
+  }
+
+  .flat_numbers p {
+    font-size: 14px;
+  }
+
+  .delete_flat {
+    font-size: 14px;
+    padding: 3px;
+  }
+
+
+}
+
+.add_newflat_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.add_flat {
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add_flat:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.AddFlatClose button {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  /* padding: 8px; */
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 50%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s ease;
+}
+
+.AddFlatClose button:hover {
+  background-color: #e04141;
+  transform: scale(1.1);
+}
+
+.add_flat_form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.add_flat_label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.add_flat_input,
+.add_flat_select {
+  padding: 12px 15px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fafafa;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.add_flat_input:focus,
+.add_flat_select:focus {
+  border-color: #007bff;
+  background-color: #ffffff;
+  outline: none;
+}
+
+.add_flat_button_submit {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.add_flat_button_submit:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7d);
+  transform: translateY(-2px);
+}
+
+@media screen and (max-width: 768px) {
+  .add_flat {
+    padding: 20px;
+  }
+
+  .add_flat_input,
+  .add_flat_select {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .add_flat_button_submit {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .AddFlatClose button {
+    font-size: 16px;
+    padding: 6px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .add_flat {
+    padding: 15px;
+  }
+
+  .add_flat_input,
+  .add_flat_select {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .add_flat_button_submit {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .AddFlatClose button {
+    font-size: 14px;
+    padding: 5px;
+  }
+}
+
+
+/* falt detail; crad */
+
+.flat_Detail_Container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.flat_Detail_Container.visible {
+  display: flex;
+}
+
+.flat-detail-card {
+  background: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.singleflat_close_button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 50%;
+}
+
+.singleflat_close_button:hover {
+  background-color: #c0392b;
+}
+
+.flat-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.flat-info p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 7px;
+}
+
+.flat-info strong {
+  color: #333;
+  display: flex;
+  gap: 10px;
+}
+
+.add-customer-button,
+.coustomer_view_button {
+  background-color: #06a7b1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-customer-button:hover,
+.coustomer_view_button:hover {
+  background-color: #0491a4;
+}
+
+@media screen and (max-width: 768px) {
+  .flat-detail-card {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .flat-title {
+    font-size: 20px;
+  }
+
+  .flat-info p {
+    font-size: 14px;
+  }
+
+  .add-customer-button,
+  .coustomer_view_button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+/* customer css */
+.add_customer_form {
+  background: #fff;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top: -66px;
+}
+
+.close_cutomer_form_button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 50%;
+}
+
+.close_cutomer_form_button:hover {
+  background-color: #c0392b;
+}
+
+.add_customer_h3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.add_customer_label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.add_customer_input,
+.add_customer_select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.add_customer_submit_button {
+  background-color: #06a7b1;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.add_customer_submit_button:hover {
+  background-color: #0491a4;
+}
+
+.add_customer_h4 {
+  font-size: 20px;
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  .add_customer_form {
+    padding: 15px;
+  }
+
+  .add_customer_h3 {
+    font-size: 20px;
+  }
+
+  .add_customer_label {
+    font-size: 14px;
+  }
+
+  .add_customer_input,
+  .add_customer_select {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .add_customer_submit_button {
+    font-size: 16px;
+  }
+}
+
+/* custome crd css */
+
+.flat_owener_multi_button_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.AddBankAccount,
+.AddFlatInstallment,
+.CancleBooking,
+.ShowCustomerInstallment,
+.CustomerSlip {
+  background-color: #06a7b1;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.AddBankAccount:hover,
+.AddFlatInstallment:hover,
+.CancleBooking:hover,
+.ShowCustomerInstallment:hover,
+.CustomerSlip:hover {
+  background-color: #0491a4;
+}
+
+/*   customer main card */
+.customer_data_card_wrapper {
+  background-color: whitesmoke;
+
+}
+
+.customer_card_flat_no p {
+  font-size: 25px;
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  margin-left: 50px;
+  padding: 25px;
+}
+
+.customer_card_flat_no strong {
+  font-size: 25px;
+
+}
+
+.customer_card_name_wrapper {
+  text-align: center;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.customer_flat_owner_conatiner {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.customer_data_container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.customer_data_container strong {
+  font-size: 24px;
+  color: #06a7b1;
+}
+
+@media screen and (max-width: 768px) {
+  .customer_flat_owner_conatiner {
+
+    gap: 46px;
+
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .customer_flat_owner_conatiner {
+    padding: 10px;
+  }
+}
+
+/* customer bank detsil */
+
+
+.customer_bank_details_form_wrapper {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  background: #f9f9f9;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  top: -740px;
+}
+
+.customer_bank_detail_form_close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #f30000;
+}
+
+.customer_bank_detail_form_close:hover {
+  color: #000;
+}
+
+.customer_bank_name {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.customer_bank_name label {
+  font-size: 15px;
+  color: #444;
+}
+
+.customer_bank_name input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+.customer_bank_name input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.bank_detail_submit_button {
+  text-align: center;
+}
+
+.bank_detail_submit_button button {
+  padding: 12px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.bank_detail_submit_button button:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 768px) {
+  .customer_bank_details_form_wrapper {
+    width: 92%;
+    padding: 20px;
+    top: -1300px;
+  }
+
+  .customer_bank_name input,
+  .bank_detail_submit_button button {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .customer_bank_details_form_wrapper {
+    width: 96%;
+    padding: 16px;
+    top: -1749px;
+  }
+
+  .customer_bank_name input {
+    font-size: 16px;
+    padding: 14px;
+  }
+
+  .bank_detail_submit_button button {
+    font-size: 16px;
+    padding: 14px;
+  }
+}
+
+
+/* customer bank installment */
+/* General Styles */
+
+.customer_installment_form_wrapper {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  background: #f9f9f9;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  top: -740px;
+}
+
+.customer_installment_form_close_button {
+  position: absolute;
+  top: 2px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #fc0000;
+}
+
+
+.customet_installment_form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.customet_installment_form input,
+.customet_installment_form select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+.customet_installment_form input:focus,
+.customet_installment_form select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.customer_installment_form_submit_button {
+  padding: 12px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
+.customer_installment_form_submit_button:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 768px) {
+  .customer_installment_form_wrapper {
+    width: 92%;
+    padding: 20px;
+    top: -1300px;
+  }
+
+  .customet_installment_form input,
+  .customet_installment_form select,
+  .customer_installment_form_submit_button {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .customer_installment_form_wrapper {
+    width: 96%;
+    padding: 16px;
+    top: -1749px;
+  }
+
+  .customet_installment_form input,
+  .customet_installment_form select {
+    font-size: 16px;
+    padding: 14px;
+  }
+
+  .customer_installment_form_submit_button {
+    font-size: 16px;
+    padding: 14px;
+  }
+}
+
+
+/* customer installment show */
+.customer_installment_card_wrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+
+  background-color: whitesmoke;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  position: relative;
+  top: -740px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: auto;
+  height: 550px;
+}
+
+.customer_installment_card_close_button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #ec0000;
+}
+
+.customer_installment_card_wrapper p {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #000000;
+}
+
+.customer_installment_card_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.customer_installment_card_tr {
+  background-color: rgba(255, 255, 255, 0.05);
+  text-align: left;
+}
+
+.customer_installment_card_th,
+.customer_installment_card_td {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #000000;
+}
+
+.customer_installment_card_th {
+  background-color: #06a7b1;
+  /* font-weight: bold; */
+}
+
+.customer_installment_card_td {
+  font-size: 14px;
+}
+
+.customer_installment_card_table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 768px) {
+  .customer_installment_card_wrapper {
+    width: 90%;
+    padding: 18px;
+    top: -1300px;
+  }
+
+  .customer_installment_card_wrapper p,
+  .customer_installment_card_th,
+  .customer_installment_card_td {
+    font-size: 16px;
+  }
+
+  .customer_installment_card_table {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .customer_installment_card_wrapper {
+    width: 95%;
+    padding: 14px;
+    top: -1750px;
+  }
+
+  .customer_installment_card_wrapper p,
+  .customer_installment_card_th,
+  .customer_installment_card_td {
+    font-size: 16px;
+  }
+
+  .customer_installment_card_table {
+    font-size: 14px;
+  }
+
+  .customer_installment_card_th,
+  .customer_installment_card_td {
+    padding: 10px;
+  }
+}
+
+
+/* salary slip css */
+.customer_salary_slip_close_button {
+  background-color: #f44336;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.customer_salary_slip_close_button:hover {
+  background-color: #d32f2f;
+  transform: scale(1.1);
+}
+
+.customer_salary_slip_downlode_btn {
+  background-color: #4CAF50;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.customer_salary_slip_downlode_btn:hover {
+  background-color: #388E3C;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .customer_salary_slip_close_button {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .customer_salary_slip_downlode_btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .customer_salary_slip_close_button {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .customer_salary_slip_downlode_btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .payment_slip_first_table {
+    width: 100%;
+  }
+}
+
+/* *******************  residency delete  */
+.residency_delete {
+  margin-left: 250px;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 50px;
+  border: none;
+  background-color: red;
+  color: whitesmoke;
+}
+
+.addschemecreate_vutton {
+  padding: 10px 25px;
+  background-color: #0baea6;
+  color: whitesmoke;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+}

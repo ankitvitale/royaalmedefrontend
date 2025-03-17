@@ -1,0 +1,223 @@
+.bill-container {
+  display: grid;
+  gap: 20px;
+  padding: 20px;
+}
+
+.bill-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  overflow: auto;
+  padding: 20px;
+}
+
+.bill-card:hover {
+  transform: translateY(-5px);
+}
+
+.bill-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.vendor-info {
+  font-size: 14px;
+  color: #666;
+}
+
+.materials-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.materials-table th,
+.materials-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.materials-table th {
+  background-color: #0b92a5;
+  font-weight: bold;
+  color: white;
+}
+
+.materials-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.materials-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.amount-details {
+  margin-top: 10px;
+}
+
+.amount-details p {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+@media (min-width: 768px) {
+  .bill-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .bill-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+
+.materials-section {
+  margin: 20px 0;
+}
+
+.materials-section-header {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 400px;
+}
+
+.payments-table th,
+.payments-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.payments-table th {
+  background-color: #0b92a5;
+  font-weight: bold;
+  color: white;
+}
+
+.payments-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+
+  .payments-table th,
+  .payments-table td {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payments-table {
+    min-width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+
+.show_payment_form_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.show_payment_form {
+  background: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.show_payment_form_close {
+  position: absolute;
+  top: -10px;
+  right: 0px;
+  background: red;
+  color: white;
+  border: none;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.show_payment_form_input,
+.show_payment_form_select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.show_payment_form_submit_button {
+  background: #28a745;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.show_payment_form_submit_button:hover {
+  background: #218838;
+}
+
+@media (max-width: 600px) {
+  .show_payment_form {
+    width: 95%;
+  }
+}
+
+.bill_no_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (max-width: 426px){
+  .bill-container {
+    display: grid;
+    gap: 20px;
+    padding: 0px;
+}
+.Materials_section {
+
+  overflow: auto;
+}
+}

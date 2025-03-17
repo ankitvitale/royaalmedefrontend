@@ -1,0 +1,417 @@
+import React, { useEffect, useState } from 'react'
+import logo from "../../assets/Royalmedeinfra Logo.svg"
+import {
+    FaMapMarkerAlt,
+    FaEnvelope,
+    FaGlobe,
+    FaPhoneAlt,
+} from "react-icons/fa";
+import { useRef } from 'react';
+import html2pdf from 'html2pdf.js';
+import Logo2 from "../../assets/Royalmedeinfra Logo.svg"
+import "./Latter.css"
+import axios from 'axios';
+import { BASE_URL } from '../../config';
+function Possession() {
+    const token = JSON.parse(
+        localStorage.getItem("employeROyalmadeLogin")
+    )?.token;
+    const [showPossession, setshowPossession] = useState(false)
+    const letterref = useRef()
+    const [from, setFrom] = useState("");
+    const [date, setDate] = useState("");
+    const [yourName, setYourName] = useState("");
+    const [firstName, setFirstName] = useState("");
+
+    const [flatNumber, setFlatNumber] = useState("");
+    const [residencyName, setResidencyName] = useState("");
+    const [address, setAddress] = useState("");
+    const [possesionTable, setpossesionTable] = useState([])
+    const [refreshKey, setrefreshKey] = useState(0)
+    const [letterdata, setLetterData] = useState({})
+    function handleDownlodepossession() {
+        const element = letterref.current;
+        const options = {
+            margin: 0.5,
+            filename: "possession_letter.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+        };
+
+        html2pdf().set(options).from(element).save();
+    }
+
+
+    async function handlepossessionSubmit(e) {
+        e.preventDefault()
+
+        const formdata = {
+            fromName: from,
+            date,
+            toName: yourName,
+            name: firstName,
+            flatNo: flatNumber,
+            residencyName: residencyName,
+            address
+        }
+        try {
+            const resonse = await axios.post(`${BASE_URL}/createPossessionLetter`, formdata, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            console.log(resonse.data)
+            setrefreshKey(refreshKey + 1)
+            setFrom("")
+            setDate("")
+            setYourName("")
+            setFirstName("")
+            setFlatNumber("")
+            setResidencyName("")
+            setAddress("")
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    useEffect(() => {
+        async function getPossessionLetter() {
+            try {
+                const response = await axios.get(`${BASE_URL}/PossessionLetter`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+                console.log(response.data)
+                setpossesionTable(response.data)
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
+        getPossessionLetter()
+    }, [refreshKey])
+
+    async function handlepossionDelete(id) {
+        try {
+            await axios.delete(`${BASE_URL}/PossessionLetter/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+
+            setrefreshKey((prevKey) => prevKey + 1)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+    async function handleShowPossessionletter(id) {
+        setshowPossession(true)
+        try {
+            const response = await axios.get(`${BASE_URL}/PossessionLetter/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            console.log(response.data)
+            setLetterData(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    return (
+        <>
+
+            <h1 style={{ textAlign: 'center', marginTop: "50px", fontSize: "25px" }}> Possession Letter</h1>
+
+            <div className="possession_letter_form_wrapper">
+                <form className="possession_letter" onSubmit={handlepossessionSubmit}>
+                    <input
+                        type="text"
+                        placeholder="From"
+                        className="possession_letter_input"
+                        value={from}
+                        onChange={(e) => setFrom(e.target.value)}
+                    />
+                    <input
+                        type="date"
+                        className="possession_letter_input"
+                        value={date || new Date().toISOString().split("T")[0]}
+                        onChange={(e) => setDate(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter Your Name"
+                        className="possession_letter_input"
+                        value={yourName}
+                        onChange={(e) => setYourName(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="First Name"
+                        className="possession_letter_input"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                    />
+
+                    <input
+                        type="number"
+                        placeholder="Flat Number"
+                        className="possession_letter_input"
+                        value={flatNumber}
+                        onChange={(e) => setFlatNumber(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Residency Name"
+                        className="possession_letter_input"
+                        value={residencyName}
+                        onChange={(e) => setResidencyName(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter Address"
+                        className="possession_letter_input"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                    <button className="possession_letter_submit_button">Submit</button>
+                </form>
+            </div>
+
+
+            <div className="possession_letter_wrapper">
+                <table className="possession_table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>From Name</th>
+                            <th>Date</th>
+                            <th>To Name</th>
+                            <th>Name</th>
+                            <th>Flat No</th>
+                            <th>Residency Name</th>
+                            <th>Address</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {possesionTable.length > 0 ? (
+                            possesionTable.map((item, index) => (
+                                <tr key={item.id}>
+                                    <td>{index}</td>
+                                    <td>{item.fromName}</td>
+                                    <td>{new Date(item.date).toLocaleDateString("en-GB")}</td>
+                                    <td>{item.toName}</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.flatNo}</td>
+                                    <td>{item.residencyName}</td>
+                                    <td>{item.address}</td>
+                                    <td style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px", flexDirection: "column" }}>
+                                        <button onClick={() => handlepossionDelete(item.id)} className='possession_delete'> Delete</button>
+                                        <button onClick={() => handleShowPossessionletter(item.id)} className='possession_show'>Show</button>
+
+                                    </td>
+
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="8">No data available</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+
+
+            {
+                showPossession && letterdata && (
+                    <>
+                        <div className="infra_letter_head_main_wrapper">
+                            <div className="downlode_button">
+                                <button onClick={handleDownlodepossession} className='royalinfra_downlode_button'> DownLode</button>
+                                <button onClick={() => setshowPossession(false)} className='possion_close'>Close</button>
+                            </div>
+                            <div className="infraletter_head_wrapper" ref={letterref}>
+                                <div
+                                    style={{
+                                        textAlign: "right",
+                                        marginBottom: "20px",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        justifyContent: "space-around",
+                                        color: "#000",
+
+                                    }}
+                                >
+                                    <img
+                                        style={{
+                                            height: "120px", // Set desired height
+                                            width: "auto", // Auto to maintain aspect ratio
+                                            objectFit: "contain", // Prevent distortion
+                                        }}
+                                        src={Logo2}
+                                        alt=""
+                                    />
+                                    <div
+                                        style={{
+                                            fontFamily: "Arial, sans-serif",
+                                            lineHeight: "40px",
+                                            width: "80%",
+                                            margin: "auto",
+                                            padding: "20px",
+                                            color: "#000",
+
+                                        }}
+                                    >
+                                        {/* Address Section */}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "right",
+                                                alignItems: "center",
+                                                marginBottom: "10px",
+                                            }}
+                                        >
+                                            <div style={{ lineHeight: "30px", marginRight: "30px" }}>
+                                                <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
+                                                <p>Hudkeshwar Road, Nagpur - 440034</p>
+                                            </div>
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#d34508",
+                                                    padding: "10px",
+                                                    borderRadius: "1px",
+                                                    height: "40px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <FaMapMarkerAlt size={21} color="#ffff" />
+                                            </div>
+                                        </div>
+
+                                        {/* Email */}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "right",
+                                                alignItems: "center",
+                                                marginBottom: "10px",
+                                            }}
+                                        >
+                                            <p style={{ marginRight: "30px" }}>royaalmede@gmail.com</p>
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#d34508",
+                                                    padding: "10px",
+                                                    borderRadius: "1px",
+                                                    height: "40px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <FaEnvelope size={21} color="#ffff" />
+                                            </div>
+                                        </div>
+
+                                        {/* Website */}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "right",
+                                                alignItems: "center",
+                                                marginBottom: "10px",
+                                            }}
+                                        >
+                                            <p style={{ marginRight: "30px" }}>www.royaalmede.co.in</p>
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#d34508",
+                                                    padding: "10px",
+                                                    borderRadius: "1px",
+                                                    height: "40px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <FaGlobe size={21} color="#ffff" />
+                                            </div>
+                                        </div>
+
+                                        {/* Phone */}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "right",
+                                                alignItems: "center",
+                                                marginBottom: "10px",
+                                            }}
+                                        >
+                                            <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#d34508",
+                                                    padding: "10px",
+                                                    borderRadius: "1px",
+                                                    height: "40px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <FaPhoneAlt size={21} color="#ffff" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px" }} />
+                                <hr style={{ border: "3px solid rgb(167, 5, 86)" }} />
+
+
+
+
+                                <p style={{ marginTop: "25px", marginLeft: "80px" }}>From:- <b>{letterdata.fromName}   </b>      </p>
+                                <p style={{ marginTop: "25px", marginLeft: "80px" }}>  Date: <b> {new Date(letterdata.date).toLocaleDateString("en-GB") }  </b>  </p>
+                                <p style={{ marginLeft: "80px" }}>To, </p>
+                                <p style={{ marginLeft: "80px" }}> Mr./Mrs./Ms.   </p>
+                                <p style={{ marginLeft: "80px" }}>  <b> {letterdata.name}	   </b></p>
+                                <p style={{ marginTop: "25px", marginLeft: "80px" }}>Sub: - Handing over possession of    </p>
+
+                                <p style={{ marginTop: "25px", marginLeft: "80px", marginRight: "10px" }}>
+
+                                    Dear Sir/Madam, I, the undersigned, Mr./Mrs./Ms. <b>{letterdata.name}</b> state that I have transferred
+                                    my above flat to you, Mr./Mrs./Ms.{letterdata.name}	and have since received full payment towards the transfer of above
+                                    Flat  <b>{letterdata.flatNo}  </b>and Shares of Society. Since, <b>{letterdata.address}  </b> , <b> {letterdata.residencyName}  </b>I have received full payment from you, I relinquish my rights for the above
+                                    flat and hand over possession of the same, and you are at liberty to use and/or to sell, transfer, sublet at your will as you may wish
+                                    within the rules and regulations of the society and I will have no objection or rights for the said flat.
+                                </p>
+
+                                <p style={{ marginLeft: "80px", marginTop: "60px" }}>faithfully,</p>
+                                <p style={{ marginLeft: "80px", marginTop: "50px" }}>(ROYAALMEDE INFRA)</p>
+
+
+                            </div>
+                        </div>
+
+
+
+
+                    </>
+                )
+            }
+
+        </>
+    )
+}
+
+export default Possession

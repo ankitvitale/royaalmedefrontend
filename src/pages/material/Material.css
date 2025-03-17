@@ -1,0 +1,895 @@
+.vendor_view{
+    height: 35px;
+    width: 80px;
+    background-color: cadetblue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+.show_building_name_material_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+    margin-top: 30px;
+}
+.show_building_name_material {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 2px 0 25px #04847e48;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.show_building_name_material:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.show_building_name_material p {
+    margin: 10px 0 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.show_building_name_material .material_status {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+}
+
+.show_building_name_material svg {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  
+    .show_building_name_material {
+        padding: 16px;
+        width: 300px;
+    }
+
+    .show_building_name_material p {
+        font-size: 0.9rem;
+    }
+
+    .show_building_name_material .material_status {
+        font-size: 0.85rem;
+    }
+
+    .show_building_name_material svg {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .show_building_name_material_wrapper {
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .show_building_name_material {
+        padding: 12px;
+        height: 250px;
+    }
+
+    .show_building_name_material p {
+        font-size: 0.85rem;
+    }
+
+    .show_building_name_material .material_status {
+        font-size: 0.8rem;
+    }
+
+    .show_building_name_material svg {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+
+/* Form Wrapper */
+.addMeterialformwrapper {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 25px 20px;
+}
+
+.hideAddmaterial_button {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.crossMetetialform_btn {
+    background: linear-gradient(90deg, #ff7b7b, #ff4d4d);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.crossMetetialform_btn:hover {
+    background: linear-gradient(90deg, #ff4d4d, #ff1a1a);
+}
+
+.addMeterialform {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.addMeteriallable {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.addMeterialinput,
+.addMeterialselect {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.addMeterialinput:focus,
+.addMeterialselect:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.addMeterialsubmitbutton {
+    background: linear-gradient(90deg, #4caf50, #32a852);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.addMeterialsubmitbutton:hover {
+    background: linear-gradient(90deg, #32a852, #2d934a);
+}
+
+/* Table Wrapper */
+.material_table_wrapper {
+    overflow-x: auto;
+    margin: 30px auto;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.material_table_wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f9f9f9;
+}
+
+.material_table_wrapper thead {
+    color: white;
+    background-color: #0b92a5;
+}
+
+.material_table_wrapper thead th {
+    padding: 15px;
+    text-align: left;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+}
+
+.material_table_wrapper tbody tr {
+    transition: background-color 0.2s ease-in-out;
+}
+
+.material_table_wrapper tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.material_table_wrapper tbody td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.95rem;
+    border: 1px solid #ddd;
+
+}
+
+.material_table_wrapper tbody td:last-child {
+    text-align: center;
+}
+
+
+.meterialDelete {
+    background: linear-gradient(90deg, #ff4d4d, #d32f2f);
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    margin: 2px;
+}
+
+.addmeterialinstallment {
+    background: linear-gradient(90deg, #4caf50, #32a852);
+    color: white;
+    border: none;
+    padding: 10px 13px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    margin: 2px;
+}
+
+.showemeterialBillImg {
+    background: #ffc107;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    margin: 2px;
+}
+.showmaterialcard{
+    background: #17a2b8;
+ 
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    margin: 2px;
+}
+
+@media (max-width: 768px) {
+    .addMeterialformwrapper {
+        padding: 20px 15px;
+    }
+
+    .addMeterialform {
+        gap: 12px;
+    }
+
+    .material_table_wrapper table {
+        font-size: 0.9rem;
+    }
+
+    .material_table_wrapper thead th,
+    .material_table_wrapper tbody td {
+        padding: 10px;
+    }
+
+    .meterialDelete,
+    .addmeterialinstallment,
+    .showemeterialBill,
+    .showmaterialcard {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .addMeterialformwrapper {
+        padding: 15px;
+    }
+
+    .crossMetetialform_btn {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+    .addMeterialsubmitbutton {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+    }
+
+    .material_table_wrapper thead th,
+    .material_table_wrapper tbody td {
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+
+    .meterialDelete,
+    .addmeterialinstallment,
+    .showemeterialBill,
+    .showmaterialcard {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+    }
+}
+
+
+
+.Addmaterialbutton_wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 150px;
+    flex-wrap: wrap;
+}
+.search_vendor{
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: 100%;
+    width: 260px;
+    border-radius: 50px;
+    box-shadow: 2px 0 15px #04847e48;
+}
+
+.Addmaterialbutton_wrapper button {
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    background-color: #0b92a5;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .Addmaterialbutton_wrapper button {
+        font-size: 1rem;
+        padding: 10px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .Addmaterialbutton_wrapper button {
+        font-size: 0.9rem;
+        padding: 8px 20px;
+    }
+}
+
+
+.addmaterial_inatallment_form_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+
+.addmaterial_inatallment_form {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.addmaterial_inatallment_form_closebutton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.addmaterial_inatallment_form_closebutton:hover {
+    background: #d32f2f;
+}
+
+
+.addmaterial_inatallment_form_input,
+.addmaterial_inatallment_form_select {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.addmaterial_inatallment_form_input:focus,
+.addmaterial_inatallment_form_select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.addmaterial_inatallment_form_submit_button {
+    background: linear-gradient(90deg, #4caf50, #32a852);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.addmaterial_inatallment_form_submit_button:hover {
+    background: linear-gradient(90deg, #32a852, #2d934a);
+}
+
+
+@media (max-width: 768px) {
+    .addmaterial_inatallment_form {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .addmaterial_inatallment_form_closebutton {
+        width: 25px;
+        height: 25px;
+        font-size: 1rem;
+    }
+
+    .addmaterial_inatallment_form_input,
+    .addmaterial_inatallment_form_select {
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+
+    .addmaterial_inatallment_form_submit_button {
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .addmaterial_inatallment_form {
+        padding: 10px;
+    }
+
+    .addmaterial_inatallment_form_input,
+    .addmaterial_inatallment_form_select {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .addmaterial_inatallment_form_submit_button {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}
+
+/* Wrapper */
+.material_bills_image_wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Close Button */
+  .material_bills_image_close_button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #ff4d4d;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    z-index: 1001;
+  }
+  
+  .material_bills_image_close_button:hover {
+    background: #d32f2f;
+    transform: scale(1.1);
+  }
+  
+  /* Image */
+  .material_bills_image {
+    max-width: 100%;
+    max-height: 80%;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    object-fit: contain;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .material_bills_image_close_button {
+      width: 35px;
+      height: 35px;
+      font-size: 1.2rem;
+    }
+  
+    .material_bills_image {
+      max-height: 70%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .material_bills_image_close_button {
+      width: 30px;
+      height: 30px;
+      font-size: 1rem;
+    }
+  
+    .material_bills_image {
+      max-height: 60%;
+    }
+  }
+
+  
+  /* Main Wrapper */
+.material_card_main_wrapper {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Close Button */
+  .material_card_close_button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #ff4d4d;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: 0.3s;
+  }
+  
+  .material_card_close_button:hover {
+    background: #d32f2f;
+    transform: scale(1.1);
+  }
+  
+  /* Card Content */
+  .material_card_main_wrapper p {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  .material_card_main_wrapper h3 {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #0066cc;
+    font-weight: bold;
+  }
+  
+  /* Installment Section */
+  .material_card_installment_section {
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .material_card_installment_section p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .material_card_installment_section hr {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 10px 0;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .material_card_main_wrapper {
+      padding: 15px;
+    }
+  
+    .material_card_close_button {
+      width: 30px;
+      height: 30px;
+      font-size: 1rem;
+    }
+  
+    .material_card_main_wrapper p {
+      font-size: 0.9rem;
+    }
+  
+    .material_card_main_wrapper h3 {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .material_card_main_wrapper {
+      padding: 10px;
+    }
+  
+    .material_card_close_button {
+      width: 25px;
+      height: 25px;
+      font-size: 0.9rem;
+    }
+  
+    .material_card_main_wrapper p {
+      font-size: 0.85rem;
+    }
+  
+    .material_card_main_wrapper h3 {
+      font-size: 0.95rem;
+    }
+  }
+  
+
+
+  .material_card_installment_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+  }
+  
+  .material_card_installment_table th,
+  .material_card_installment_table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .material_card_installment_table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .material_card_installment_table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+ 
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.vendor_form_container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.close_vendor_form {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.add_vendor_form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add_vendor_submit_button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add_vendor_submit_button:hover {
+    background: #0056b3;
+}
+
+.open_vendor_form {
+    padding: 10px 15px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.open_vendor_form:hover {
+    background: #218838;
+}
+
+@media (max-width: 768px) {
+    .vendor_form_container {
+        width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    .vendor_form_container {
+        width: 90%;
+        padding: 15px;
+    }
+}
+
+
+.vendor_table_container {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling on small screens */
+    padding: 20px;
+}
+
+.vendor_list_table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.vendor_list_table thead {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.vendor_list_table th,
+.vendor_list_table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    border: 1px solid rgb(225, 220, 220);
+
+}
+
+.vendor_list_table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.vendor_list_table tbody tr:hover {
+    background-color: #f1f1f1;
+    transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+    .vendor_list_table th,
+    .vendor_list_table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vendor_list_table {
+        font-size: 12px;
+    }
+}

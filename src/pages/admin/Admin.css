@@ -1,0 +1,275 @@
+
+  .admin_registration_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.add_supervisor{
+  height: 50px;
+  width: 140px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  background-color: #00adb5;
+  color: whitesmoke;
+  font-size: 15px;
+}
+.add_employee{
+  height: 50px;
+  width: 140px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  background-color: darkorange;
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+}
+
+.login_button {
+  height: 40px;
+  width: 120px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background-color: #0dada5;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.link_container {
+  display: flex;
+  align-items: start;
+  height: 57px;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+  padding: 19px 20px;
+  width: 100%;
+  /* overflow: auto; */
+}
+.link_container a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+}
+
+
+.link_container:hover {
+  background-color: #0f3460;
+}
+
+.hospital {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: start;
+}
+
+.sidebar img {
+  background-color: white;
+  width: 100%;
+
+}
+
+.admin-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: #fff;
+  align-items: center;
+  height: 70px;
+  padding: 10px;
+  margin-top: 25px;
+}
+
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #fff;
+  align-items: center;
+  box-shadow: 2px 0 25px #04847e48;
+  height: 70px;
+  padding: 10px;
+
+}
+
+.header-icon {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #fff;
+  align-items: center;
+  height: 70px;
+  padding: 10px;
+  gap: 180px;
+  box-shadow: 2px 0 25px #04847e48;
+  width: 100%;
+}
+
+.searchBar {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+.cancel {
+  position: absolute;
+  color: #00adb5;
+  font-size: 30px;
+
+}
+
+.searchBar input {
+  width: 50em;
+  padding: 10px 40px 10px 16px;
+  /* Space for the icon */
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  color: #333;
+
+  &:focus {
+    border-color: #0dada5;
+    background-color: #fff;
+  }
+}
+
+.searchBar .icon {
+  position: absolute;
+  right: 16px;
+  font-size: 1.2rem;
+  color: #555;
+  pointer-events: none;
+}
+
+.profile {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 150px;
+  align-items: center;
+
+}
+
+.profile span {
+  font-size: 22px;
+  color: #0dada5;
+}
+
+/* Sidebar.css */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(250deg, #0dada5, #097aa5);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  position: absolute;
+  left: -260px;
+}
+
+.open {
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(250deg, #0dada5, #097aa5);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+
+}
+
+@media (max-width: 480px){
+  .open {
+    background-color: #0e3a70;
+  }
+  .header-icon {
+    gap: 0px;
+    
+}
+.hamberger_icon {
+  height: 29px;
+}
+.login_button{
+  height: 27px;
+  width: 60px;
+  font-size: 13px;
+}
+}
+
+
+.sidebar-header {
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-bottom: 0.5px solid #0e3a70;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.menu-item {
+  margin: 0;
+}
+
+.menu-item a {
+  display: flex;
+  align-items: center;
+  padding: 25px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.menu-item a:hover {
+  background-color: #0f3460;
+  color: #e0e0e0;
+}
+
+.menu-item a:active {
+  background-color: #0f3460;
+  color: #00adb5;
+}
+
+.hicon {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+
+.text {
+  flex: 1;
+  font-size: 18px;
+}
+
+/* .link_container:hover{
+  background-color: #0f3460;
+} */
