@@ -132,7 +132,7 @@ function LandPurchase() {
       paymentDate: paymentDate,
     };
     try {
-      const response = await axios.post(`${BASE_URLs}/partnerpayment/${addPatnerPay}`, formdata, {
+      const response = await axios.post(`${BASE_URL}/partnerpayment/${addPatnerPay}`, formdata, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
