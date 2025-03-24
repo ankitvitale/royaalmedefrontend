@@ -9,7 +9,6 @@ import {
     FaPhoneAlt,
 } from "react-icons/fa";
 import logo from "../../assets/royal.png"
-import { jsPDF } from "jspdf";
 import { useRef } from "react";
 import html2pdf from "html2pdf.js";
 import "@fontsource/roboto"; // Default weight
@@ -288,136 +287,144 @@ function Offerlatter() {
                             }}>
                             {/* Header */}
                             <div
-                                style={{
-                                    textAlign: "right",
-                                    marginBottom: "20px",
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "space-around",
-                                    color: "#000",
-
-                                }}
-                            >
-                                <img
                                     style={{
-                                        height: "120px", // Set desired height
-                                        width: "auto", // Auto to maintain aspect ratio
-                                        objectFit: "contain", // Prevent distortion
-                                    }}
-                                    src={logo}
-                                    alt=""
-                                />
-                                <div
-                                    style={{
-                                        fontFamily: "Arial, sans-serif",
-                                        lineHeight: "40px",
-                                        width: "80%",
-                                        margin: "auto",
-                                        padding: "20px",
+                                        textAlign: "right",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        justifyContent: "space-around",
                                         color: "#000",
+                                        marginLeft: "50px",
+                                        marginTop: "20px"
 
                                     }}
                                 >
-                                    {/* Address Section */}
+                                    <img
+                                        style={{
+                                            height: "80px",
+                                            width: "auto",
+                                            objectFit: "contain",
+                                        }}
+                                        src={logo}
+                                        alt=""
+                                    />
                                     <div
                                         style={{
-                                            display: "flex",
-                                            justifyContent: "right",
-                                            alignItems: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <div style={{ lineHeight: "30px", marginRight: "30px" }}>
-                                            <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
-                                            <p>Hudkeshwar Road, Nagpur - 440034</p>
-                                        </div>
-                                        <div
-                                            style={{
-                                                backgroundColor: "#d34508",
-                                                padding: "10px",
-                                                borderRadius: "1px",
-                                                height: "40px",
-                                                display: "flex",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <FaMapMarkerAlt size={21} color="#ffff" />
-                                        </div>
-                                    </div>
+                                            fontFamily: "Arial, sans-serif",
+                                            lineHeight: "40px",
+                                            width: "80%",
+                                            margin: "auto",
+                                            padding: "20px",
+                                            color: "#000",
 
-                                    {/* Email */}
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "right",
-                                            alignItems: "center",
-                                            marginBottom: "10px",
                                         }}
                                     >
-                                        <p style={{ marginRight: "30px" }}>royaalmede@gmail.com</p>
+                                        {/* Address Section */}
                                         <div
                                             style={{
-                                                backgroundColor: "#d34508",
-                                                padding: "10px",
-                                                borderRadius: "1px",
-                                                height: "40px",
                                                 display: "flex",
+                                                justifyContent: "right",
                                                 alignItems: "center",
+                                                marginBottom: "8px",
+                                                fontSize: "14px"
                                             }}
                                         >
-                                            <FaEnvelope size={21} color="#ffff" />
+                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
+                                                <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
+                                                <p>Hudkeshwar Road, Nagpur - 440034</p>
+                                            </div>
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#d34508",
+                                                    padding: "10px",
+                                                    borderRadius: "1px",
+                                                    height: "30px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <FaMapMarkerAlt size={15} color="#ffff" />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {/* Website */}
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "right",
-                                            alignItems: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <p style={{ marginRight: "30px" }}>www.royaalmede.co.in</p>
+                                        {/* Email */}
                                         <div
                                             style={{
-                                                backgroundColor: "#d34508",
-                                                padding: "10px",
-                                                borderRadius: "1px",
-                                                height: "40px",
                                                 display: "flex",
+                                                justifyContent: "right",
                                                 alignItems: "center",
+                                                marginBottom: "8px",
+                                                fontSize: "14px",
+
                                             }}
                                         >
-                                            <FaGlobe size={21} color="#ffff" />
+                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#d34508",
+                                                    padding: "10px",
+                                                    borderRadius: "1px",
+                                                    height: "30px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <FaEnvelope size={15} color="#ffff" />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {/* Phone */}
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "right",
-                                            alignItems: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
+                                        {/* Website */}
                                         <div
                                             style={{
-                                                backgroundColor: "#d34508",
-                                                padding: "10px",
-                                                borderRadius: "1px",
-                                                height: "40px",
                                                 display: "flex",
+                                                justifyContent: "right",
                                                 alignItems: "center",
+                                                marginBottom: "8px",
+                                                fontSize: "14px",
+
+
                                             }}
                                         >
-                                            <FaPhoneAlt size={21} color="#ffff" />
+                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#d34508",
+                                                    padding: "10px",
+                                                    borderRadius: "1px",
+                                                    height: "30px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <FaGlobe size={15} color="#ffff" />
+                                            </div>
+                                        </div>
+
+                                        {/* Phone */}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "right",
+                                                alignItems: "center",
+                                                marginBottom: "8px",
+
+                                            }}
+                                        >
+                                            <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#d34508",
+                                                    padding: "10px",
+                                                    borderRadius: "1px",
+                                                    height: "30px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <FaPhoneAlt size={15} color="#ffff" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
                             <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px" }} />
                             <hr style={{ border: "3px solid rgb(167, 5, 86)" }} />

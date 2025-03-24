@@ -59,24 +59,25 @@ function LatterHead() {
                                 <button onClick={handleDownlodeInfra} className='royalinfra_downlode_button'> DownLode</button>
                             </div>
                             <div className="infraletter_head_wrapper" ref={letterref}>
-                                <div
+                            <div
                                     style={{
                                         textAlign: "right",
-                                        marginBottom: "20px",
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "space-around",
                                         color: "#000",
+                                        marginLeft: "50px",
+                                        marginTop: "20px"
 
                                     }}
                                 >
                                     <img
                                         style={{
-                                            height: "120px", // Set desired height
-                                            width: "auto", // Auto to maintain aspect ratio
-                                            objectFit: "contain", // Prevent distortion
+                                            height: "80px",
+                                            width: "auto",
+                                            objectFit: "contain",
                                         }}
-                                        src={logo}
+                                        src={Logo2}
                                         alt=""
                                     />
                                     <div
@@ -96,10 +97,11 @@ function LatterHead() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px"
                                             }}
                                         >
-                                            <div style={{ lineHeight: "30px", marginRight: "30px" }}>
+                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
                                                 <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
                                                 <p>Hudkeshwar Road, Nagpur - 440034</p>
                                             </div>
@@ -108,12 +110,12 @@ function LatterHead() {
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaMapMarkerAlt size={21} color="#ffff" />
+                                                <FaMapMarkerAlt size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -123,21 +125,23 @@ function LatterHead() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px",
+
                                             }}
                                         >
-                                            <p style={{ marginRight: "30px" }}>royaalmede@gmail.com</p>
+                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
                                             <div
                                                 style={{
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaEnvelope size={21} color="#ffff" />
+                                                <FaEnvelope size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -147,21 +151,24 @@ function LatterHead() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px",
+
+
                                             }}
                                         >
-                                            <p style={{ marginRight: "30px" }}>www.royaalmede.co.in</p>
+                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
                                             <div
                                                 style={{
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaGlobe size={21} color="#ffff" />
+                                                <FaGlobe size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -171,7 +178,8 @@ function LatterHead() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+
                                             }}
                                         >
                                             <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
@@ -180,12 +188,12 @@ function LatterHead() {
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaPhoneAlt size={21} color="#ffff" />
+                                                <FaPhoneAlt size={15} color="#ffff" />
                                             </div>
                                         </div>
                                     </div>
@@ -212,22 +220,23 @@ function LatterHead() {
                                 <button onClick={handleDownlodeLoan} className='royalloan_downlode_button'> DownLode</button>
                             </div>
                             <div className="infraletter_head_wrapper" ref={loanref}>
-                                <div
+                            <div
                                     style={{
                                         textAlign: "right",
-                                        marginBottom: "20px",
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "space-around",
                                         color: "#000",
+                                        marginLeft: "50px",
+                                        marginTop: "20px"
 
                                     }}
                                 >
                                     <img
                                         style={{
-                                            height: "120px", // Set desired height
-                                            width: "auto", // Auto to maintain aspect ratio
-                                            objectFit: "contain", // Prevent distortion
+                                            height: "80px",
+                                            width: "auto",
+                                            objectFit: "contain",
                                         }}
                                         src={Logo2}
                                         alt=""
@@ -249,10 +258,11 @@ function LatterHead() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px"
                                             }}
                                         >
-                                            <div style={{ lineHeight: "30px", marginRight: "30px" }}>
+                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
                                                 <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
                                                 <p>Hudkeshwar Road, Nagpur - 440034</p>
                                             </div>
@@ -261,12 +271,12 @@ function LatterHead() {
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaMapMarkerAlt size={21} color="#ffff" />
+                                                <FaMapMarkerAlt size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -276,21 +286,23 @@ function LatterHead() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px",
+
                                             }}
                                         >
-                                            <p style={{ marginRight: "30px" }}>royaalmede@gmail.com</p>
+                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
                                             <div
                                                 style={{
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaEnvelope size={21} color="#ffff" />
+                                                <FaEnvelope size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -300,21 +312,24 @@ function LatterHead() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px",
+
+
                                             }}
                                         >
-                                            <p style={{ marginRight: "30px" }}>www.royaalmede.co.in</p>
+                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
                                             <div
                                                 style={{
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaGlobe size={21} color="#ffff" />
+                                                <FaGlobe size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -324,7 +339,8 @@ function LatterHead() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+
                                             }}
                                         >
                                             <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
@@ -333,12 +349,12 @@ function LatterHead() {
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaPhoneAlt size={21} color="#ffff" />
+                                                <FaPhoneAlt size={15} color="#ffff" />
                                             </div>
                                         </div>
                                     </div>

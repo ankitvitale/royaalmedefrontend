@@ -5,7 +5,7 @@ import "./Admin.css";
 import logo from "../../assets/royal.png";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import {
-  FaBars,
+ 
   FaBoxes,
   FaBuilding,
   FaFileAlt,
@@ -17,7 +17,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { RiFilePaper2Fill } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdCancel } from "react-icons/md";
-import { BASE_URL } from "../../config";
+
 
 function Admin() {
   const navigate = useNavigate()

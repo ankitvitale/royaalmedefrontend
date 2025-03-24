@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import logo from "../../assets/Royalmedeinfra Logo.svg"
 import {
     FaMapMarkerAlt,
     FaEnvelope,
@@ -33,7 +32,7 @@ function Possession() {
         const element = letterref.current;
         const options = {
             margin: 0.5,
-            filename: "possession_letter.pdf",
+            filename: `${letterdata.name} possession_letter.pdf`,
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
@@ -48,7 +47,7 @@ function Possession() {
 
         const formdata = {
             fromName: from,
-            date,
+            date: date || new Date().toISOString().split("T")[0],
             toName: yourName,
             name: firstName,
             flatNo: flatNumber,
@@ -63,6 +62,9 @@ function Possession() {
                 }
             })
             console.log(resonse.data)
+            if (resonse.status === 200) {
+                alert("form Submitted Successfully")
+            }
             setrefreshKey(refreshKey + 1)
             setFrom("")
             setDate("")
@@ -98,14 +100,18 @@ function Possession() {
 
     async function handlepossionDelete(id) {
         try {
-            await axios.delete(`${BASE_URL}/PossessionLetter/${id}`, {
+            const response = await axios.delete(`${BASE_URL}/PossessionLetter/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 }
             })
 
-            setrefreshKey((prevKey) => prevKey + 1)
+            if (response.status === 200) {
+                alert("letter delete Successfully")
+                setrefreshKey((prevKey) => prevKey + 1)
+
+            }
 
         } catch (error) {
             console.log(error)
@@ -245,19 +251,20 @@ function Possession() {
                                 <div
                                     style={{
                                         textAlign: "right",
-                                        marginBottom: "20px",
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "space-around",
                                         color: "#000",
+                                        marginLeft: "50px",
+                                        marginTop: "20px"
 
                                     }}
                                 >
                                     <img
                                         style={{
-                                            height: "120px", // Set desired height
-                                            width: "auto", // Auto to maintain aspect ratio
-                                            objectFit: "contain", // Prevent distortion
+                                            height: "80px",
+                                            width: "auto",
+                                            objectFit: "contain",
                                         }}
                                         src={Logo2}
                                         alt=""
@@ -279,10 +286,11 @@ function Possession() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px"
                                             }}
                                         >
-                                            <div style={{ lineHeight: "30px", marginRight: "30px" }}>
+                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
                                                 <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
                                                 <p>Hudkeshwar Road, Nagpur - 440034</p>
                                             </div>
@@ -291,12 +299,12 @@ function Possession() {
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaMapMarkerAlt size={21} color="#ffff" />
+                                                <FaMapMarkerAlt size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -306,21 +314,23 @@ function Possession() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px",
+
                                             }}
                                         >
-                                            <p style={{ marginRight: "30px" }}>royaalmede@gmail.com</p>
+                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
                                             <div
                                                 style={{
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaEnvelope size={21} color="#ffff" />
+                                                <FaEnvelope size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -330,21 +340,24 @@ function Possession() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+                                                fontSize: "14px",
+
+
                                             }}
                                         >
-                                            <p style={{ marginRight: "30px" }}>www.royaalmede.co.in</p>
+                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
                                             <div
                                                 style={{
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaGlobe size={21} color="#ffff" />
+                                                <FaGlobe size={15} color="#ffff" />
                                             </div>
                                         </div>
 
@@ -354,7 +367,8 @@ function Possession() {
                                                 display: "flex",
                                                 justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "10px",
+                                                marginBottom: "8px",
+
                                             }}
                                         >
                                             <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
@@ -363,25 +377,25 @@ function Possession() {
                                                     backgroundColor: "#d34508",
                                                     padding: "10px",
                                                     borderRadius: "1px",
-                                                    height: "40px",
+                                                    height: "30px",
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <FaPhoneAlt size={21} color="#ffff" />
+                                                <FaPhoneAlt size={15} color="#ffff" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px" }} />
-                                <hr style={{ border: "3px solid rgb(167, 5, 86)" }} />
+                                <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px", marginTop: "-5px" }} />
+                                <hr style={{ border: "3px solid rgb(167, 5, 86)", marginTop: "4px" }} />
 
 
 
 
                                 <p style={{ marginTop: "25px", marginLeft: "80px" }}>From:- <b>{letterdata.fromName}   </b>      </p>
-                                <p style={{ marginTop: "25px", marginLeft: "80px" }}>  Date: <b> {new Date(letterdata.date).toLocaleDateString("en-GB") }  </b>  </p>
+                                <p style={{ marginTop: "25px", marginLeft: "80px" }}>  Date: <b> {new Date(letterdata.date).toLocaleDateString("en-GB")}  </b>  </p>
                                 <p style={{ marginLeft: "80px" }}>To, </p>
                                 <p style={{ marginLeft: "80px" }}> Mr./Mrs./Ms.   </p>
                                 <p style={{ marginLeft: "80px" }}>  <b> {letterdata.name}	   </b></p>
@@ -397,7 +411,7 @@ function Possession() {
                                 </p>
 
                                 <p style={{ marginLeft: "80px", marginTop: "60px" }}>faithfully,</p>
-                                <p style={{ marginLeft: "80px", marginTop: "50px" }}>(ROYAALMEDE INFRA)</p>
+                                <p style={{ marginLeft: "80px", marginTop: "50px" }}>(ROYAALMEDE INFRAA)</p>
 
 
                             </div>
