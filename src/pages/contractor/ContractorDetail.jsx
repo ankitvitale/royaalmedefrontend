@@ -24,6 +24,15 @@ function ContractorDetail() {
     const [addedOn, setAddedOn] = useState("");
     const [searchContractor, setSearchContractor] = useState("")
     const [paymentRemark, setpaymentRemark] = useState("")
+    const [paymenttableEditFormShow, setpaymenttableEditFormShow] = useState(false)
+    const [ContractorTableId, setContractorTableId] = useState("")
+    console.log(ContractorTableId)
+    const [paymenttableId, setpaymenttableId] = useState("")
+    console.log(paymenttableId)
+    const [editAmout, seteditAmout] = useState("")
+    const [editDate, seteditDate] = useState("")
+    const [editpaymentMethod, seteditpaymentMethod] = useState("")
+    const [editRemark, seteditRemark] = useState("")
     useEffect(() => {
         if (!id || !token) return;
 
@@ -86,6 +95,8 @@ function ContractorDetail() {
 
 
     async function handleShowContractor(id) {
+        //   alert(id)
+        setContractorTableId(id)
         try {
             const response = await axios.get(`${BASE_URL}/Contractor/${id}`, {
                 headers: {
@@ -105,7 +116,7 @@ function ContractorDetail() {
         if (id) {
             handleShowContractor(id);
         }
-    }, [refreshKey, id]);
+    }, [refreshKey, id, token]);
 
     function handleaddPayment(id) {
 
@@ -116,7 +127,7 @@ function ContractorDetail() {
     async function handleaddContractorpayment(e) {
         e.preventDefault();
         const formdata = [{
-            contractorPayDate: paymentDate,
+            contractorPayDate: paymentDate || new Date().toISOString().split("T")[0],
             contractorPayStatus: paymentMethod,
             amount,
             remark: paymentRemark
@@ -171,6 +182,91 @@ function ContractorDetail() {
     const filterContractor = contractors.filter((item, index) => {
         return item.contractorName.toLowerCase().includes(searchContractor.toLowerCase())
     })
+
+    async function handleEditPayment(id) {
+
+        setpaymenttableId(id)
+        setpaymenttableEditFormShow(true)
+        try {
+            const response = await axios.get(`${BASE_URL}/getSingleInstallmentById/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+            console.log(response.data)
+
+            seteditAmout(response.data.amount)
+            seteditDate(response.data.contractorPayDate)
+            seteditpaymentMethod(response.data.contractorPayStatus)
+            seteditRemark(response.data.remark)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function handlechangePayment(e) {
+        e.preventDefault()
+        console.log(paymenttableId)
+        console.log(ContractorTableId)
+        const formdata = [{
+            id: paymenttableId,
+            contractorPayDate: editDate || new Date().toISOString("T")[0],
+            remark: editRemark,
+            contractorPayStatus: editpaymentMethod,
+            amount: editAmout
+        }]
+        console.log(formdata)
+
+        try {
+            const response = await axios.put(`${BASE_URL}/updateContractorInstallment/${ContractorTableId}`, formdata, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+            console.log(response.data)
+            if (response.status === 200) {
+                alert("payment Update")
+                setrefreshKey(prevKey => prevKey + 1);
+                handleShowContractor(ContractorTableId);
+                setpaymenttableEditFormShow(false)
+                setShowPopup(false);
+                seteditAmout("")
+                seteditDate("")
+                seteditpaymentMethod("")
+                seteditRemark("")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    async function handleDeletePayment(id) {
+        const confirmation = window.confirm("Do you want to delete?");
+        if (!confirmation) return;
+
+        try {
+            const response = await axios.delete(`${BASE_URL}/deleteContractorInstallment/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            console.log(response.data);
+            if (response.status === 200) {
+                alert("Payment Deleted");
+
+                // Refresh data after deletion
+                handleShowContractor(ContractorTableId);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
 
@@ -285,6 +381,7 @@ function ContractorDetail() {
                                             <th>Payment Date</th>
                                             <th>Payment Method</th>
                                             <th> Remark</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -295,6 +392,10 @@ function ContractorDetail() {
                                                     <td> {new Date(installment.contractorPayDate).toLocaleDateString("en-GB")}</td>
                                                     <td>{installment.contractorPayStatus}</td>
                                                     <td>{installment.remark}</td>
+                                                    <td>
+                                                        <button onClick={() => handleEditPayment(installment.id)} className="view-btn" > Edit</button>
+                                                        <button className="contractor_delete_button" onClick={() => handleDeletePayment(installment.id)}> Delete</button>
+                                                    </td>
                                                 </tr>
                                             ))
                                         ) : (
@@ -346,6 +447,30 @@ function ContractorDetail() {
 
 
             </div>
+
+            {
+                paymenttableEditFormShow && (
+                    <>
+
+                        <form className="paymentTableEditForm" onSubmit={handlechangePayment}>
+                            <button type="button" onClick={() => setpaymenttableEditFormShow(false)} style={{ color: "red" }} >X</button>
+                            <input type="text" className="paymentTableEditForm_input" placeholder="Enter Amount" value={editAmout} onChange={(e) => seteditAmout(e.target.value)} />
+                            <input type="date" className="paymentTableEditForm_input" value={editDate} onChange={(e) => seteditDate(e.target.value)} />
+                            <select className="paymentTableEditForm_select" value={editpaymentMethod} onChange={(e) => seteditpaymentMethod(e.target.value)}>
+                                <option value="">Select Payment Method</option>
+                                <option value="CASH">CASH</option>
+                                <option value="CHECK">Cheque</option>
+                                <option value="UPI">UPI</option>
+                                <option value="RTGS">RTGS</option>
+                                <option value="NEFT">NEFT</option>
+                            </select>
+                            <input type="text" className="paymentTableEditForm_input" placeholder="Remarks" value={editRemark} onChange={(e) => seteditRemark(e.target.value)} />
+                            <button className="paymentTableEditForm_submit">Submit</button>
+                        </form>
+
+                    </>
+                )
+            }
         </>
     );
 }

@@ -61,7 +61,7 @@ function AllotmentLatter() {
             name,
             totalamount,
             totalamountword,
-            agreementDate,
+            agreementDate: agreementDate || new Date().toISOString().split("T")[0],
             sqmtrs,
             sqft,
         };

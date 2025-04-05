@@ -411,3 +411,83 @@
     gap: 120px;
     flex-wrap: wrap;
 }
+
+
+.paymentTableEditForm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    z-index: 1000;
+}
+
+.paymentTableEditForm button {
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.paymentTableEditForm .paymentTableEditForm_submit {
+    /* position: absolute; */
+    top: 10px;
+    right: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff
+}
+
+.paymentTableEditForm_input,
+.paymentTableEditForm_select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.paymentTableEditForm_submit {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.paymentTableEditForm_submit:hover {
+    background: #0056b3;
+}
+
+.paymentTableEditForm_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+@media (max-width: 768px) {
+    .paymentTableEditForm {
+        width: 95%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .paymentTableEditForm {
+        width: 90%;
+        padding: 10px;
+    }
+}

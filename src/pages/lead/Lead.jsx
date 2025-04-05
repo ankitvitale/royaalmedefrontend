@@ -52,7 +52,7 @@ function Lead() {
         }
 
         const leads = await response.json();
-
+        leads.sort((a, b) => new Date(b.foundOn) - new Date(a.foundOn));
 
         setLeads(leads);
         setFilter(leads);
@@ -151,33 +151,25 @@ function Lead() {
 
 
   async function handledelete(id) {
-
-    const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'This action cannot be undone!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-    });
-    if (result.isConfirmed) {
-      try {
-        await axios.delete(`${BASE_URL}/deleteLead/${id}`, {
-          headers: {
-            Authorization: `Bearer ${myToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
-        Swal.fire('Deleted!', 'Your lead has been deleted.', 'success');
-      } catch (error) {
-        console.log(error);
-        Swal.fire('Error!', 'There was a problem deleting the lead.', 'error');
-      }
+    const isConfirmed = window.confirm("Are you sure you want to delete this lead? This action cannot be undone.");
+    if (!isConfirmed) return;
+  
+    try {
+      await axios.delete(`${BASE_URL}/deleteLead/${id}`, {
+        headers: {
+          Authorization: `Bearer ${myToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+  
+      setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
+      alert("Lead has been deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting lead:", error);
+      alert("There was a problem deleting the lead.");
     }
   }
+  
 
   function handleEditLead(id) {
 

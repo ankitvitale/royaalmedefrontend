@@ -52,9 +52,9 @@ function App() {
             <Route element={<Flatowner />} path="flatowner/:id" />
             <Route element={<AddLead />} path="addlead" />
             <Route element={<AddLand />} path="lands" />
-            <Route element={<LandPurchase />} path="landpurchase" />
+            <Route element={<LandPurchase />} path="/landpurchase" />
             <Route element={<EditLand />} path="editland/:id" />
-            <Route element={<LandPurchase />} path="landpurchase" />
+            <Route element={<LandPurchase />} path="/landpurchase" />
             <Route element={<Latter />} path="letter" />
             <Route element={<Offerlatter />} path="/offerlatter" />
             <Route element={<Relievinglatter />} path="/Relievinglatter" />

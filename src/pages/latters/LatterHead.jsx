@@ -77,7 +77,7 @@ function LatterHead() {
                                             width: "auto",
                                             objectFit: "contain",
                                         }}
-                                        src={Logo2}
+                                        src={logo}
                                         alt=""
                                     />
                                     <div

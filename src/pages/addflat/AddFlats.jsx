@@ -192,7 +192,7 @@ function Flat() {
                       </option>
                     </select>
                     <input type="text" placeholder="Enter Total flat"  value={totalFlat} onChange={(e)=>setTotalFlat(e.target.value)}/>
-                    <input type="text" placeholder="Enter Building Siza" value={buildingSize} onChange={(e)=>setBuildingSize(e.target.value)} />
+                    <input type="text" placeholder="Enter Building Size" value={buildingSize} onChange={(e)=>setBuildingSize(e.target.value)} />
                     <input type="text" value={Schemename} onChange={(e) => setSchemeName(e.target.value)} placeholder="Enter Project Name" className="AddSchemeForm_input" />
                   </div>
                   <button className="addschemecreate_vutton">Create Scheme</button>

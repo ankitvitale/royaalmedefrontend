@@ -1,4 +1,3 @@
-
 .flats_container {
   display: flex;
   gap: 10px;
@@ -290,6 +289,7 @@ hr {
   flex-direction: column;
   /* overflow: auto; */
 }
+
 .delete_flat {
   height: 35px;
   width: 35px;
@@ -1050,9 +1050,8 @@ hr {
 /* customer installment show */
 .customer_installment_card_wrapper {
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
-
   background-color: whitesmoke;
   padding: 20px;
   border-radius: 12px;
@@ -1085,11 +1084,13 @@ hr {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  border: 2px solid #dbe1e1;
 }
 
 .customer_installment_card_tr {
   background-color: rgba(255, 255, 255, 0.05);
   text-align: left;
+
 }
 
 .customer_installment_card_th,
@@ -1097,15 +1098,25 @@ hr {
   padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #000000;
+  border: 1px solid rgb(204, 202, 202);
+
 }
 
 .customer_installment_card_th {
   background-color: #06a7b1;
-  /* font-weight: bold; */
-}
 
+  border: 1px solid rgb(204, 202, 202);
+
+}
+.action-column{
+  border: 1px solid rgb(204, 202, 202);
+
+}
 .customer_installment_card_td {
   font-size: 14px;
+  border: 1px solid rgb(204, 202, 202);
+
+
 }
 
 .customer_installment_card_table tr:nth-child(even) {
@@ -1239,4 +1250,92 @@ hr {
   font-size: 14px;
   border: none;
   border-radius: 10px;
+}
+
+.installment_edit_button {
+
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 50px;
+  border: none;
+  background-color: rgb(0, 183, 255);
+  color: whitesmoke;
+}
+
+.installment_delete_button {
+  margin-top: 5px;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 50px;
+  border: none;
+  background-color: red;
+  color: whitesmoke;
+}
+
+.showCustomerInstallmentEditForm_heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.showCustomerInstallmentEditForm_form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  z-index: 1000;
+}
+
+.showCustomerInstallmentEditForm_close_button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.showCustomerInstallmentEditForm_input,
+.showCustomerInstallmentEditForm_select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.showCustomerInstallmentEditForm_submit_button {
+  width: 100%;
+  padding: 10px;
+  background: blue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.showCustomerInstallmentEditForm_submit_button:hover {
+  background: darkblue;
+}
+
+@media (max-width: 480px) {
+  .showCustomerInstallmentEditForm_form {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .showCustomerInstallmentEditForm_heading {
+    font-size: 1.2rem;
+  }
 }

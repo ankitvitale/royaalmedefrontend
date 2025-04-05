@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import "./AddLand.css";
 import axios from "axios";
 import { BASE_URL } from "../../config";
+import { useNavigate } from "react-router-dom";
 function AddLand() {
-  
+  const navigate = useNavigate()
   const [ownerName, setOwnerName] = useState("");
   const [ownerPhone, setOwnerPhone] = useState("");
   const [ownerEmail, setOwnerEmail] = useState("");
@@ -21,11 +22,11 @@ function AddLand() {
   const [pincode, setPincode] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
-   const [khNumber,setkhNumber]= useState("")
-   const [PhNumber,setPhNumber]= useState("")
-   const [plotNumber,setPlotNumber]= useState("")
-   const [mauzaNumber,setMauzaNumber]= useState("")
-
+  const [khNumber, setkhNumber] = useState("")
+  const [PhNumber, setPhNumber] = useState("")
+  const [plotNumber, setPlotNumber] = useState("")
+  const [mauzaNumber, setMauzaNumber] = useState("")
+  const [date, setDate] = useState("")
   const [partners, setPartners] = useState([]);
 
 
@@ -57,10 +58,11 @@ function AddLand() {
     e.preventDefault();
 
     const formData = {
-      area: area.replace(/,/g, ""),  
+      area: area.replace(/,/g, ""),
       tokenAmount: tokenAmount.replace(/,/g, ""),
       agreementAmount: agreementAmount.replace(/,/g, ""),
       totalAmount: totalAmount.replace(/,/g, ""),
+      landAddOnDate: date || new Date().toISOString().split("T")[0],
       address: {
         city,
         landmark,
@@ -106,10 +108,33 @@ function AddLand() {
       });
       console.log(response);
       alert("Your Land is Successfully Added");
+      navigate("/landpurchase")
+      setOwnerName("");
+      setOwnerPhone("");
+      setOwnerEmail("");
+      setOwnerAadhar("");
+      setPurchaserName("");
+      setPurchaserPhone("");
+      setPurchaserEmail("");
+      setPurchaserAadhar("");
+      setArea("");
+      setTokenAmount("");
+      setAgreementAmount("");
+      setTotalAmount("");
+      setCity("");
+      setLandmark("");
+      setPincode("");
+      setCountry("");
+      setState("");
+      setkhNumber("");
+      setPhNumber("");
+      setPlotNumber("");
+      setMauzaNumber("");
+      setPartners([]);
     } catch (error) {
       console.error("Error submitting form:", error.response?.data || error);
     }
-};
+  };
 
   return (
     <>
@@ -232,6 +257,15 @@ function AddLand() {
               onChange={(e) => setTotalAmount(e.target.value)}
             />
           </div>
+          <div className="Add_land_form_group">
+            <label>Date:</label>
+            <input
+              type="date"
+              value={date || new Date().toISOString().split("T")[0]}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+
 
           {/* Address Details */}
           <h3>Address Details</h3>
@@ -249,8 +283,8 @@ function AddLand() {
             <input
               type="text"
               placeholder="Enter city"
-           value={mauzaNumber}
-           onChange={(e)=>setMauzaNumber(e.target.value)}
+              value={mauzaNumber}
+              onChange={(e) => setMauzaNumber(e.target.value)}
             />
           </div>
           <div className="Add_land_form_group">
@@ -258,8 +292,8 @@ function AddLand() {
             <input
               type="text"
               placeholder="Enter KH Number"
-            value={khNumber}
-            onChange={(e)=>setkhNumber(e.target.value)}
+              value={khNumber}
+              onChange={(e) => setkhNumber(e.target.value)}
             />
           </div>
           <div className="Add_land_form_group">
@@ -267,8 +301,8 @@ function AddLand() {
             <input
               type="text"
               placeholder="Enter PH Number"
-             value={PhNumber}
-             onChange={(e)=>setPhNumber(e.target.value)}
+              value={PhNumber}
+              onChange={(e) => setPhNumber(e.target.value)}
             />
           </div>
           <div className="Add_land_form_group">
@@ -276,8 +310,8 @@ function AddLand() {
             <input
               type="text"
               placeholder="Enter city"
-          value={plotNumber}
-          onChange={(e=>setPlotNumber(e.target.value))}
+              value={plotNumber}
+              onChange={(e => setPlotNumber(e.target.value))}
             />
           </div>
           <div className="Add_land_form_group">
@@ -363,13 +397,13 @@ function AddLand() {
               </div>
               <div className="Add_land_form_group">
                 <label>Phone:</label>
-                <input type="number" 
-                placeholder="Enter Number"
-                value={partner.phoneNumber}
-                onChange={(e)=> handlePartnerChange(index ,"phoneNumber" ,e.target.value)}
+                <input type="number"
+                  placeholder="Enter Number"
+                  value={partner.phoneNumber}
+                  onChange={(e) => handlePartnerChange(index, "phoneNumber", e.target.value)}
                 />
               </div>
-           
+
               <div className="Add_land_form_group">
                 <label>Date:</label>
                 <input

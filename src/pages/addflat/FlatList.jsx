@@ -133,8 +133,6 @@ function FlatList() {
         } catch (error) {
             console.log(error)
         }
-       
-
     }
 
     function handlecloseflat() {

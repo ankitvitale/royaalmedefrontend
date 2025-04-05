@@ -41,22 +41,44 @@ function LandPurchase() {
   const [newPatnername, setnewPatnername] = useState("")
   const [newPatnerCity, setnewPatnerCity] = useState("")
   const [newPatnerPhoneNumber, setnewPatnerPhoneNumber] = useState("")
+  const [ShowEditPatnerPayment, setShowEditPatnerPayment] = useState(false)
+  const [patnerpaymentEditId, setpatnerpaymentEditId] = useState("")
+  const [editpatnerpaymentName, seteditpatnerpaymentName] = useState("")
+  const [editpatnerpaymentDate, setEditPatnerPaymentDate] = useState("");
+  const [editpatnerpaymentAmount, setEditPatnerPaymentAmount] = useState("");
+  const [editpatnerpaymentTransactionMode, setEditPatnerPaymentTransactionMode] = useState("");
+  const [editpatnerpaymentMethod, setEditPatnerPaymentMethod] = useState("");
+  const [editpatnerpaymentNote, setEditPatnerPaymentNote] = useState("");
   useEffect(() => {
     async function getAllLand() {
-      const response = await axios.get(`${BASE_URL}/getAllland`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response.data);
-      setGetLand(response.data);
-      setFilter(response.data);
+      try {
+        const response = await axios.get(`${BASE_URL}/getAllland`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        let sortedData = response.data.sort(
+          (a, b) => new Date(b.landAddOnDate) - new Date(a.landAddOnDate)
+        );
+
+        console.log(sortedData);
+        setGetLand(sortedData);
+        setFilter(sortedData);
+      } catch (error) {
+        console.error("Error fetching land data:", error);
+      }
     }
+
     getAllLand();
   }, [token, refreshKey]);
 
+
   async function handleDelete(id) {
+    const isConfirmed = window.confirm("Are you sure you want to delete this land?");
+    if (!isConfirmed) return;
+
     try {
       const response = await axios.delete(`${BASE_URL}/delete/${id}`, {
         headers: {
@@ -66,12 +88,14 @@ function LandPurchase() {
       });
       console.log(response);
       alert("Data deleted");
-      setrefreshkey(refreshKey + 1)
+      setrefreshkey(refreshKey + 1);
       setGetLand((prevLands) => prevLands.filter((land) => land.id !== id));
     } catch (error) {
-      console.log(error);
+      console.error("Error deleting data:", error);
+      alert("Failed to delete data. Please try again.");
     }
   }
+
 
   function handleEdit(id) {
     console.log(id);
@@ -96,9 +120,7 @@ function LandPurchase() {
     }
   }
 
-  function handleCloseCard() {
-    setShowCard(null);
-  }
+
 
   useEffect(() => {
     const searchfilter = getLand.filter((item) => {
@@ -129,10 +151,10 @@ function LandPurchase() {
       city: cityName,
       phoneNumber: phoneNumber,
       amount,
-      paymentDate: paymentDate,
+      paymentDate: paymentDate || new Date().toISOString().split("T")[0],
     };
     try {
-      const response = await axios.post(`${BASE_URLs}/partnerpayment/${addPatnerPay}`, formdata, {
+      const response = await axios.post(`${BASE_URL}/partnerpayment/${addPatnerPay}`, formdata, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -174,6 +196,11 @@ function LandPurchase() {
       console.log(error)
     }
   }
+  useEffect(() => {
+    if (patnerData?.id) {
+      handlepatnerShowDetail(patnerData.id);
+    }
+  }, [refreshKey]);
 
   function handleNewpaynemt(id) {
     setPatnetId(id)
@@ -185,7 +212,7 @@ function LandPurchase() {
     e.preventDefault()
     const formData = {
       madeBy: partnerName,
-      transactionDate: existingpaymentDate,
+      transactionDate: existingpaymentDate || new Date().toISOString().split("T")[0],
       transactionAmount: existingamount.replace(/,/g, ""),
       change: transactionMode,
       note: note,
@@ -199,9 +226,10 @@ function LandPurchase() {
           "Content-Type": "application/json",
         },
       })
-      console.log(response)
+      console.log(response.data)
       if (response.status === 201) {
         alert("patner payment add successfully")
+        setpatnerPaymentForm(false)
         setexistingamount("")
         setexistingpaymentDate("")
         setTransactionMode("")
@@ -237,10 +265,84 @@ function LandPurchase() {
       console.log(response.data)
       if (response.status === 200) {
         alert("patner add successfully")
-        setrefreshkey(refreshKey+1)
+        setrefreshkey(refreshKey + 1)
+        setshowAddpatnerForm(false)
         setnewPatnerCity("")
         setnewPatnerPhoneNumber("")
         setnewPatnername("")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+
+  async function handledeletePatnerpayment(id) {
+    const deletepatnerPayment = window.confirm("Are you sure to delete ?")
+    if (!deletepatnerPayment) return
+
+    try {
+      const response = await axios.delete(`${BASE_URL}/partner/transaction/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      if (response.status === 200) {
+        alert("patner Payment deleted")
+        setrefreshkey((prev) => prev + 1)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  async function handleEditPatnerPayment(id) {
+    setpatnerpaymentEditId(id)
+    setShowEditPatnerPayment(true)
+    try {
+      const response = await axios.get(`${BASE_URL}/SinglePartnerPaymentById/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+
+      seteditpatnerpaymentName(response.data.madeBy)
+      setEditPatnerPaymentAmount(response.data.transactionAmount)
+      setEditPatnerPaymentDate(response.data.transactionDate)
+      setEditPatnerPaymentMethod(response.data.status)
+      setEditPatnerPaymentTransactionMode(response.data.change)
+      setEditPatnerPaymentNote(response.data.note)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function handlesubmitEditPatnerPayment(e) {
+    e.preventDefault()
+    const formdata = {
+      transactionDate: editpatnerpaymentDate,
+      transactionAmount: editpatnerpaymentAmount,
+      note: editpatnerpaymentNote,
+      change: editpatnerpaymentTransactionMode,
+      madeBy: editpatnerpaymentName,
+      status: editpatnerpaymentMethod
+    }
+
+    try {
+      const response = await axios.put(`${BASE_URL}/UpdatePartner/payment/${patnerpaymentEditId}`, formdata, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      if (response.status === 200) {
+        alert("patner payment edit successfully")
+        setShowEditPatnerPayment(false)
+        setrefreshkey((prev) => prev + 1)
       }
     } catch (error) {
       console.log(error)
@@ -366,8 +468,6 @@ function LandPurchase() {
                     <th>Partner Name</th>
                     <th>City</th>
                     <th>Phone Number</th>
-                    <th>Payment Date</th>
-                    <th>Total</th>
                     <th> Action</th>
                     <th>Action</th>
                   </tr>
@@ -379,8 +479,6 @@ function LandPurchase() {
                       <td>{item.name}</td>
                       <td>{item.city}</td>
                       <td>{item.phoneNumber}</td>
-                      <td>{new Date(item.paymentDate).toLocaleDateString("en-GB")}</td>
-                      <td>{item.total ? item.total.toLocaleString() : "N/A"}</td>
                       <td> <button onClick={() => handlepatnerShowDetail(item.id)} className="patner_table_view_button">View </button>  </td>
                       <td> <button className="patner_table_view_button" onClick={() => handleNewpaynemt(item.id)}> Add Payment</button></td>
                     </tr>
@@ -404,7 +502,8 @@ function LandPurchase() {
               <button onClick={() => setshowSinglePatnerData(false)} className="single_patner_cardclose_button">X</button>
               <p> patner Name : {patnerData.name}</p>
               <p> patner City : {patnerData.city}</p>
-              <p> patner payment Date : {new Date(patnerData.paymentDate).toLocaleDateString("en-GB")}</p>
+              {/* <p>Partner Payment Date: {new Date(patnerData.paymentDate + "T00:00:00").toLocaleDateString("en-GB")}</p> */}
+
               <p>Patner Number : {patnerData.phoneNumber}</p>
               <p> Total Amount : {patnerData.total}</p>
               <h2> Transition table</h2>
@@ -418,6 +517,7 @@ function LandPurchase() {
                       <th>Transaction Amount</th>
                       <th>Transaction Date</th>
                       <th>Note</th>
+                      <th> Action</th>
                     </tr>
                   </thead>
                   <tbody className="singl_patner_table_tbody" >
@@ -430,6 +530,10 @@ function LandPurchase() {
                           <td>{item.transactionAmount ? item.transactionAmount.toLocaleString() : "N/A"}</td>
                           <td>{new Date(item.transactionDate).toLocaleDateString("en-GB")}</td>
                           <td>{item.note}</td>
+                          <td>
+                            <button onClick={() => handleEditPatnerPayment(item.id)} className="handleEditPatnerPayment">Edit</button>
+                            <button onClick={() => handledeletePatnerpayment(item.id)} className="handledeletePatnerpayment">Delete</button>
+                          </td>
                         </tr>
                       ))}
                   </tbody>
@@ -518,15 +622,88 @@ function LandPurchase() {
 
             <form action="" className="add_patner_form" onSubmit={handleAddNewPatner}>
               <button onClick={() => setshowAddpatnerForm(false)} className="close_showAddpatnerForm">X</button>
-
-              <input type="text" placeholder="Enter Patner Name" className="add_patner_form_input" value={newPatnername} onChange={(e)=>setnewPatnername(e.target.value)} />
-              <input type="text" placeholder="Enter Patner City Name" className="add_patner_form_input" value={newPatnerCity} onChange={(e)=>setnewPatnerCity(e.target.value)}  />
-              <input type="text" placeholder="Enter patner Phone Number" className="add_patner_form_input"  value={newPatnerPhoneNumber}  onChange={(e)=>setnewPatnerPhoneNumber(e.target.value)}/>
+              <input type="text" placeholder="Enter Patner Name" className="add_patner_form_input" value={newPatnername} onChange={(e) => setnewPatnername(e.target.value)} />
+              <input type="text" placeholder="Enter Patner City Name" className="add_patner_form_input" value={newPatnerCity} onChange={(e) => setnewPatnerCity(e.target.value)} />
+              <input type="text" placeholder="Enter patner Phone Number" className="add_patner_form_input" value={newPatnerPhoneNumber} onChange={(e) => setnewPatnerPhoneNumber(e.target.value)} />
               <button className="add_patner_form_submit" > Submit</button>
             </form>
           </>
         )
       }
+
+      {
+        ShowEditPatnerPayment && (
+          <div className="editpatnerpayment-overlay">
+            <div className="editpatnerpayment-content">
+              <form className="editpatnerpayment-form" onSubmit={handlesubmitEditPatnerPayment}>
+                <button className="editpatnerpayment-close" onClick={() => setShowEditPatnerPayment(false)}>×</button>
+
+                <h2>Edit Partner Payment</h2>
+                <input
+                  type="text"
+                  value={editpatnerpaymentName}
+                  onChange={(e) => seteditpatnerpaymentName(e.target.value)}
+                  required
+                  className="editpatnerpayment-input"
+                  readOnly
+                />
+                <input
+                  type="date"
+                  value={editpatnerpaymentDate}
+                  onChange={(e) => setEditPatnerPaymentDate(e.target.value)}
+                  required
+                  className="editpatnerpayment-input"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Amount"
+                  value={editpatnerpaymentAmount}
+                  onChange={(e) => setEditPatnerPaymentAmount(e.target.value)}
+                  required
+                  className="editpatnerpayment-input"
+                />
+
+                <select
+                  value={editpatnerpaymentTransactionMode}
+                  onChange={(e) => setEditPatnerPaymentTransactionMode(e.target.value)}
+                  required
+                  className="editpatnerpayment-select"
+                >
+                  <option value="">Transaction Mode</option>
+                  <option value="CREDIT">CREDIT</option>
+                  <option value="DEBIT">DEBIT</option>
+                </select>
+
+                <select
+                  value={editpatnerpaymentMethod}
+                  onChange={(e) => setEditPatnerPaymentMethod(e.target.value)}
+                  required
+                  className="editpatnerpayment-select"
+                >
+                  <option value="">Select Payment Method</option>
+                  <option value="UPI">UPI</option>
+                  <option value="CASH">CASH</option>
+                  <option value="CHEQUE">CHEQUE</option>
+                  <option value="RTGS">RTGS</option>
+                  <option value="NEFT">NEFT</option>
+                </select>
+
+                <input
+                  type="text"
+                  placeholder="Note"
+                  value={editpatnerpaymentNote}
+                  onChange={(e) => setEditPatnerPaymentNote(e.target.value)}
+                  className="editpatnerpayment-input"
+                />
+
+                <button type="submit" className="editpatnerpayment-button">Update</button>
+              </form>
+            </div>
+          </div>
+        )
+      }
+
 
     </>
   );

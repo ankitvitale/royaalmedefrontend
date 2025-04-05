@@ -4,7 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import infraLogo from "../../assets/Royalmedeinfra Logo.svg"
 import { useRef } from 'react';
-import html2pdf from "html2pdf.js";
+import html2pdf from "html2pdf.js/dist/html2pdf";
+
 import { BsBuilding, BsFillLightningChargeFill } from 'react-icons/bs';
 import { FaBook, FaCalendarAlt, FaEnvelope, FaGitSquare, FaHandshake, FaIdBadge, FaIdCard, FaSortAmountUp, FaUser } from 'react-icons/fa';
 import { FaAddressCard } from 'react-icons/fa6';
@@ -40,9 +41,14 @@ function Flatowner() {
   const [selectinstallmentType, setselectinstallmentType] = useState("")
   const [showCustomerInstallMentcard, setshowCustomerInstallMentcard] = useState(false)
   const [customerInstallMentDeta, setcustomerInstallMentDeta] = useState("")
-  console.log(customerInstallMentDeta)
   const [customerSlip, setcustomerSlip] = useState(false)
-  const [note,setNote]= useState("")
+  const [note, setNote] = useState("")
+  const [showCustomerInstallmentEditForm, setshowCustomerInstallmentEditForm] = useState(false)
+  const [installmentId, setinstallmentId] = useState("")
+  const [InstallmentEditFormDate, setInstallmentEditFormDate] = useState("");
+  const [InstallmentEditFormAmount, setInstallmentEditFormAmount] = useState("");
+  const [InstallmentEditFormPaymentMethod, setInstallmentEditFormPaymentMethod] = useState("");
+  const [InstallmentEditFormRemark, setInstallmentEditFormRemark] = useState("");
   useEffect(() => {
     async function customerProfile() {
       try {
@@ -52,7 +58,6 @@ function Flatowner() {
             "Content-Type": "application/json",
           },
         });
-        console.log(response?.data)
         setCustomerId(response?.data?.customer?.id)
         setCustomerDetail(response.data);
       } catch (error) {
@@ -67,7 +72,7 @@ function Flatowner() {
 
     const formdata = {
       bankName: bankName,
-      loanAmount: LoanAmount.replace(/,/g,"")
+      loanAmount: LoanAmount.replace(/,/g, "")
     }
     try {
       const response = await axios.post(`${BASE_URL}/addLoanDetails/${customerid}`, formdata, {
@@ -76,12 +81,13 @@ function Flatowner() {
           "Content-Type": "application/json"
         }
       })
-      console.log(response)
+      if (response.status === 200) {
+        setRefreshKey((prev) => prev + 1);
+        setshowBankDetailForm(false)
+        setbankName("")
+        setLoanAmount("")
+      }
 
-      //alert("successfully bank detail added")
-      setRefreshKey((prev) => prev + 1);
-      setbankName("")
-      setLoanAmount("")
     } catch (error) {
       console.log(error)
     }
@@ -90,7 +96,8 @@ function Flatowner() {
 
 
   async function handleCancleBooking() {
-    console.log(id)
+    const cancleBooking = window.confirm("Do you want to cancle the booking ?")
+    if (!cancleBooking) return
     try {
       const response = await axios.put(`${BASE_URL}/cancelBooking/${id}`, {}, {
         headers: {
@@ -99,7 +106,6 @@ function Flatowner() {
         }
       })
       alert("booking Delete Successfully")
-
     } catch (error) {
       console.log(error)
     }
@@ -117,9 +123,9 @@ function Flatowner() {
     e.preventDefault()
     const formdata = [{
       installmentDate: installmentData || new Date().toISOString().split("T")[0],
-      installmentAmount: installmentAmount,
+      installmentAmount: installmentAmount.replace(/,/g, ""),
       installmentStatus: selectinstallmentType,
-      remark:note
+      remark: note
     }]
     try {
       const response = await axios.post(`${BASE_URL}/${id}/addInstallment`, formdata, {
@@ -128,11 +134,12 @@ function Flatowner() {
           "Content-Type": "application/json"
         }
       })
-      console.log(response)
       alert("payment Added")
+      setShowInstallmentForm(false)
       setInstallmentDate("")
       setInstallMentAmount("")
-      selectinstallmentType("")
+      setselectinstallmentType("")
+      setNote("")
       setRefreshKey(refreshKey + 1)
 
     } catch (error) {
@@ -156,12 +163,15 @@ function Flatowner() {
       console.log(error)
     }
   }
+  // useEffect(() => {
+  //   handleShowInstallment()
+  // }, [refreshKey,token])
 
   const handleDownload = () => {
     const element = letterref.current;
     const options = {
       margin: 0.5,
-      filename: "Relieving_letter.pdf",
+      filename: "Final Booking Slip.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
@@ -170,6 +180,91 @@ function Flatowner() {
     html2pdf().set(options).from(element).save();
   };
 
+
+  async function handleEditInstallment(installmentId) {
+    setinstallmentId(installmentId)
+    setshowCustomerInstallmentEditForm(true)
+
+    try {
+      const response = await axios.get(`${BASE_URL}/getBookingInstallmentById/${installmentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+      console.log(response.data)
+      setInstallmentEditFormAmount(response.data.installmentAmount)
+      setInstallmentEditFormDate(response.data.installmentDate)
+      setInstallmentEditFormPaymentMethod(response.data.installmentStatus)
+      setInstallmentEditFormRemark(response.data.remark)
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formdata = {
+      installmentDate: InstallmentEditFormDate,
+      installmentAmount: String(InstallmentEditFormAmount)?.replace(/,/g, ""),
+      remark: InstallmentEditFormRemark,
+      installmentStatus: InstallmentEditFormPaymentMethod
+    }
+
+    try {
+      const response = await axios.put(`${BASE_URL}/updateBookingInstallment/${installmentId}`, formdata, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+      if (response.status === 200) {
+        alert("installment updated")
+        handleShowInstallment(); 
+        setshowCustomerInstallmentEditForm(false)
+        setInstallmentEditFormDate("")
+        setInstallmentEditFormAmount("")
+        setInstallmentEditFormRemark("")
+        setInstallmentEditFormPaymentMethod("")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  async function handleDeleteInstallment(id) {
+
+    const deleteInstallment = window.confirm("Do you want to delete the Installment ?")
+    if (!deleteInstallment) return
+    try {
+      const response = await axios.delete(`${BASE_URL}/deleteBookingInstallment/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+      if (response.status === 200) {
+        alert("Installment deleted")
+        setRefreshKey(refreshKey + 1)
+        setcustomerInstallMentDeta((prev) => ({
+          ...prev,
+          bookingInstallments: prev.bookingInstallments.filter(installment => installment.id !== id)
+        }));
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handlePrintInstallment = () => {
+    const element = document.getElementById("customerInstallmentCard").cloneNode(true);
+    element.querySelectorAll(".installment_edit_button, .installment_delete_button, .action-column").forEach(btn => btn.remove());
+    element.style.padding = "20px";
+    html2pdf().from(element).save(`Customer_Installment_${customerInstallMentDeta.identifier}.pdf`);
+  };
 
   return (
     <>
@@ -264,7 +359,6 @@ function Flatowner() {
 
       {/* bank details form end */}
 
-
       {/* Add customet installment Form */}
       {
         showInstallmentForm && (
@@ -272,7 +366,7 @@ function Flatowner() {
             <button onClick={() => setShowInstallmentForm(false)} className='customer_installment_form_close_button'> X</button>
             <form action="" onSubmit={handleAddflatinstallment} className='customet_installment_form'>
               <input type="date" placeholder='Enter Installment Date' value={installmentData || new Date().toISOString().split("T")[0]} onChange={(e) => setInstallmentDate(e.target.value)} className='customer_installment_form_input' />
-              <input type="number" placeholder='Enter Installment Amount' value={installmentAmount} onChange={(e) => setInstallMentAmount(e.target.value)} className='customer_installment_form_input' />
+              <input type="text" placeholder='Enter Installment Amount' value={installmentAmount} onChange={(e) => setInstallMentAmount(e.target.value)} className='customer_installment_form_input' />
               <select value={selectinstallmentType} onChange={(e) => setselectinstallmentType(e.target.value)} className='customer_installment_form_select'>
                 <option value=""> Select Payment Method</option>
                 <option value="CASH">Cash</option>
@@ -281,7 +375,7 @@ function Flatowner() {
                 <option value="RTGS">RTGS</option>
                 <option value="NEFT">NEFT</option>
               </select>
-              <input type="text" placeholder='Note ...' value={note} onChange={(e)=>setNote(e.target.value)} />
+              <input type="text" placeholder='Note ...' value={note} onChange={(e) => setNote(e.target.value)} />
               <button className='customer_installment_form_submit_button'>Submit</button>
             </form>
 
@@ -296,41 +390,102 @@ function Flatowner() {
       {
         showCustomerInstallMentcard && customerInstallMentDeta && (
           <div className='customer_installment_card_wrapper'>
+            <button className='add_print_button_bill' onClick={handlePrintInstallment}> Print </button>
             <button onClick={() => setshowCustomerInstallMentcard(false)} className='customer_installment_card_close_button'> X</button>
-            <p> Residency Name : {customerInstallMentDeta.residencyName}</p>
-            <p> Customer name : {customerInstallMentDeta?.customerName}</p>
-            <p> Plot No : {customerInstallMentDeta.identifier}</p>
-            <p>  Flat Price : {customerInstallMentDeta.dealPrice ? customerInstallMentDeta.dealPrice.toLocaleString() : "N/A"}</p>
-            <p> Token Amount : {customerInstallMentDeta.tokenAmount.toLocaleString()}</p>
-            <p> Agreement price: {customerInstallMentDeta.agreementAmount.toLocaleString()}</p>
-            <p> Customer Remaining Amount : {customerInstallMentDeta.remainingAmount.toLocaleString()}</p>
-            <p> {customerInstallMentDeta.bookingInstallments.map((item, index) => {
-              return <>
-                <table className='customer_installment_card_table' key={index}>
-                  <tr className='customer_installment_card_tr'>
-                    <th className='customer_installment_card_th'> Installment Date </th>
-                    <th className='customer_installment_card_th'> Installment Amount</th>
-                    <th className='customer_installment_card_th'> Installment Status</th>
-                    <th className='customer_installment_card_th'> Note</th>
-                  </tr>
-                  <tr className='customer_installment_card_tr'>
-                    <td className='customer_installment_card_td'>{new Date(item.installmentDate).toLocaleDateString("en-GB")}  </td>
-                    <td className='customer_installment_card_td'>{item.installmentAmount} </td>
-                    <td className='customer_installment_card_td'>
-                      {item.installmentStatus}
+            <div id="customerInstallmentCard">
+              <p> Residency Name : {customerInstallMentDeta.residencyName}</p>
+              <p> Customer name : {customerInstallMentDeta?.customerName}</p>
+              <p> Plot No : {customerInstallMentDeta.identifier}</p>
+              <p>  Flat Price : {customerInstallMentDeta.dealPrice ? customerInstallMentDeta.dealPrice.toLocaleString() : "N/A"}</p>
+              <p> Token Amount : {customerInstallMentDeta.tokenAmount.toLocaleString()}</p>
+              <p> Agreement price: {customerInstallMentDeta.agreementAmount.toLocaleString()}</p>
+              <p> Customer Remaining Amount : {customerInstallMentDeta.remainingAmount.toLocaleString()}</p>
+              <p> {customerInstallMentDeta.bookingInstallments.map((item, index) => {
+                return <>
+                  <table className='customer_installment_card_table' key={item.id}>
+                    <tr className='customer_installment_card_tr'>
+                      <th className='customer_installment_card_th'> Installment Date </th>
+                      <th className='customer_installment_card_th'> Installment Amount</th>
+                      <th className='customer_installment_card_th'> Installment Status</th>
+                      <th className='customer_installment_card_th'> Note</th>
+                      <th className='customer_installment_card_th action-column' > Action</th>
+                    </tr>
+                    <tr className='customer_installment_card_tr'>
+                      <td className='customer_installment_card_td'>{new Date(item.installmentDate).toLocaleDateString("en-GB")}  </td>
+                      <td className='customer_installment_card_td'>{item.installmentAmount.toLocaleString()} </td>
+                      <td className='customer_installment_card_td'>
+                        {item.installmentStatus}
 
-                    </td>
-                    <td className='customer_installment_card_td'>{item.remark} </td>
-                  </tr>
-                </table>
+                      </td>
+                      <td className='customer_installment_card_td'>{item.remark} </td>
+                      <td>
+                        <button className='installment_edit_button' onClick={() => handleEditInstallment(item.id)}> Edit</button> <br />
+                        <button className='installment_delete_button' onClick={() => handleDeleteInstallment(item.id)}> Delete</button>
+                      </td>
 
-              </>
-            })}</p>
+                    </tr>
+                  </table>
 
+                </>
+              })}</p>
+            </div>
           </div>
         )
       }
 
+
+      {
+        showCustomerInstallmentEditForm && (
+          <>
+            <p className='showCustomerInstallmentEditForm_heading'> Edit InstallMent</p>
+            <form className="showCustomerInstallmentEditForm_form" onSubmit={handleSubmit}>
+              <button
+                type="button"
+                onClick={() => setshowCustomerInstallmentEditForm(false)}
+                className="showCustomerInstallmentEditForm_close_button"
+              >
+                X
+              </button>
+              <input
+                type="date"
+                value={InstallmentEditFormDate || new Date().toISOString().split("T")[0]}
+                onChange={(e) => setInstallmentEditFormDate(e.target.value)}
+                className="showCustomerInstallmentEditForm_input"
+              />
+              <input
+                type="text"
+                placeholder="Installment Amount"
+                value={InstallmentEditFormAmount}
+                onChange={(e) => setInstallmentEditFormAmount(e.target.value)}
+                className="showCustomerInstallmentEditForm_input"
+              />
+              <select
+                value={InstallmentEditFormPaymentMethod}
+                onChange={(e) => setInstallmentEditFormPaymentMethod(e.target.value)}
+                className="showCustomerInstallmentEditForm_select"
+              >
+                <option value="">Select Payment Method</option>
+                <option value="CASH">Cash</option>
+                <option value="CHECK">Check</option>
+                <option value="UPI">UPI</option>
+                <option value="RTGS">RTGS</option>
+                <option value="NEFT">NEFT</option>
+              </select>
+              <input
+                type="text"
+                placeholder="Remark"
+                value={InstallmentEditFormRemark}
+                onChange={(e) => setInstallmentEditFormRemark(e.target.value)}
+                className="showCustomerInstallmentEditForm_input"
+              />
+              <button type="submit" className="showCustomerInstallmentEditForm_submit_button">
+                Submit
+              </button>
+            </form>
+
+          </>
+        )
+      }
 
       {/*   customer Slip */}
 
@@ -442,7 +597,7 @@ function Flatowner() {
                   </p>
                 </div>
                 <p style={{ marginLeft: "25px", marginTop: "5px", fontSize: "15px" }}>
-                  <b> Balance Amount : {(customerDetail.dealPrice-(customerDetail.agreementAmount + customerDetail.tokenAmount)).toLocaleString()}</b>
+                  <b> Balance Amount : {(customerDetail.dealPrice - (customerDetail.agreementAmount + customerDetail.tokenAmount)).toLocaleString()}</b>
                 </p>
                 <p style={{ marginLeft: "25px", marginTop: "5px", fontSize: "15px" }}>
                   <b>
@@ -543,7 +698,7 @@ function Flatowner() {
                         -
                       </td>
                       <td style={{ border: "1px solid #000", padding: "2px 10px" }}>
-                      {customerDetail.dealPrice.toLocaleString()}
+                        {customerDetail.dealPrice.toLocaleString()}
                       </td>
                     </tr>
                     <tr>
@@ -682,7 +837,7 @@ function Flatowner() {
                       ></td>
                       <td
                         style={{ border: "1px solid #000", padding: "2px 10px" }}
-                      >     {(customerDetail.dealPrice +customerDetail.stampDutyAmount+customerDetail.registrationAmount +customerDetail.gstAmount+customerDetail.electricWaterAmmount+customerDetail.legalChargesAmmout).toLocaleString()}</td>
+                      >     {(customerDetail.dealPrice + customerDetail.stampDutyAmount + customerDetail.registrationAmount + customerDetail.gstAmount + customerDetail.electricWaterAmmount + customerDetail.legalChargesAmmout).toLocaleString()}</td>
                     </tr>
                   </table>
                 </div>
@@ -737,6 +892,9 @@ function Flatowner() {
                 </ol>
               </div>
             </div>
+
+
+
 
           </>
         )

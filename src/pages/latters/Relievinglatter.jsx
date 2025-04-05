@@ -35,14 +35,17 @@ function Relievinglatter() {
         // Collect form data
         const formdata = {
             employeeName,
-            currentDate,
-            resignationDate,
-            lastWorkingDate,
+            currentDate: currentDate || new Date().toISOString().split("T")[0],
+            resignationDate: resignationDate || new Date().toISOString().split("T")[0],
+            lastworkingdate: lastWorkingDate && lastWorkingDate.trim() !== ""
+                ? lastWorkingDate
+                : new Date().toISOString().split("T")[0],
             designation,
             department,
             location,
         };
 
+        console.log(formdata)
         try {
             // Sending data to the Relieving Latter API
             const response = await axios.post(`${BASE_URL}/createRelievinglatter`, formdata, {
@@ -120,7 +123,7 @@ function Relievinglatter() {
         const element = letterRef.current;
         const options = {
             margin: 0.5,
-            filename:`Relieving_letter_ ${myrelivinglatter.employeeName}.pdf`,
+            filename: `Relieving_letter_ ${myrelivinglatter.employeeName}.pdf`,
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
@@ -131,7 +134,7 @@ function Relievinglatter() {
 
     return (
         <>
-            <h1 style={{ textAlign: "center" ,marginTop:"50px" }}>Relieving Latter</h1>
+            <h1 style={{ textAlign: "center", marginTop: "50px" }}>Relieving Latter</h1>
 
             <div className="offer_latter_form_wrapper">
                 <form onSubmit={handleSubmit} className="offer_latter_form">
@@ -170,7 +173,7 @@ function Relievinglatter() {
                         <input
                             type="date"
                             className="offer_latter_input"
-                            value={lastWorkingDate  || new Date().toISOString().split("T")[0]}
+                            value={lastWorkingDate || new Date().toISOString().split("T")[0]}
                             onChange={(e) => setLastWorkingDate(e.target.value)}
                         />
                     </div>
@@ -233,9 +236,17 @@ function Relievinglatter() {
                                     <tr key={item.id}>
                                         <td>{index}</td>
                                         <td>{item.employeeName}</td>
-                                        <td>{new Date(item.currentDate).toLocaleDateString("en-GB") }</td>
-                                        <td>{new Date(item.resignationDate).toLocaleDateString("en-GB") }</td>
-                                        <td>{new Date (item.lastworkingdate).toLocaleDateString("en-GB") }</td>
+                                        <td>{new Date(item.currentDate).toLocaleDateString("en-GB")}</td>
+                                        <td>{new Date(item.resignationDate).toLocaleDateString("en-GB")}</td>
+                                        <td>
+                                            {item.lastworkingdate
+                                                ? new Date(item.lastworkingdate).toLocaleDateString("en-GB", {
+                                                    day: "2-digit",
+                                                    month: "2-digit",
+                                                    year: "numeric",
+                                                })
+                                                : "N/A"}
+                                        </td>
                                         <td>{item.designation}</td>
                                         <td>{item.department}</td>
                                         <td>{item.location}</td>
@@ -265,150 +276,150 @@ function Relievinglatter() {
 
                         <button className='doenlode_relieving' onClick={handleDownload} >Download </button>
                         <button onClick={() => setShowRelivinglatter(false)} className='relieving_close_button'>close</button>
-                        <div className="relieving_letter_container"  ref={letterRef}>
-                        <div
+                        <div className="relieving_letter_container" ref={letterRef}>
+                            <div
+                                style={{
+                                    textAlign: "right",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-around",
+                                    color: "#000",
+                                    marginLeft: "50px",
+                                    marginTop: "20px"
+
+                                }}
+                            >
+                                <img
                                     style={{
-                                        textAlign: "right",
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        justifyContent: "space-around",
+                                        height: "80px",
+                                        width: "auto",
+                                        objectFit: "contain",
+                                    }}
+                                    src={logo}
+                                    alt=""
+                                />
+                                <div
+                                    style={{
+                                        fontFamily: "Arial, sans-serif",
+                                        lineHeight: "40px",
+                                        width: "80%",
+                                        margin: "auto",
+                                        padding: "20px",
                                         color: "#000",
-                                        marginLeft: "50px",
-                                        marginTop: "20px"
 
                                     }}
                                 >
-                                    <img
-                                        style={{
-                                            height: "80px",
-                                            width: "auto",
-                                            objectFit: "contain",
-                                        }}
-                                        src={logo}
-                                        alt=""
-                                    />
+                                    {/* Address Section */}
                                     <div
                                         style={{
-                                            fontFamily: "Arial, sans-serif",
-                                            lineHeight: "40px",
-                                            width: "80%",
-                                            margin: "auto",
-                                            padding: "20px",
-                                            color: "#000",
+                                            display: "flex",
+                                            justifyContent: "right",
+                                            alignItems: "center",
+                                            marginBottom: "8px",
+                                            fontSize: "14px"
+                                        }}
+                                    >
+                                        <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
+                                            <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
+                                            <p>Hudkeshwar Road, Nagpur - 440034</p>
+                                        </div>
+                                        <div
+                                            style={{
+                                                backgroundColor: "#d34508",
+                                                padding: "10px",
+                                                borderRadius: "1px",
+                                                height: "30px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <FaMapMarkerAlt size={15} color="#ffff" />
+                                        </div>
+                                    </div>
+
+                                    {/* Email */}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "right",
+                                            alignItems: "center",
+                                            marginBottom: "8px",
+                                            fontSize: "14px",
 
                                         }}
                                     >
-                                        {/* Address Section */}
+                                        <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
                                         <div
                                             style={{
+                                                backgroundColor: "#d34508",
+                                                padding: "10px",
+                                                borderRadius: "1px",
+                                                height: "30px",
                                                 display: "flex",
-                                                justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px"
                                             }}
                                         >
-                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
-                                                <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
-                                                <p>Hudkeshwar Road, Nagpur - 440034</p>
-                                            </div>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaMapMarkerAlt size={15} color="#ffff" />
-                                            </div>
+                                            <FaEnvelope size={15} color="#ffff" />
                                         </div>
+                                    </div>
 
-                                        {/* Email */}
+                                    {/* Website */}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "right",
+                                            alignItems: "center",
+                                            marginBottom: "8px",
+                                            fontSize: "14px",
+
+
+                                        }}
+                                    >
+                                        <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
                                         <div
                                             style={{
+                                                backgroundColor: "#d34508",
+                                                padding: "10px",
+                                                borderRadius: "1px",
+                                                height: "30px",
                                                 display: "flex",
-                                                justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
                                             }}
                                         >
-                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaEnvelope size={15} color="#ffff" />
-                                            </div>
+                                            <FaGlobe size={15} color="#ffff" />
                                         </div>
+                                    </div>
 
-                                        {/* Website */}
+                                    {/* Phone */}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "right",
+                                            alignItems: "center",
+                                            marginBottom: "8px",
+
+                                        }}
+                                    >
+                                        <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
                                         <div
                                             style={{
+                                                backgroundColor: "#d34508",
+                                                padding: "10px",
+                                                borderRadius: "1px",
+                                                height: "30px",
                                                 display: "flex",
-                                                justifyContent: "right",
                                                 alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-
                                             }}
                                         >
-                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaGlobe size={15} color="#ffff" />
-                                            </div>
-                                        </div>
-
-                                        {/* Phone */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaPhoneAlt size={15} color="#ffff" />
-                                            </div>
+                                            <FaPhoneAlt size={15} color="#ffff" />
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px" }} />
                             <hr style={{ border: "3px solid rgb(167, 5, 86)" }} />
 
-                            <h2 style={{ marginTop: "10px" ,textAlign:"center" }} className='reliveing_letter_heading'> Subject - Relieving Letter Cum Experience  Letter</h2>
+                            <h2 style={{ marginTop: "10px", textAlign: "center" }} className='reliveing_letter_heading'> Subject - Relieving Letter Cum Experience  Letter</h2>
 
 
 
@@ -422,7 +433,7 @@ function Relievinglatter() {
                                 marginLeft: '100px'
                             }}>
                                 <p>
-                                    Date: <strong> {new Date(myrelivinglatter.currentDate).toLocaleDateString("en-GB") }</strong>
+                                    Date: <strong> {new Date(myrelivinglatter.currentDate).toLocaleDateString("en-GB")}</strong>
                                 </p>
                                 <p>
                                     Name: <strong> {myrelivinglatter.employeeName}</strong>
@@ -435,18 +446,18 @@ function Relievinglatter() {
                                 Dear <span>Somesh Dutta</span>,
                             </p>
                             <p style={{ marginLeft: "150px", marginTop: "20px" }}>
-                                With reference to your resignation dated   <b> {new Date(myrelivinglatter.resignationDate).toLocaleDateString("en-GB") }   </b>
+                                With reference to your resignation dated   <b> {new Date(myrelivinglatter.resignationDate).toLocaleDateString("en-GB")}   </b>
                                 the same has been accepted, and you are relieved from your services
                                 w.e.f the close of business hours of  <b>{myrelivinglatter.lastworkingdate || "N/A"}   </b>
                             </p>
                             <p style={{ marginLeft: "150px", marginTop: "15px" }}>The details of your employment with Royaalmede Jan Dhan Multi Urban Nidhi LID are as below:</p>
                             <ul style={{ display: 'flex', flexDirection: "column", gap: "10px", marginLeft: "150px", marginTop: '30px' }}>
                                 <li style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
-                                    <span>Date of Joining:</span> <span className="dynamic">{new Date( myrelivinglatter.dateOfjoing || "N/A").toLocaleDateString("en-GB")} </span>
+                                    <span>Date of Joining:</span> <span className="dynamic">{new Date(myrelivinglatter.dateOfjoing || "N/A").toLocaleDateString("en-GB")} </span>
                                 </li>
                                 <li style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
-                                    <span>Last Working Date:</span> <span className="dynamic">{new Date( myrelivinglatter.lastworkingdate || "N/A").toLocaleDateString("en-GB")}</span>
-                                </li>  
+                                    <span>Last Working Date:</span> <span className="dynamic">{new Date(myrelivinglatter.lastworkingdate || "N/A").toLocaleDateString("en-GB")}</span>
+                                </li>
                                 <li style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
                                     <span>Designation at the time of exit:</span> <span className="dynamic">{myrelivinglatter.designation}</span>
                                 </li>

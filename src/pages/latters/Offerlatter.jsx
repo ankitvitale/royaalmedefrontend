@@ -38,8 +38,8 @@ function Offerlatter() {
             email,
             address,
             phoneNumber,
-            cureentDate,
-            joiningDate,
+            cureentDate :cureentDate || new Date().toISOString().split("T")[0],
+            joiningDate: joiningDate || new Date().toISOString().split("T")[0],
             position,
             ctc,
         };
