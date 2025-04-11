@@ -28,6 +28,9 @@ function Possession() {
     const [possesionTable, setpossesionTable] = useState([])
     const [refreshKey, setrefreshKey] = useState(0)
     const [letterdata, setLetterData] = useState({})
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editId, setEditId] = useState(null);
+
     function handleDownlodepossession() {
         const element = letterref.current;
         const options = {
@@ -43,7 +46,7 @@ function Possession() {
 
 
     async function handlepossessionSubmit(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         const formdata = {
             fromName: from,
@@ -53,31 +56,62 @@ function Possession() {
             flatNo: flatNumber,
             residencyName: residencyName,
             address
-        }
-        try {
-            const resonse = await axios.post(`${BASE_URL}/createPossessionLetter`, formdata, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            })
-            console.log(resonse.data)
-            if (resonse.status === 200) {
-                alert("form Submitted Successfully")
-            }
-            setrefreshKey(refreshKey + 1)
-            setFrom("")
-            setDate("")
-            setYourName("")
-            setFirstName("")
-            setFlatNumber("")
-            setResidencyName("")
-            setAddress("")
-        } catch (error) {
-            console.log(error)
-        }
+        };
 
+        try {
+            if (isEditMode && editId) {
+                const response = await axios.put(`${BASE_URL}/PossessionLetter/${editId}`, formdata, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.status === 200) {
+                    alert("Possession letter updated successfully");
+                }
+            } else {
+                const response = await axios.post(`${BASE_URL}/createPossessionLetter`, formdata, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.status === 200) {
+                    alert("Form submitted successfully");
+                }
+            }
+            resetForm();
+            setrefreshKey(prev => prev + 1);
+        } catch (error) {
+            console.log(error);
+        }
     }
+    function resetForm() {
+        setFrom("");
+        setDate("");
+        setYourName("");
+        setFirstName("");
+        setFlatNumber("");
+        setResidencyName("");
+        setAddress("");
+        setIsEditMode(false);
+        setEditId(null);
+    }
+    function handleEditPossession(item) {
+        setIsEditMode(true);
+        setEditId(item.id);
+        setFrom(item.fromName);
+        setDate(item.date?.split("T")[0] || "");
+        setYourName(item.toName);
+        setFirstName(item.name);
+        setFlatNumber(item.flatNo);
+        setResidencyName(item.residencyName);
+        setAddress(item.address);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
 
     useEffect(() => {
         async function getPossessionLetter() {
@@ -89,7 +123,8 @@ function Possession() {
                     }
                 })
                 console.log(response.data)
-                setpossesionTable(response.data)
+                const sortedData = [...response.data].sort((a, b) => b.id - a.id)
+                setpossesionTable(sortedData)
             } catch (error) {
                 console.log(error)
             }
@@ -99,6 +134,8 @@ function Possession() {
     }, [refreshKey])
 
     async function handlepossionDelete(id) {
+        const deletepaossioson = window.confirm("Are you sure to delete ?")
+        if (!deletepaossioson) return
         try {
             const response = await axios.delete(`${BASE_URL}/PossessionLetter/${id}`, {
                 headers: {
@@ -106,12 +143,12 @@ function Possession() {
                     "Content-Type": "application/json"
                 }
             })
-
             if (response.status === 200) {
                 alert("letter delete Successfully")
-                setrefreshKey((prevKey) => prevKey + 1)
 
             }
+            setpossesionTable((prev) => prev.filter(item => item.id !== id));
+            setrefreshKey(prev => prev + 1);
 
         } catch (error) {
             console.log(error)
@@ -189,7 +226,10 @@ function Possession() {
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
                     />
-                    <button className="possession_letter_submit_button">Submit</button>
+                    <button className="possession_letter_submit_button">
+                        {isEditMode ? "Update" : "Submit"}
+                    </button>
+
                 </form>
             </div>
 
@@ -222,6 +262,7 @@ function Possession() {
                                     <td>{item.residencyName}</td>
                                     <td>{item.address}</td>
                                     <td style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px", flexDirection: "column" }}>
+                                        <button onClick={() => handleEditPossession(item)} className='possession_show'>Edit</button>
                                         <button onClick={() => handlepossionDelete(item.id)} className='possession_delete'> Delete</button>
                                         <button onClick={() => handleShowPossessionletter(item.id)} className='possession_show'>Show</button>
 
@@ -269,7 +310,7 @@ function Possession() {
                                         src={Logo2}
                                         alt=""
                                     />
-                                    <div
+                                    {/* <div
                                         style={{
                                             fontFamily: "Arial, sans-serif",
                                             lineHeight: "40px",
@@ -280,7 +321,7 @@ function Possession() {
 
                                         }}
                                     >
-                                        {/* Address Section */}
+                                     
                                         <div
                                             style={{
                                                 display: "flex",
@@ -308,7 +349,7 @@ function Possession() {
                                             </div>
                                         </div>
 
-                                        {/* Email */}
+                                     
                                         <div
                                             style={{
                                                 display: "flex",
@@ -334,7 +375,7 @@ function Possession() {
                                             </div>
                                         </div>
 
-                                        {/* Website */}
+                                       
                                         <div
                                             style={{
                                                 display: "flex",
@@ -361,7 +402,7 @@ function Possession() {
                                             </div>
                                         </div>
 
-                                        {/* Phone */}
+                                      
                                         <div
                                             style={{
                                                 display: "flex",
@@ -384,6 +425,27 @@ function Possession() {
                                             >
                                                 <FaPhoneAlt size={15} color="#ffff" />
                                             </div>
+                                        </div>
+                                    </div> */}
+                                    <div className="relieving_company_details">
+                                        <div className="relieving_detail_row">
+                                            <div className="relieving_detail_text">
+                                                <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
+                                                <p>Hudkeshwar Road, Nagpur - 440034</p>
+                                            </div>
+                                            <div className="relieving_icon_box"><FaMapMarkerAlt size={15} color="#fff" /></div>
+                                        </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">royaalmede@gmail.com</p>
+                                            <div className="relieving_icon_box"><FaEnvelope size={15} color="#fff" /></div>
+                                        </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">www.royaalmede.co.in</p>
+                                            <div className="relieving_icon_box"><FaGlobe size={15} color="#fff" /></div>
+                                        </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">9028999253 | 9373450092</p>
+                                            <div className="relieving_icon_box"><FaPhoneAlt size={15} color="#fff" /></div>
                                         </div>
                                     </div>
                                 </div>

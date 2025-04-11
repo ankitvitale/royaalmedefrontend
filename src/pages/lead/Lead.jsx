@@ -16,7 +16,7 @@ function Lead() {
   const [currentProcessId, setCurrentProcessId] = useState(null);
   const [formData, setFormData] = useState({
     id: null,
-    date: "" || new Date().toISOString().split("T")[0] ,
+    date: "" || new Date().toISOString().split("T")[0],
     step: "",
   });
   const [card, setCard] = useState(null);
@@ -27,7 +27,7 @@ function Lead() {
   const [review, setreview] = useState(false)
   const [getLeadId, setGetleadId] = useState("")
 
-  const [reviewdata, setReviewdate] = useState("")
+  const [reviewdate, setReviewdate] = useState(new Date().toISOString().split("T")[0]);
   const [Addreview, setAddreview] = useState("")
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState([])
@@ -52,7 +52,7 @@ function Lead() {
         }
 
         const leads = await response.json();
-        leads.sort((a, b) => new Date(b.foundOn) - new Date(a.foundOn));
+        leads.sort((a, b) => b.id - a.id);
 
         setLeads(leads);
         setFilter(leads);
@@ -153,7 +153,7 @@ function Lead() {
   async function handledelete(id) {
     const isConfirmed = window.confirm("Are you sure you want to delete this lead? This action cannot be undone.");
     if (!isConfirmed) return;
-  
+
     try {
       await axios.delete(`${BASE_URL}/deleteLead/${id}`, {
         headers: {
@@ -161,7 +161,7 @@ function Lead() {
           "Content-Type": "application/json",
         },
       });
-  
+
       setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
       alert("Lead has been deleted successfully.");
     } catch (error) {
@@ -169,7 +169,7 @@ function Lead() {
       alert("There was a problem deleting the lead.");
     }
   }
-  
+
 
   function handleEditLead(id) {
 
@@ -189,7 +189,8 @@ function Lead() {
     e.preventDefault();
     const obj = {
       remark: Addreview,
-      remarkdate: reviewdata || new Date().toISOString().split("T")[0]
+      remarkdate: reviewdate ? reviewdate : new Date().toISOString().split("T")[0]
+
     }
     try {
       const reponse = await axios.post(`${BASE_URL}/remark/${getLeadId}/remark`, obj, {
@@ -352,7 +353,7 @@ function Lead() {
               <input
                 type="date"
                 name="date"
-                 value={formData.date || new Date().toISOString().split("T")[0]}
+                value={formData.date || new Date().toISOString().split("T")[0]}
                 onChange={handleFormChange}
                 required
                 className="stepform_container_input"
@@ -404,7 +405,7 @@ function Lead() {
                   <ul className="lead_logs_line">
                     {card.leadLogs.map((log) => (
                       <li key={log.id} >
-                        <p><strong>Log Date:</strong> {new Date( log.logDate).toLocaleDateString("en-GB")}</p>
+                        <p><strong>Log Date:</strong> {new Date(log.logDate).toLocaleDateString("en-GB")}</p>
                         <p><strong>Status:</strong> {log.status}</p>
                       </li>
                     ))}
@@ -419,7 +420,12 @@ function Lead() {
                   <ul className="lead_logs_line">
                     <li>
                       <p><strong> Customer Remark :</strong> {card.remark}</p>
-                      <p><strong> Customer Remark Date :</strong>  {new Date(card.remarkdate).toLocaleDateString("en-GB") }</p>
+                      <p>
+                        <strong>Customer Remark Date:</strong> {card.remark}{" "}
+                        {new Date().toLocaleDateString("en-GB")}
+                      </p>
+
+
 
                     </li>
                   </ul>
@@ -438,7 +444,12 @@ function Lead() {
               <p>add review</p>
               <button className="addreview_close_btn" onClick={handleClosereview}> X</button>
               <form className="add_review_from" onSubmit={handleAddreview}>
-                <input type="date" value={reviewdata || new Date().toISOString().split("T")[0]} onChange={(e) => setReviewdate(e.target.value)} className="add_review_input" />
+                <input
+                  type="date"
+                  value={reviewdate || new Date().toISOString().split("T")[0]}
+                  onChange={(e) => setReviewdate(e.target.value)}
+                  className="add_review_input"
+                />
                 <input type="text" placeholder="Add Remark" value={Addreview} onChange={(e) => setAddreview(e.target.value)} className="add_review_input" />
                 <button type="submit" className="add_review_submit_button">Add Review</button>
               </form>

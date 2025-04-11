@@ -30,53 +30,85 @@ function Offerlatter() {
     const [singleOffer, setSingleOffer] = useState("")
     const [showMyofferLatter, setShowMyOfferlatter] = useState(false)
     const [refreshKey, setRefreshKey] = useState("")
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // You can process the form data here
         const formdata = {
             name,
             email,
             address,
             phoneNumber,
-            cureentDate :cureentDate || new Date().toISOString().split("T")[0],
+            cureentDate: cureentDate || new Date().toISOString().split("T")[0],
             joiningDate: joiningDate || new Date().toISOString().split("T")[0],
             position,
             ctc,
         };
+
         try {
-            const response = await axios.post(`${BASE_URL}/createOfferLatter`, formdata, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            })
-            console.log(response.data)
-            alert("form Submit Successfully")
-            setAddress("")
-            setName("")
-            setEmail("")
-            setPhoneNumber("")
-            setCurrentDate("")
-            setJoiningDate("")
-            setPosition("")
-            setCtc("")
+            if (isEditing) {
+                await axios.put(`${BASE_URL}/updateOfferlatter/${editId}`, formdata, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                alert("Offer letter updated successfully!");
+            } else {
+                await axios.post(`${BASE_URL}/createOfferLatter`, formdata, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                alert("Form submitted successfully!");
+            }
+
+            setIsEditing(false);
+            setEditId(null);
+            setRefreshKey(refreshKey + 1); // refresh table
+
+            // Reset form
+            setAddress("");
+            setName("");
+            setEmail("");
+            setPhoneNumber("");
+            setCurrentDate("");
+            setJoiningDate("");
+            setPosition("");
+            setCtc("");
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     };
+
+    const handleEdit = (offer) => {
+        setName(offer.name);
+        setEmail(offer.email);
+        setAddress(offer.address);
+        setPhoneNumber(offer.phoneNumber);
+        setCurrentDate(offer.cureentDate.split("T")[0]);
+        setJoiningDate(offer.joiningDate.split("T")[0]);
+        setPosition(offer.position);
+        setCtc(offer.ctc);
+        setEditId(offer.id);
+        setIsEditing(true);
+    };
+
+
     useEffect(() => {
         async function getoffer() {
             try {
-                const rsponse = await axios.get(`${BASE_URL}/getOfferlatter`, {
+                const response = await axios.get(`${BASE_URL}/getOfferlatter`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json"
                     }
                 })
-                console.log(rsponse.data)
 
-                setOfferdata(rsponse.data)
-                setRefreshKey(refreshKey + 1)
+                const sortData = [...response.data].sort((a, b) => b.id - a.id)
+                setOfferdata(sortData)
             } catch (error) {
                 console.log(error)
             }
@@ -103,6 +135,8 @@ function Offerlatter() {
     }
 
     async function deleteofferLatter(id) {
+        const deleteoffer = window.confirm("Are you sure to delete ? ")
+        if (!deleteoffer) return
         try {
             const response = await axios.delete(`${BASE_URL}/deleteOfferlatter/${id}`, {
                 headers: {
@@ -219,7 +253,10 @@ function Offerlatter() {
                     </div>
 
                     <div className="offer_latter_div">
-                        <button type="submit" className="offer_latter_button">Submit</button>
+                        <button type="submit" className="offer_latter_button">
+                            {isEditing ? "Update" : "Submit"}
+                        </button>
+
                     </div>
                 </form>
             </div>
@@ -257,6 +294,8 @@ function Offerlatter() {
                                 <td>
                                     <button onClick={() => ShowofferLatter(offer.id)} className='latter_show_button'> Show</button>
                                     <button onClick={() => deleteofferLatter(offer.id)} className='latter_show_delete'> Delete</button>
+                                    <button onClick={() => handleEdit(offer)} className='latter_show_button'> Edit</button>
+
                                 </td>
                             </tr>
                         ))}
@@ -268,11 +307,9 @@ function Offerlatter() {
             {
                 showMyofferLatter && singleOffer && (
                     <div className='offer_latter_main_wrapper'>
-                   
-                        <button  onClick={handleDownload} className='offer_latter_downlode'>Download</button>
-                        <button  onClick={() => setShowMyOfferlatter(false)} className='offer_latter_close'>Close</button>
 
-                        {/* Offer Letter Container */}
+                        <button onClick={handleDownload} className='offer_latter_downlode'>Download</button>
+                        <button onClick={() => setShowMyOfferlatter(false)} className='offer_latter_close'>Close</button>
                         <div
                             ref={letterRef}
                             style={{
@@ -287,144 +324,50 @@ function Offerlatter() {
                             }}>
                             {/* Header */}
                             <div
+                                style={{
+                                    textAlign: "right",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-around",
+                                    color: "#000",
+                                    marginLeft: "50px",
+                                    marginTop: "20px"
+
+                                }}
+                            >
+                                <img
                                     style={{
-                                        textAlign: "right",
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        justifyContent: "space-around",
-                                        color: "#000",
-                                        marginLeft: "50px",
-                                        marginTop: "20px"
-
+                                        height: "80px",
+                                        width: "auto",
+                                        objectFit: "contain",
                                     }}
-                                >
-                                    <img
-                                        style={{
-                                            height: "80px",
-                                            width: "auto",
-                                            objectFit: "contain",
-                                        }}
-                                        src={logo}
-                                        alt=""
-                                    />
-                                    <div
-                                        style={{
-                                            fontFamily: "Arial, sans-serif",
-                                            lineHeight: "40px",
-                                            width: "80%",
-                                            margin: "auto",
-                                            padding: "20px",
-                                            color: "#000",
+                                    src={logo}
+                                    alt=""
+                                />
 
-                                        }}
-                                    >
-                                        {/* Address Section */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px"
-                                            }}
-                                        >
-                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
-                                                <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
-                                                <p>Hudkeshwar Road, Nagpur - 440034</p>
-                                            </div>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaMapMarkerAlt size={15} color="#ffff" />
-                                            </div>
+
+                                <div className="relieving_company_details">
+                                    <div className="relieving_detail_row">
+                                        <div className="relieving_detail_text">
+                                            <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
+                                            <p>Hudkeshwar Road, Nagpur - 440034</p>
                                         </div>
-
-                                        {/* Email */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaEnvelope size={15} color="#ffff" />
-                                            </div>
-                                        </div>
-
-                                        {/* Website */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaGlobe size={15} color="#ffff" />
-                                            </div>
-                                        </div>
-
-                                        {/* Phone */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaPhoneAlt size={15} color="#ffff" />
-                                            </div>
-                                        </div>
+                                        <div className="relieving_icon_box"><FaMapMarkerAlt size={15} color="#fff" /></div>
+                                    </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">royaalmede@gmail.com</p>
+                                        <div className="relieving_icon_box"><FaEnvelope size={15} color="#fff" /></div>
+                                    </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">www.royaalmede.co.in</p>
+                                        <div className="relieving_icon_box"><FaGlobe size={15} color="#fff" /></div>
+                                    </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">9028999253 | 9373450092</p>
+                                        <div className="relieving_icon_box"><FaPhoneAlt size={15} color="#fff" /></div>
                                     </div>
                                 </div>
+                            </div>
 
                             <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px" }} />
                             <hr style={{ border: "3px solid rgb(167, 5, 86)" }} />

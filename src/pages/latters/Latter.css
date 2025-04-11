@@ -552,7 +552,7 @@ margin-left: 5px;
   }
 
   .relieving_letter_container > div {
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: flex-start;
   }
 
@@ -593,11 +593,11 @@ margin-left: 5px;
     padding: 15px;
   }
 
-  .relieving_letter_container > div {
+  /* .relieving_letter_container > div {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-  }
+  } */
 
   .relieving_letter_container ul li {
     width: 100%;
@@ -871,11 +871,6 @@ margin-left: 5px;
       margin-top: 10px;
   }
 
-  /* Adjusting icons in the address, email, phone sections */
-  .allotment_latter_container div {
-      display: block;
-      margin-bottom: 15px;
-  }
 
   .allotment_latter_container div p {
       margin-right: 0;

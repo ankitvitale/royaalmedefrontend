@@ -30,7 +30,9 @@ function DemandLetter() {
     });
     const [alldemandlattertable, setalldemandlattertable] = useState([])
     const [refreshkey, setrefreshKey] = useState("")
-    // Handle input change
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -39,31 +41,65 @@ function DemandLetter() {
         });
     };
 
-    // Handle form submission
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${BASE_URL}/createDemandLetter`, {
-                method: 'POST',
+            const url = isEditing
+                ? `${BASE_URL}/updateDemandLetter/${editId}`
+                : `${BASE_URL}/createDemandLetter`;
+
+            const method = isEditing ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Replace with actual token
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(formData)
             });
 
             if (response.ok) {
+                alert("form submit successfully")
                 const data = await response.json();
                 console.log('Response:', data);
-                setrefreshKey(refreshkey + 1)
-                // Handle success (e.g., show success message, reset form, etc.)
+                setrefreshKey(refreshkey + 1);
+                setFormData({
+                    name: '',
+                    faltno: '',
+                    amount: '',
+                    sitename: '',
+                    favorOf: '',
+                    bankName: '',
+                    branch: '',
+                    acNo: ''
+                });
+                setIsEditing(false);
+                setEditId(null);
             } else {
                 console.log('Failed to submit the form');
             }
         } catch (error) {
             console.error('Error:', error);
         }
+    };
+
+
+    const handleEditDemand = (demand) => {
+        setFormData({
+            name: demand.name,
+            faltno: demand.faltno,
+            amount: demand.amount,
+            sitename: demand.sitename,
+            favorOf: demand.favorOf,
+            bankName: demand.bankName,
+            branch: demand.branch,
+            acNo: demand.acNo
+        });
+        setEditId(demand.id);
+        setIsEditing(true);
     };
 
     useEffect(() => {
@@ -76,7 +112,9 @@ function DemandLetter() {
                     }
                 })
                 console.log(response.data)
-                setalldemandlattertable(response.data)
+
+                const sortedData = [...response.data].sort((a, b) => b.id - a.id)
+                setalldemandlattertable(sortedData)
             } catch (error) {
                 console.log(error)
             }
@@ -88,13 +126,13 @@ function DemandLetter() {
     const handleDownload = () => {
         const element = letterRef.current;
 
-     
-        const width = 750; 
+
+        const width = 750;
         const height = element.scrollHeight + 220;
 
-      
+
         const options = {
-            margin: [10, 10], 
+            margin: [10, 10],
             filename: "Demand_lette.pdf",
             image: { type: "jpeg", quality: 0.8 },
             html2canvas: {
@@ -108,10 +146,12 @@ function DemandLetter() {
             },
         };
 
-      
+
         html2pdf().from(element).set(options).save();
     };
     async function handleDeleteDemand(id) {
+        const deleteDemand = window.confirm("Are you sure to delete ?")
+        if (!deleteDemand) return
         try {
             const response = await axios.delete(`${BASE_URL}/deleteDemandLetter/${id}`, {
                 headers: {
@@ -270,6 +310,8 @@ function DemandLetter() {
                                 <td>
                                     <button onClick={() => handleShowdemadlatter(demand.id)} className='latter_show_button'> Show</button>
                                     <button onClick={() => handleDeleteDemand(demand.id)} className='latter_show_delete'> Delete</button>
+                                    <button onClick={() => handleEditDemand(demand)} className='latter_show_button'>Edit</button>
+
                                 </td>
                             </tr>
                         ))}
@@ -283,10 +325,10 @@ function DemandLetter() {
                 showDemandlatter && singleDemadlatter && (
                     <div
                         className="demand_latter_main_wrapper"
-                     
+
                     >
                         <button onClick={handleDownload} className='demand_latter_dowmlode_button'> downlode</button>
-                        <button onClick={()=>setShowDemandlatter(false)} className='demand_latter_close_button'>  Close</button>
+                        <button onClick={() => setShowDemandlatter(false)} className='demand_latter_close_button'>  Close</button>
                         <div className="demand_latter_container">
                             <div
                                 ref={letterRef}
@@ -322,7 +364,7 @@ function DemandLetter() {
                                         src={logo}
                                         alt=""
                                     />
-                                    <div
+                                    {/* <div
                                         style={{
                                             fontFamily: "Arial, sans-serif",
                                             lineHeight: "40px",
@@ -333,7 +375,7 @@ function DemandLetter() {
 
                                         }}
                                     >
-                                        {/* Address Section */}
+                                       
                                         <div
                                             style={{
                                                 display: "flex",
@@ -361,7 +403,7 @@ function DemandLetter() {
                                             </div>
                                         </div>
 
-                                        {/* Email */}
+                                      
                                         <div
                                             style={{
                                                 display: "flex",
@@ -387,7 +429,7 @@ function DemandLetter() {
                                             </div>
                                         </div>
 
-                                        {/* Website */}
+                                      
                                         <div
                                             style={{
                                                 display: "flex",
@@ -414,7 +456,7 @@ function DemandLetter() {
                                             </div>
                                         </div>
 
-                                        {/* Phone */}
+                                     
                                         <div
                                             style={{
                                                 display: "flex",
@@ -437,6 +479,28 @@ function DemandLetter() {
                                             >
                                                 <FaPhoneAlt size={15} color="#ffff" />
                                             </div>
+                                        </div>
+                                    </div> */}
+
+                                    <div className="relieving_company_details">
+                                        <div className="relieving_detail_row">
+                                            <div className="relieving_detail_text">
+                                                <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
+                                                <p>Hudkeshwar Road, Nagpur - 440034</p>
+                                            </div>
+                                            <div className="relieving_icon_box"><FaMapMarkerAlt size={15} color="#fff" /></div>
+                                        </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">royaalmede@gmail.com</p>
+                                            <div className="relieving_icon_box"><FaEnvelope size={15} color="#fff" /></div>
+                                        </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">www.royaalmede.co.in</p>
+                                            <div className="relieving_icon_box"><FaGlobe size={15} color="#fff" /></div>
+                                        </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">9028999253 | 9373450092</p>
+                                            <div className="relieving_icon_box"><FaPhoneAlt size={15} color="#fff" /></div>
                                         </div>
                                     </div>
                                 </div>

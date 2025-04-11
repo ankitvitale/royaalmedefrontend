@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { useRef } from 'react';
 import html2pdf from 'html2pdf.js';
-import Logo2 from "../../assets/RoyalmedeLOAN  Logo.svg"
+import Logo2 from "../../assets/royalmede loan.svg"
 function LatterHead() {
     const [infraletterHead, setinfraletterHead] = useState(false)
     const [LoanLeterhead, setLoanLeterhead] = useState(false)
@@ -41,8 +41,8 @@ function LatterHead() {
     }
     return (
         <>
-            <h2 className='letter_head_heading' style={{textAlign:"center"}}>
-                LatterHeads
+            <h2 className='letter_head_heading' style={{ textAlign: "center" }}>
+                Letter Heads
             </h2>
 
             <div className="letter_heads_buttons" >
@@ -57,9 +57,10 @@ function LatterHead() {
                         <div className="infra_letter_head_main_wrapper">
                             <div className="downlode_button">
                                 <button onClick={handleDownlodeInfra} className='royalinfra_downlode_button'> DownLode</button>
+                                <button onClick={() => setinfraletterHead(false)} style={{ marginLeft: "10px" }} className='royalinfra_downlode_button'> Close</button>
                             </div>
                             <div className="infraletter_head_wrapper" ref={letterref}>
-                            <div
+                                <div
                                     style={{
                                         textAlign: "right",
                                         display: "flex",
@@ -80,121 +81,27 @@ function LatterHead() {
                                         src={logo}
                                         alt=""
                                     />
-                                    <div
-                                        style={{
-                                            fontFamily: "Arial, sans-serif",
-                                            lineHeight: "40px",
-                                            width: "80%",
-                                            margin: "auto",
-                                            padding: "20px",
-                                            color: "#000",
 
-                                        }}
-                                    >
-                                        {/* Address Section */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px"
-                                            }}
-                                        >
-                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
+
+                                    <div className="relieving_company_details">
+                                        <div className="relieving_detail_row">
+                                            <div className="relieving_detail_text">
                                                 <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
                                                 <p>Hudkeshwar Road, Nagpur - 440034</p>
                                             </div>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaMapMarkerAlt size={15} color="#ffff" />
-                                            </div>
+                                            <div className="relieving_icon_box"><FaMapMarkerAlt size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Email */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaEnvelope size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">royaalmede@gmail.com</p>
+                                            <div className="relieving_icon_box"><FaEnvelope size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Website */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaGlobe size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">www.royaalmede.co.in</p>
+                                            <div className="relieving_icon_box"><FaGlobe size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Phone */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaPhoneAlt size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">9028999253 | 9373450092</p>
+                                            <div className="relieving_icon_box"><FaPhoneAlt size={15} color="#fff" /></div>
                                         </div>
                                     </div>
                                 </div>
@@ -218,9 +125,10 @@ function LatterHead() {
                         <div className="loan_letter_head_main_wrapper">
                             <div className="downlode_button">
                                 <button onClick={handleDownlodeLoan} className='royalloan_downlode_button'> DownLode</button>
+                                <button style={{ marginLeft: "10px" }} className='royalloan_downlode_button' onClick={() => setLoanLeterhead(false)}> Close </button>
                             </div>
                             <div className="infraletter_head_wrapper" ref={loanref}>
-                            <div
+                                <div
                                     style={{
                                         textAlign: "right",
                                         display: "flex",
@@ -241,121 +149,26 @@ function LatterHead() {
                                         src={Logo2}
                                         alt=""
                                     />
-                                    <div
-                                        style={{
-                                            fontFamily: "Arial, sans-serif",
-                                            lineHeight: "40px",
-                                            width: "80%",
-                                            margin: "auto",
-                                            padding: "20px",
-                                            color: "#000",
 
-                                        }}
-                                    >
-                                        {/* Address Section */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px"
-                                            }}
-                                        >
-                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
+                                    <div className="relieving_company_details">
+                                        <div className="relieving_detail_row">
+                                            <div className="relieving_detail_text">
                                                 <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
                                                 <p>Hudkeshwar Road, Nagpur - 440034</p>
                                             </div>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaMapMarkerAlt size={15} color="#ffff" />
-                                            </div>
+                                            <div className="relieving_icon_box"><FaMapMarkerAlt size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Email */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaEnvelope size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">royaalmede@gmail.com</p>
+                                            <div className="relieving_icon_box"><FaEnvelope size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Website */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaGlobe size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">www.royaalmede.co.in</p>
+                                            <div className="relieving_icon_box"><FaGlobe size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Phone */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaPhoneAlt size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">9028999253 | 9373450092</p>
+                                            <div className="relieving_icon_box"><FaPhoneAlt size={15} color="#fff" /></div>
                                         </div>
                                     </div>
                                 </div>

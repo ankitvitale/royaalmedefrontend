@@ -11,6 +11,7 @@ import {
 import logo from "../../assets/royal.png"
 import html2pdf from "html2pdf.js";
 import { BASE_URL } from '../../config';
+import "../latters/relievinglatter.css"
 function Relievinglatter() {
 
     const letterRef = useRef();
@@ -28,36 +29,45 @@ function Relievinglatter() {
     const token = JSON.parse(
         localStorage.getItem("employeROyalmadeLogin")
     )?.token;
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editId, setEditId] = useState(null);
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Collect form data
         const formdata = {
             employeeName,
             currentDate: currentDate || new Date().toISOString().split("T")[0],
             resignationDate: resignationDate || new Date().toISOString().split("T")[0],
-            lastworkingdate: lastWorkingDate && lastWorkingDate.trim() !== ""
-                ? lastWorkingDate
-                : new Date().toISOString().split("T")[0],
+            lastworkingdate: lastWorkingDate || new Date().toISOString().split("T")[0],
             designation,
             department,
             location,
         };
 
-        console.log(formdata)
         try {
-            // Sending data to the Relieving Latter API
-            const response = await axios.post(`${BASE_URL}/createRelievinglatter`, formdata, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            console.log(response.data);
-            alert("Form submitted successfully!");
+            if (isEditMode && editId) {
+                const response = await axios.put(`${BASE_URL}/updateRelievingLatter/${editId}`, formdata, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                console.log("Updated:", response.data);
+                alert("Letter updated successfully!");
+            } else {
+                const response = await axios.post(`${BASE_URL}/createRelievinglatter`, formdata, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                console.log("Created:", response.data);
+                alert("Form submitted successfully!");
+            }
 
-            // Reset form fields
+            // Reset all
             setEmployeeName("");
             setCurrentDate("");
             setResignationDate("");
@@ -65,10 +75,25 @@ function Relievinglatter() {
             setDesignation("");
             setDepartment("");
             setLocation("");
-            setrefreshKey(refreshKey + 1)
+            setrefreshKey(refreshKey + 1);
+            setIsEditMode(false);
+            setEditId(null);
         } catch (error) {
             console.error("Error submitting the form:", error);
         }
+    };
+
+
+    const handleEditRelievingLatter = (item) => {
+        setIsEditMode(true);
+        setEditId(item.id);
+        setEmployeeName(item.employeeName);
+        setCurrentDate(item.currentDate);
+        setResignationDate(item.resignationDate);
+        setLastWorkingDate(item.lastworkingdate);
+        setDesignation(item.designation);
+        setDepartment(item.department);
+        setLocation(item.location);
     };
 
     useEffect(() => {
@@ -81,7 +106,8 @@ function Relievinglatter() {
                     }
                 })
                 console.log(response.data)
-                setRevilingtabledata(response.data)
+                const sorteddata = [...response.data].sort((a, b) => b.id - a.id)
+                setRevilingtabledata(sorteddata)
             } catch (error) {
                 console.log(error)
             }
@@ -105,6 +131,8 @@ function Relievinglatter() {
         }
     }
     async function handledeleteRelivingLatter(id) {
+        const deletereliving = window.confirm("Are you sure to delete ?")
+        if (!deletereliving) return
         try {
             const response = await axios.delete(`${BASE_URL}/deleteRelievingLatter/${id}`, {
                 headers: {
@@ -209,7 +237,10 @@ function Relievinglatter() {
                     </div>
 
                     <div className="offer_latter_div">
-                        <button type="submit" className="offer_latter_button">Submit</button>
+                        <button type="submit" className="offer_latter_button">
+                            {isEditMode ? "Update" : "Submit"}
+                        </button>
+
                     </div>
                 </form>
             </div>
@@ -253,6 +284,8 @@ function Relievinglatter() {
                                         <td>
                                             <button onClick={() => handleshowrevilingletter(item.id)} className='latter_show_button'> Show</button>
                                             <button onClick={() => handledeleteRelivingLatter(item.id)} className='latter_show_delete'> Delete</button>
+                                            <button onClick={() => handleEditRelievingLatter(item)} className='latter_show_button'>Edit</button>
+
                                         </td>
                                     </tr>
                                 ))
@@ -272,216 +305,78 @@ function Relievinglatter() {
                 showrelivinglatter && myrelivinglatter && (
 
 
-                    <div className="relieving_latter_main_container">
 
-                        <button className='doenlode_relieving' onClick={handleDownload} >Download </button>
-                        <button onClick={() => setShowRelivinglatter(false)} className='relieving_close_button'>close</button>
+
+                    <div className="relieving_main_container">
+                        <div className="relieving_button_group">
+                            <button className="relieving_download_button" onClick={handleDownload}>Download</button>
+                            <button className="relieving_close_button" onClick={() => setShowRelivinglatter(false)}>Close</button>
+                        </div>
+
                         <div className="relieving_letter_container" ref={letterRef}>
-                            <div
-                                style={{
-                                    textAlign: "right",
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "space-around",
-                                    color: "#000",
-                                    marginLeft: "50px",
-                                    marginTop: "20px"
-
-                                }}
-                            >
-                                <img
-                                    style={{
-                                        height: "80px",
-                                        width: "auto",
-                                        objectFit: "contain",
-                                    }}
-                                    src={logo}
-                                    alt=""
-                                />
-                                <div
-                                    style={{
-                                        fontFamily: "Arial, sans-serif",
-                                        lineHeight: "40px",
-                                        width: "80%",
-                                        margin: "auto",
-                                        padding: "20px",
-                                        color: "#000",
-
-                                    }}
-                                >
-                                    {/* Address Section */}
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "right",
-                                            alignItems: "center",
-                                            marginBottom: "8px",
-                                            fontSize: "14px"
-                                        }}
-                                    >
-                                        <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
+                            <div className="relieving_header_section">
+                                <img className="relieving_company_logo" src={logo} alt="logo" />
+                                <div className="relieving_company_details">
+                                    <div className="relieving_detail_row">
+                                        <div className="relieving_detail_text">
                                             <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
                                             <p>Hudkeshwar Road, Nagpur - 440034</p>
                                         </div>
-                                        <div
-                                            style={{
-                                                backgroundColor: "#d34508",
-                                                padding: "10px",
-                                                borderRadius: "1px",
-                                                height: "30px",
-                                                display: "flex",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <FaMapMarkerAlt size={15} color="#ffff" />
-                                        </div>
+                                        <div className="relieving_icon_box"><FaMapMarkerAlt size={15} color="#fff" /></div>
                                     </div>
-
-                                    {/* Email */}
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "right",
-                                            alignItems: "center",
-                                            marginBottom: "8px",
-                                            fontSize: "14px",
-
-                                        }}
-                                    >
-                                        <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
-                                        <div
-                                            style={{
-                                                backgroundColor: "#d34508",
-                                                padding: "10px",
-                                                borderRadius: "1px",
-                                                height: "30px",
-                                                display: "flex",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <FaEnvelope size={15} color="#ffff" />
-                                        </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">royaalmede@gmail.com</p>
+                                        <div className="relieving_icon_box"><FaEnvelope size={15} color="#fff" /></div>
                                     </div>
-
-                                    {/* Website */}
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "right",
-                                            alignItems: "center",
-                                            marginBottom: "8px",
-                                            fontSize: "14px",
-
-
-                                        }}
-                                    >
-                                        <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
-                                        <div
-                                            style={{
-                                                backgroundColor: "#d34508",
-                                                padding: "10px",
-                                                borderRadius: "1px",
-                                                height: "30px",
-                                                display: "flex",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <FaGlobe size={15} color="#ffff" />
-                                        </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">www.royaalmede.co.in</p>
+                                        <div className="relieving_icon_box"><FaGlobe size={15} color="#fff" /></div>
                                     </div>
-
-                                    {/* Phone */}
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "right",
-                                            alignItems: "center",
-                                            marginBottom: "8px",
-
-                                        }}
-                                    >
-                                        <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
-                                        <div
-                                            style={{
-                                                backgroundColor: "#d34508",
-                                                padding: "10px",
-                                                borderRadius: "1px",
-                                                height: "30px",
-                                                display: "flex",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <FaPhoneAlt size={15} color="#ffff" />
-                                        </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">9028999253 | 9373450092</p>
+                                        <div className="relieving_icon_box"><FaPhoneAlt size={15} color="#fff" /></div>
                                     </div>
                                 </div>
                             </div>
-                            <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px" }} />
-                            <hr style={{ border: "3px solid rgb(167, 5, 86)" }} />
 
-                            <h2 style={{ marginTop: "10px", textAlign: "center" }} className='reliveing_letter_heading'> Subject - Relieving Letter Cum Experience  Letter</h2>
+                            <hr className="relieving_line_thin" />
+                            <hr className="relieving_line_thick" />
 
+                            <h2 className="relieving_letter_heading">Subject - Relieving Letter Cum Experience Letter</h2>
 
-
-
-                            <div style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                                gap: "5px",
-                                padding: "30px",
-                                marginLeft: '100px'
-                            }}>
-                                <p>
-                                    Date: <strong> {new Date(myrelivinglatter.currentDate).toLocaleDateString("en-GB")}</strong>
-                                </p>
-                                <p>
-                                    Name: <strong> {myrelivinglatter.employeeName}</strong>
-                                </p>
-                                <p>
-                                    Emp ID-: <strong>{myrelivinglatter.empId}</strong>
-                                </p>
+                            <div className="relieving_employee_info">
+                                <p>Date: <strong>{new Date(myrelivinglatter.currentDate).toLocaleDateString("en-GB")}</strong></p>
+                                <p>Name: <strong>{myrelivinglatter.employeeName}</strong></p>
+                               
                             </div>
-                            <p style={{ marginLeft: '150px', marginTop: '15px' }}>
-                                Dear <span>Somesh Dutta</span>,
+
+                            <p className="relieving_paragraph">Dear <span>{myrelivinglatter.employeeName}</span>,</p>
+
+                            <p className="relieving_paragraph">
+                                With reference to your resignation dated <b>{new Date(myrelivinglatter.resignationDate).toLocaleDateString("en-GB")}</b>,
+                                the same has been accepted, and you are relieved from your services w.e.f the close of business hours of
+                                <b> {myrelivinglatter.lastworkingdate || "N/A"} </b>
                             </p>
-                            <p style={{ marginLeft: "150px", marginTop: "20px" }}>
-                                With reference to your resignation dated   <b> {new Date(myrelivinglatter.resignationDate).toLocaleDateString("en-GB")}   </b>
-                                the same has been accepted, and you are relieved from your services
-                                w.e.f the close of business hours of  <b>{myrelivinglatter.lastworkingdate || "N/A"}   </b>
-                            </p>
-                            <p style={{ marginLeft: "150px", marginTop: "15px" }}>The details of your employment with Royaalmede Jan Dhan Multi Urban Nidhi LID are as below:</p>
-                            <ul style={{ display: 'flex', flexDirection: "column", gap: "10px", marginLeft: "150px", marginTop: '30px' }}>
-                                <li style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
-                                    <span>Date of Joining:</span> <span className="dynamic">{new Date(myrelivinglatter.dateOfjoing || "N/A").toLocaleDateString("en-GB")} </span>
-                                </li>
-                                <li style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
-                                    <span>Last Working Date:</span> <span className="dynamic">{new Date(myrelivinglatter.lastworkingdate || "N/A").toLocaleDateString("en-GB")}</span>
-                                </li>
-                                <li style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
-                                    <span>Designation at the time of exit:</span> <span className="dynamic">{myrelivinglatter.designation}</span>
-                                </li>
-                                <li style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
-                                    <span>Department at the time of exit:</span> <span className="dynamic">{myrelivinglatter.department}</span>
-                                </li>
-                                <li style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
-                                    <span>Location at the time of exit:</span> <span className="dynamic">{myrelivinglatter.location}</span>
-                                </li>
+
+                            <p className="relieving_paragraph">The details of your employment with Royaalmede Jan Dhan Multi Urban Nidhi LID are as below:</p>
+
+                            <ul className="relieving_employment_details">
+                                <li><span>Date of Joining:</span> <span>{new Date(myrelivinglatter.dateOfjoing || "N/A").toLocaleDateString("en-GB")}</span></li>
+                                <li><span>Last Working Date:</span> <span>{new Date(myrelivinglatter.lastworkingdate || "N/A").toLocaleDateString("en-GB")}</span></li>
+                                <li><span>Designation:</span> <span>{myrelivinglatter.designation}</span></li>
+                                <li><span>Department:</span> <span>{myrelivinglatter.department}</span></li>
+                                <li><span>Location:</span> <span>{myrelivinglatter.location}</span></li>
                             </ul>
 
-                            <p style={{ marginTop: "20px", marginLeft: "150px" }}>
-                                We wish you all the best for your future endeavors.
-                            </p>
-                            <p style={{ marginTop: "20px", marginLeft: "150px" }}>Thank you.</p>
-                            <p style={{ marginTop: "10px", marginLeft: "150px" }}>For Royaalmede Jan Dhan Multi Urban Nidhi LID</p>
-                            <div className="signature" style={{ marginLeft: "150px", marginTop: "60px" }}>
+                            <p className="relieving_paragraph">We wish you all the best for your future endeavors.</p>
+                            <p className="relieving_paragraph">Thank you.</p>
+                            <p className="relieving_paragraph">For Royaalmede Jan Dhan Multi Urban Nidhi LID</p>
 
-                                <p><b>Ankkit Malviya</b></p>
+                            <div className="relieving_signature">
+                               
                                 <p>Chief Executive Officer</p>
                             </div>
-
                         </div>
-
                     </div>
 
                 )

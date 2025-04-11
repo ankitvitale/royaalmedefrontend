@@ -17,6 +17,9 @@ const currentDate = new Date().toISOString().split("T")[0]
 const myCurrentDate = (new Date(currentDate).toLocaleDateString("en-GB"))
 function NocLetter() {
     const [ShowNocLetter, setShowNocLetter] = useState(false)
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editId, setEditId] = useState(null);
+
     const [bankName, setBankName] = useState("");
     const [address, setAddress] = useState("");
     const [blank, setBlank] = useState("");
@@ -80,40 +83,86 @@ function NocLetter() {
         };
 
         try {
-            const response = await axios.post(`${BASE_URL}/createBankNoc`, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            })
-            console.log(response.data)
-            if (response.status === 200) {
-                alert("Form submit Successfully")
-                setrefreshkey(prevKey => (prevKey || 0) + 1);
-                setBankName("");
-                setAddress("");
-                setBlank("");
-                setCoustomerName("");
-                setAggrementDate("");
-                setFlatNo("");
-                setBuildingNo("");
-                setStreetNo("");
-                setLocalityName("");
-                setAreaName("");
-                setPincode("");
-                setCity("");
-                setTransactionAmount("");
-                setFacvoringName("");
-                setReciverBankName("");
-                setBranchName("");
-                setAcNO("");
-                setIfsc("");
+            if (isEditMode && editId) {
+                const response = await axios.put(`${BASE_URL}/bankNoc/${editId}`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (response.status === 200) {
+                    alert("NOC Letter Updated Successfully");
+                }
+            } else {
+                const response = await axios.post(`${BASE_URL}/createBankNoc`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (response.status === 200) {
+                    alert("Form submit Successfully");
+                }
             }
-        } catch (error) {
-            console.log(error)
-        }
 
+            setrefreshkey(prevKey => (prevKey || 0) + 1);
+            resetForm();
+
+        } catch (error) {
+            console.log(error);
+            alert("Something went wrong");
+        }
     };
+
+
+    function handleEditNoc(item) {
+        setIsEditMode(true);
+        setEditId(item.id);
+
+        setBankName(item.bankName || "");
+        setAddress(item.address || "");
+        setBlank(item.blank || "");
+        setCoustomerName(item.coustomername || "");
+        setAggrementDate(item.aggrementDate || "");
+        setFlatNo(item.flatNo || "");
+        setBuildingNo(item.buildingNo || "");
+        setStreetNo(item.streetNo || "");
+        setLocalityName(item.localityName || "");
+        setAreaName(item.areaName || "");
+        setPincode(item.pincode || "");
+        setCity(item.city || "");
+        setTransactionAmount(item.transactionAmount || "");
+        setTransactionAmountWords(item.transactionAmountWords || "");
+        setFacvoringName(item.facvoringName || "");
+        setReciverBankName(item.reciverBankName || "");
+        setBranchName(item.branchName || "");
+        setAcNO(item.acNO || "");
+        setIfsc(item.ifsc || "");
+    }
+    function resetForm() {
+        setBankName("");
+        setAddress("");
+        setBlank("");
+        setCoustomerName("");
+        setAggrementDate("");
+        setFlatNo("");
+        setBuildingNo("");
+        setStreetNo("");
+        setLocalityName("");
+        setAreaName("");
+        setPincode("");
+        setCity("");
+        setTransactionAmount("");
+        setTransactionAmountWords("");
+        setFacvoringName("");
+        setReciverBankName("");
+        setBranchName("");
+        setAcNO("");
+        setIfsc("");
+        setIsEditMode(false);
+        setEditId(null);
+    }
+
 
     useEffect(() => {
         async function getAllNocLatter() {
@@ -125,7 +174,11 @@ function NocLetter() {
                     },
                 })
                 console.log(response.data)
-                setnocLatterTable(response.data)
+                const sortedData = [...response.data].sort((a, b) => b.id - a.id);
+                setnocLatterTable(sortedData);
+
+            
+
             } catch (error) {
                 console.log(error)
             }
@@ -152,6 +205,8 @@ function NocLetter() {
 
 
     async function handleDeleteNoc(id) {
+        const nocDelete = window.confirm("Are you sure to delete ?")
+        if (!nocDelete) return
         try {
             const response = await axios.delete(`${BASE_URL}/bankNoc/${id}`, {
                 headers: {
@@ -211,7 +266,10 @@ function NocLetter() {
                 <input className="nocinput" type="text" value={branchName} onChange={(e) => setBranchName(e.target.value)} placeholder="Branch Name" />
                 <input className="nocinput" type="text" value={acNO} onChange={(e) => setAcNO(e.target.value)} placeholder="Account No" />
                 <input className="nocinput" type="text" value={ifsc} onChange={(e) => setIfsc(e.target.value)} placeholder="IFSC Code" />
-                <button type="submit" className="nocbutton">Submit</button>
+                <button type="submit" className="nocbutton">
+                    {isEditMode ? "Update" : "Submit"}
+                </button>
+
             </form>
 
             {/* noc table */}
@@ -246,6 +304,7 @@ function NocLetter() {
                                 <td>
                                     <button onClick={() => handleViewNoc(item.id)} className='noc_view_button'> View</button>
                                     <button className='noc_delete_button' onClick={() => handleDeleteNoc(item.id)}>Delete</button>
+                                    <button className='noc_view_button' onClick={() => handleEditNoc(item)}>Edit</button>
                                 </td>
                             </tr>
                         ))}
@@ -264,7 +323,7 @@ function NocLetter() {
                                 <button onClick={() => setShowNocLetter(false)} className='noc_close_button'> Close</button>
                             </div>
                             <div className="noc_letter_wrapper" ref={loanref}>
-                            <div
+                                <div
                                     style={{
                                         textAlign: "right",
                                         display: "flex",
@@ -285,121 +344,26 @@ function NocLetter() {
                                         src={Logo2}
                                         alt=""
                                     />
-                                    <div
-                                        style={{
-                                            fontFamily: "Arial, sans-serif",
-                                            lineHeight: "40px",
-                                            width: "80%",
-                                            margin: "auto",
-                                            padding: "20px",
-                                            color: "#000",
 
-                                        }}
-                                    >
-                                        {/* Address Section */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px"
-                                            }}
-                                        >
-                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
+                                    <div className="relieving_company_details">
+                                        <div className="relieving_detail_row">
+                                            <div className="relieving_detail_text">
                                                 <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
                                                 <p>Hudkeshwar Road, Nagpur - 440034</p>
                                             </div>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaMapMarkerAlt size={15} color="#ffff" />
-                                            </div>
+                                            <div className="relieving_icon_box"><FaMapMarkerAlt size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Email */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaEnvelope size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">royaalmede@gmail.com</p>
+                                            <div className="relieving_icon_box"><FaEnvelope size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Website */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaGlobe size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">www.royaalmede.co.in</p>
+                                            <div className="relieving_icon_box"><FaGlobe size={15} color="#fff" /></div>
                                         </div>
-
-                                        {/* Phone */}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaPhoneAlt size={15} color="#ffff" />
-                                            </div>
+                                        <div className="relieving_detail_row">
+                                            <p className="relieving_detail_text">9028999253 | 9373450092</p>
+                                            <div className="relieving_icon_box"><FaPhoneAlt size={15} color="#fff" /></div>
                                         </div>
                                     </div>
                                 </div>

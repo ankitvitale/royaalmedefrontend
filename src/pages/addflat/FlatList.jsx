@@ -126,7 +126,7 @@ function FlatList() {
             })
             console.log(response.data)
             setBookindId(response?.data?.booking?.id)
-           
+
             setsingledata(response.data)
             setFlatId(id)
             setflatDetailpopUp(true)
@@ -236,6 +236,8 @@ function FlatList() {
     }
 
     async function handleflatdelete(id) {
+        const flatdelete = window.confirm("Are you sure to delete ?")
+        if (!flatdelete) return
         try {
             const response = await axios.delete(`${BASE_URL}/deleteResidency/${id}`, {
                 headers: {

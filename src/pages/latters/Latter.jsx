@@ -26,11 +26,11 @@ function Latter() {
   return (
     <>
       <div className="latters">
-        <button onClick={handleofferLatter} className='letter_buttons'> Offer Latter</button>
-        <button onClick={handleRelievinglatter} className='letter_buttons'>Riveling Latter</button>
+        <button onClick={handleofferLatter} className='letter_buttons'> Offer Letter</button>
+        <button onClick={handleRelievinglatter} className='letter_buttons'>Riveling Letter</button>
         {/* <button onClick={handleSalarySlip} className='letter_buttons'>Salary Slip</button> */}
-        <button onClick={handleallotment} className='letter_buttons'>  Allotment Latter</button>
-        <button onClick={handleDemand} className='letter_buttons'> Demand Latter</button>
+        <button onClick={handleallotment} className='letter_buttons'>  Allotment Letter</button>
+        <button onClick={handleDemand} className='letter_buttons'> Demand Letter</button>
         <button onClick={handleLetterhead} className='letter_buttons'> Letter Heades</button>
         <button onClick={() => navigate("/nocletter")} className='letter_buttons'> Noc Letter</button>
         <button  onClick={()=>navigate("/possession")} className='letter_buttons'> possession Letter</button>

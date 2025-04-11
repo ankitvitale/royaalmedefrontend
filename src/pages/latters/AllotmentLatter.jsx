@@ -32,9 +32,10 @@ function AllotmentLatter() {
     )?.token;
     const [getAllAllotment, setgetAllAllotment] = useState([])
     const [singleAllotmentlatter, setsingleAllotmentlatter] = useState("")
+    const [editId, setEditId] = useState(null);
 
-    const currentDate= new Date().toISOString().split("T")[0]
-    const myCurrentDate= (new Date(currentDate).toLocaleDateString("en-GB") )
+    const currentDate = new Date().toISOString().split("T")[0]
+    const myCurrentDate = (new Date(currentDate).toLocaleDateString("en-GB"))
 
     const handleDownload = () => {
         const element = letterRef.current;
@@ -51,7 +52,7 @@ function AllotmentLatter() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Logic to submit the form data
+
         const formData = {
             apartmentName,
             khno,
@@ -65,14 +66,29 @@ function AllotmentLatter() {
             sqmtrs,
             sqft,
         };
+
         try {
-            const response = await axios.post(`${BASE_URL}/createAlotmentLetter`, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            })
-            console.log(response.data)
+            if (editId) {
+                // Update flow
+                await axios.put(`${BASE_URL}/updateAlotmentLetter/${editId}`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                alert("Allotment Letter Updated Successfully");
+            } else {
+                // Create flow
+                await axios.post(`${BASE_URL}/createAlotmentLetter`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                alert("Allotment Form Successfully Submitted");
+            }
+
+            // Reset form
             setName("")
             setApartmentName("")
             setKhno("")
@@ -82,14 +98,28 @@ function AllotmentLatter() {
             setTotalamount("")
             setTotalamountword("")
             setAgreementDate("")
+            setSqmtrs("")
             setSqft("")
-            setSqft("")
+            setEditId(null) // Reset edit mode
             setrefreshkey(refreshKey + 1)
-            alert(" Allotment Form Successfully Submited")
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
+    };
 
+    const handleEdit = (allotment) => {
+        setEditId(allotment.id);
+        setApartmentName(allotment.apartmentName);
+        setKhno(allotment.khno);
+        setMouzeNo(allotment.mouzeNo);
+        setSheetNo(allotment.sheetNo);
+        setCitySurveyNo(allotment.citySurveyNo);
+        setName(allotment.name);
+        setTotalamount(allotment.totalamount);
+        setTotalamountword(allotment.totalamountword);
+        setAgreementDate(allotment.agreementDate.split("T")[0]);
+        setSqmtrs(allotment.sqmtrs);
+        setSqft(allotment.sqft);
     };
 
 
@@ -102,8 +132,8 @@ function AllotmentLatter() {
                         "Content-Type": "application/json",
                     },
                 })
-                console.log(response.data)
-                setgetAllAllotment(response.data)
+                const sortedData = [...response.data].sort((a, b) => b.id - a.id)
+                setgetAllAllotment(sortedData)
             } catch (error) {
                 console.log(error)
             }
@@ -113,6 +143,8 @@ function AllotmentLatter() {
 
 
     async function deleteallotment(id) {
+        const deleteallotment = window.confirm("Are you sure to delete ?")
+        if (!deleteallotment) return
         try {
             const reonse = await axios.delete(`${BASE_URL}/deleteAlotmentLetter/${id}`, {
                 headers: {
@@ -120,7 +152,7 @@ function AllotmentLatter() {
                     "Content-Type": "application/json",
                 },
             })
-            console.log(reonse.data)
+
             setrefreshkey(refreshKey + 1)
         } catch (error) {
             console.log(error)
@@ -135,7 +167,7 @@ function AllotmentLatter() {
                     "Content-Type": "application/json",
                 },
             })
-            console.log(response.data)
+
             setsingleAllotmentlatter(response.data)
             setShowAllotmentLatter(true)
         } catch (error) {
@@ -229,7 +261,7 @@ function AllotmentLatter() {
                         <input
                             type="date"
                             className='alotment_latter_form_input'
-                            value={agreementDate  || new Date().toISOString().split("T")[0]}
+                            value={agreementDate || new Date().toISOString().split("T")[0]}
                             onChange={(e) => setAgreementDate(e.target.value)}
                         />
                     </div>
@@ -288,13 +320,14 @@ function AllotmentLatter() {
                                     <td>{allotment.name}</td>
                                     <td>{allotment.totalamount}</td>
                                     <td>{allotment.totalamountword}</td>
-                                    <td>{new Date( allotment.agreementDate).toLocaleDateString("en-GB")}</td>
+                                    <td>{new Date(allotment.agreementDate).toLocaleDateString("en-GB")}</td>
                                     <td>{allotment.sqmtrs}</td>
                                     <td>{allotment.sqft}</td>
                                     <td>
                                         <button onClick={() => showmyallotmentlatter(allotment.id)} className='latter_show_button'> Show</button>
-
                                         <button onClick={() => deleteallotment(allotment.id)} className='latter_show_delete'> Delete</button>
+                                        <button onClick={() => handleEdit(allotment)} className='latter_show_edit'> Edit</button>
+
                                     </td>
                                 </tr>
                             ))}
@@ -312,31 +345,31 @@ function AllotmentLatter() {
             {
                 ShowAllotmentLatter && singleAllotmentlatter && (
                     <div className="allotment_latter_main_container" >
-                        <button  onClick={handleDownload} className='allotment_latter_downlode_button'> Downlode</button>
+                        <button onClick={handleDownload} className='allotment_latter_downlode_button'> Downlode</button>
                         <button onClick={() => setShowAllotmentLatter(false)} className='allotment_latter_close_button' > Close</button>
                         <div className="allotment_latter_container" ref={letterRef}>
-                        <div
-                                    style={{
-                                        textAlign: "right",
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        justifyContent: "space-around",
-                                        color: "#000",
-                                        marginLeft: "50px",
-                                        marginTop: "20px"
+                            <div
+                                style={{
+                                    textAlign: "right",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-around",
+                                    color: "#000",
+                                    marginLeft: "50px",
+                                    marginTop: "20px"
 
+                                }}
+                            >
+                                <img
+                                    style={{
+                                        height: "80px",
+                                        width: "auto",
+                                        objectFit: "contain",
                                     }}
-                                >
-                                    <img
-                                        style={{
-                                            height: "80px",
-                                            width: "auto",
-                                            objectFit: "contain",
-                                        }}
-                                        src={logo}
-                                        alt=""
-                                    />
-                                    <div
+                                    src={logo}
+                                    alt=""
+                                />
+                                {/* <div
                                         style={{
                                             fontFamily: "Arial, sans-serif",
                                             lineHeight: "40px",
@@ -347,7 +380,7 @@ function AllotmentLatter() {
 
                                         }}
                                     >
-                                        {/* Address Section */}
+                           
                                         <div
                                             style={{
                                                 display: "flex",
@@ -375,7 +408,7 @@ function AllotmentLatter() {
                                             </div>
                                         </div>
 
-                                        {/* Email */}
+                                      
                                         <div
                                             style={{
                                                 display: "flex",
@@ -401,7 +434,7 @@ function AllotmentLatter() {
                                             </div>
                                         </div>
 
-                                        {/* Website */}
+                                      
                                         <div
                                             style={{
                                                 display: "flex",
@@ -428,7 +461,7 @@ function AllotmentLatter() {
                                             </div>
                                         </div>
 
-                                        {/* Phone */}
+                                      
                                         <div
                                             style={{
                                                 display: "flex",
@@ -452,8 +485,31 @@ function AllotmentLatter() {
                                                 <FaPhoneAlt size={15} color="#ffff" />
                                             </div>
                                         </div>
+                                    </div> */}
+                                <div className="relieving_company_details">
+                                    <div className="relieving_detail_row">
+                                        <div className="relieving_detail_text">
+                                            <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
+                                            <p>Hudkeshwar Road, Nagpur - 440034</p>
+                                        </div>
+                                        <div className="relieving_icon_box"><FaMapMarkerAlt size={15} color="#fff" /></div>
+                                    </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">royaalmede@gmail.com</p>
+                                        <div className="relieving_icon_box"><FaEnvelope size={15} color="#fff" /></div>
+                                    </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">www.royaalmede.co.in</p>
+                                        <div className="relieving_icon_box"><FaGlobe size={15} color="#fff" /></div>
+                                    </div>
+                                    <div className="relieving_detail_row">
+                                        <p className="relieving_detail_text">9028999253 | 9373450092</p>
+                                        <div className="relieving_icon_box"><FaPhoneAlt size={15} color="#fff" /></div>
                                     </div>
                                 </div>
+
+
+                            </div>
 
                             <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px" }} />
                             <hr style={{ border: "3px solid rgb(167, 5, 86)" }} />

@@ -71,8 +71,25 @@
   }
   
  
-
+  .password_wrapper {
+    position: relative;
+    width: 100%;
+  }
   
+  .password_input {
+    width: 100%;
+    padding-right: 40px; /* space for eye icon */
+  }
+  
+  .eye_icon {
+    position: absolute;
+    top: 67%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+    font-size: 1.2rem;
+}
  
   
 

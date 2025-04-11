@@ -35,7 +35,6 @@ function LandPurchase() {
   const [transactionMode, setTransactionMode] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [note, setNote] = useState("")
-
   const [showAddpatnerForm, setshowAddpatnerForm] = useState(false)
   const [NewpatnerId, setNewpatnerId] = useState("")
   const [newPatnername, setnewPatnername] = useState("")
@@ -59,9 +58,8 @@ function LandPurchase() {
           },
         });
 
-        let sortedData = response.data.sort(
-          (a, b) => new Date(b.landAddOnDate) - new Date(a.landAddOnDate)
-        );
+        let sortedData = response.data.sort((a, b) => b.id - a.id);
+
 
         console.log(sortedData);
         setGetLand(sortedData);

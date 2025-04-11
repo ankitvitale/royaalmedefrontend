@@ -3,12 +3,13 @@ import "../Login/Login.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // import { BASE_URL } from "../../config";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BASE_URL } from "../config";
 function Login() {
   const navigate = useNavigate();
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false);
   // Handle the login form submission
   async function handleLoginForm(e) {
     e.preventDefault();
@@ -53,8 +54,8 @@ function Login() {
 
   return (
     <>
-    <div className="login_main_wrapper">
-    <div className="login_container">
+   <div className="login_main_wrapper">
+      <div className="login_container">
         <div className="login_heading">Log In</div>
         <form className="login_form" onSubmit={handleLoginForm}>
           <input
@@ -67,16 +68,26 @@ function Login() {
             value={loginEmail}
             onChange={(e) => setLoginEmail(e.target.value)}
           />
-          <input
-            required
-            className="login_input"
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            value={loginPassword}
-            onChange={(e) => setLoginPassword(e.target.value)}
-          />
+
+          <div className="password_wrapper">
+            <input
+              required
+              className="login_input password_input"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              id="password"
+              placeholder="Password"
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
+            <span
+              className="eye_icon"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
           <input className="login-button" type="submit" value="Log In" />
         </form>
       </div>

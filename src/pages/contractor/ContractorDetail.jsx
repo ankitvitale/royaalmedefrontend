@@ -26,16 +26,13 @@ function ContractorDetail() {
     const [paymentRemark, setpaymentRemark] = useState("")
     const [paymenttableEditFormShow, setpaymenttableEditFormShow] = useState(false)
     const [ContractorTableId, setContractorTableId] = useState("")
-    console.log(ContractorTableId)
     const [paymenttableId, setpaymenttableId] = useState("")
-    console.log(paymenttableId)
     const [editAmout, seteditAmout] = useState("")
     const [editDate, seteditDate] = useState("")
     const [editpaymentMethod, seteditpaymentMethod] = useState("")
     const [editRemark, seteditRemark] = useState("")
     useEffect(() => {
         if (!id || !token) return;
-
         const gettingContractor = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/${id}/Contractor`, {
@@ -46,7 +43,10 @@ function ContractorDetail() {
                 });
                 console.log(response.data)
                 if (response.status === 200) {
-                    setContractors(response.data);
+                    const sorteddata = response.data.sort(
+                        (a, b) => new Date(b.addedOn).getTime() - new Date(a.addedOn).getTime()
+                    );
+                    setContractors(sorteddata);
                 }
             } catch (error) {
                 console.error("Error fetching contractors:", error);
@@ -59,14 +59,14 @@ function ContractorDetail() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const formdata = {
             contractorName,
             sideName,
             type,
             total,
             contractorPaidAmount,
-            addedOn,
+            addedOn: addedOn || new Date().toISOString().split("T")[0]
+
         };
 
         try {
@@ -79,7 +79,10 @@ function ContractorDetail() {
 
             if (response.status === 201) {
                 alert("Contractor added successfully");
-                setContractors((prev) => [...prev, response.data]);
+                setContractors((prev) =>
+                    [response.data, ...prev].sort((a, b) => Date.parse(b.addedOn) - Date.parse(a.addedOn))
+                );
+                
                 setContractorName("");
                 setSideName("");
                 setType("");
@@ -95,7 +98,6 @@ function ContractorDetail() {
 
 
     async function handleShowContractor(id) {
-        //   alert(id)
         setContractorTableId(id)
         try {
             const response = await axios.get(`${BASE_URL}/Contractor/${id}`, {
@@ -159,6 +161,8 @@ function ContractorDetail() {
 
 
     async function handleDelete(id) {
+        const contractorDelete = window.confirm("Are you sure to delete ?")
+        if (!contractorDelete) return
         try {
             const response = await axios.delete(`${BASE_URL}/deleteContractor/${id}`, {
                 headers: {
@@ -184,7 +188,6 @@ function ContractorDetail() {
     })
 
     async function handleEditPayment(id) {
-
         setpaymenttableId(id)
         setpaymenttableEditFormShow(true)
         try {
@@ -300,8 +303,13 @@ function ContractorDetail() {
                                 <label>Paid Amount:</label>
                                 <input type="number" value={contractorPaidAmount} onChange={(e) => setContractorPaidAmount(e.target.value)} required />
 
-                                <label>Added On:</label>
-                                <input type="date" value={addedOn} onChange={(e) => setAddedOn(e.target.value)} required />
+                                <label>Date:</label><input
+                                    type="date"
+                                    value={addedOn || new Date().toISOString().split("T")[0]}
+                                    onChange={(e) => setAddedOn(e.target.value)}
+                                    required
+                                />
+
 
                                 <button type="submit" className="contractor_form_submit_button">Submit</button>
                             </form>
