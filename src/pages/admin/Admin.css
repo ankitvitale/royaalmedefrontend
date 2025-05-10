@@ -273,3 +273,73 @@
 /* .link_container:hover{
   background-color: #0f3460;
 } */
+
+
+
+.admin_dashboard_container_count {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Increased min width for larger cards */
+  gap: 25px; /* Slightly larger gap */
+  padding: 25px;
+  max-width: 1400px; /* Adjusted for larger cards */
+  margin: 0 auto;
+}
+.lead_container {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lead_container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.lead_logo {
+  margin-bottom: 20px; /* Increased margin for spacing */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px; /* Increased circle size for larger icons */
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+/* Specific background colors for each card */
+.lead_container:nth-child(1) .lead_logo { background-color: #ffe6e6; }
+.lead_container:nth-child(2) .lead_logo { background-color: #e6f7e6; }
+.lead_container:nth-child(3) .lead_logo { background-color: #fff5cc; }
+.lead_container:nth-child(4) .lead_logo { background-color: #f0e6ff; }
+.lead_container:nth-child(5) .lead_logo { background-color: #e6f0ff; }
+.lead_container:nth-child(6) .lead_logo { background-color: #e6f0ff; }
+.lead_container:nth-child(7) .lead_logo { background-color: #ffede6; }
+.lead_container:nth-child(8) .lead_logo { background-color: #e6f0ff; }
+
+.lead_logo p {
+  margin: 0;
+  font-size: 2rem; /* Increased icon size */
+  color: #2c3e50;
+}
+
+.lead_container h4 {
+  margin: 5px 0 0;
+  font-size: 1.2rem; /* Slightly increased font size */
+  color: #34495e;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.lead_container p {
+  margin: 5px 0 0;
+  font-size: 2rem;
+  color: #7f8c8d;
+  font-weight: 400;
+}

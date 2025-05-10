@@ -634,7 +634,7 @@ function SingleVendor() {
     const token = JSON.parse(localStorage.getItem("employeROyalmadeLogin"))?.token;
     const [showAddMaterial, setShowAddMaterial] = useState(false);
     const [materials, setMaterials] = useState([]);
-    const [selectedMaterial, setSelectedMaterial] = useState(null);
+    const [selectedMaterial, setSelectedMaterial] = useState([]);
     const [showBillModal, setShowBillModal] = useState(false);
     const [showPaymentForm, setShowPaymentForm] = useState(false);
     const [billDate, setBillDate] = useState("");
@@ -658,44 +658,46 @@ function SingleVendor() {
     const [name, setName] = useState("");
     const [type, setType] = useState("");
     const [quantity, setQuantity] = useState("");
-    const [addMaterialBillNo, setAddMaterialBillNo] = useState("");
+    const [addMaterialBillNo, setAddMaterialBillNo] = useState(1);
     const [price, setPrice] = useState("");
     const [materialId, setMaterialId] = useState("");
+    const [showNewdataBillData, setshowNewdataBillData] = useState([])
+    const [isLoading, setIsLoading] = useState(false);
+    // useEffect(() => {
+    //     async function getAllBillNo() {
+    //         try {
+    //             const response = await axios.get(`${BASE_URL}/filteredMaterials`, {
+    //                 params: { vendorId, projectId },
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                     "Content-Type": "application/json",
+    //                 },
+    //             });
+    //             setMaterials(response.data);
+    //             console.log(response.data)
+    //         } catch (error) {
+    //             console.error("Error fetching materials:", error);
+    //         }
+    //     }
+    //     if (vendorId && projectId) {
+    //         getAllBillNo();
+    //     }
+    // }, [vendorId, projectId, token, refreshKey]);
 
-    useEffect(() => {
-        async function getAllBillNo() {
-            try {
-                const response = await axios.get(`${BASE_URL}/filteredMaterials`, {
-                    params: { vendorId, projectId },
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
-                setMaterials(response.data);
-            } catch (error) {
-                console.error("Error fetching materials:", error);
-            }
-        }
-        if (vendorId && projectId) {
-            getAllBillNo();
-        }
-    }, [vendorId, projectId, token, refreshKey]);
-
-    async function onShowBill(billNo) {
-        try {
-            const response = await axios.get(`${BASE_URL}/SingleBill/${billNo}/${projectId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            setSelectedMaterial(response.data);
-            setShowBillModal(true);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // async function onShowBill(billNo) {
+    //     try {
+    //         const response = await axios.get(`${BASE_URL}/SingleBill/${billNo}/${projectId}`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //                 "Content-Type": "application/json",
+    //             },
+    //         });
+    //         setSelectedMaterial(response.data);
+    //         setShowBillModal(true);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     const handleAddPayment = (billNo) => {
         setPaymentBillId(billNo);
@@ -712,7 +714,7 @@ function SingleVendor() {
             vendorId: vendorId,
             projectId: projectId
         };
-        
+
         try {
             const response = await axios.post(`${BASE_URL}/Material/${paymentBillId}/payments`, formData, {
                 headers: {
@@ -737,7 +739,7 @@ function SingleVendor() {
     async function handleDeletePayment(id) {
         const confirmDelete = window.confirm("Are you sure to delete the Payment?");
         if (!confirmDelete) return;
-        
+
         try {
             const response = await axios.delete(`${BASE_URL}/VendorMeterialPayment/${id}`, {
                 headers: {
@@ -779,7 +781,7 @@ function SingleVendor() {
     async function handleMaterialDelete(id) {
         const confirmDelete = window.confirm("Are you sure to delete the material?");
         if (!confirmDelete) return;
-        
+
         try {
             const response = await axios.delete(`${BASE_URL}/DeleteVendorMeterial/${id}`, {
                 headers: {
@@ -799,6 +801,8 @@ function SingleVendor() {
 
     async function handleUpdateMaterial(e) {
         e.preventDefault();
+        setIsLoading(true); // Start the loader
+
         const updatedMaterial = {
             id: materialId,
             name: updateMaterialName,
@@ -808,9 +812,9 @@ function SingleVendor() {
             billNo: addMaterialBillNo,
             addedOn: updateMaterialDate
         };
-        
+
         try {
-            const response = await axios.put(`${BASE_URL}/UpdateMaterial/${materialId}, updatedMaterial`, {
+            const response = await axios.put(`${BASE_URL}/UpdateMaterial/${materialId}`, updatedMaterial, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
@@ -823,9 +827,10 @@ function SingleVendor() {
             }
         } catch (error) {
             console.error("Update failed:", error);
+        } finally {
+            setIsLoading(false); // Stop the loader
         }
     }
-
     async function handleEditPayment(id) {
         setPaymentId(id);
         setShowUpdatePaymentForm(true);
@@ -878,18 +883,22 @@ function SingleVendor() {
     }
 
     const handlePrint = () => {
-        const buttons = document.querySelectorAll(".material_edit_button, .material_delete_button");
-        const actionColumns = document.querySelectorAll(".action-column");
-        buttons.forEach(button => button.style.display = "none");
-        actionColumns.forEach(column => column.style.display = "none");
-        const element = document.getElementById("billDetails");
-        element.style.padding = "20px";
-        html2pdf().from(element).save(Bill_`${selectedMaterial.billNo}`.pdf).then(() => {
+    const buttons = document.querySelectorAll(".material_edit_button, .material_delete_button");
+    const actionColumns = document.querySelectorAll(".action-column");
+    buttons.forEach(button => button.style.display = "none");
+    actionColumns.forEach(column => column.style.display = "none");
+    const element = document.getElementById("billDetails");
+    element.style.padding = "20px";
+
+    html2pdf()
+        .from(element)
+        .save(`Bill_${selectedMaterial.billNo}.pdf`) // Corrected template literal
+        .then(() => {
             buttons.forEach(button => button.style.display = "inline-block");
             actionColumns.forEach(column => column.style.display = "table-cell");
             element.style.padding = "";
         });
-    };
+};
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -900,7 +909,7 @@ function SingleVendor() {
             quantity,
             price: String(price).replace(/,/g, "")
         }];
-        
+
         try {
             const response = await axios.post(`${BASE_URL}/projects/${projectId}/${vendorId}/add-expense`, formData, {
                 headers: {
@@ -941,368 +950,482 @@ function SingleVendor() {
         }
     }
 
+
+    useEffect(() => {
+        async function getNewBills() {
+            try {
+                const response = await axios.get(`${BASE_URL}/bills/${vendorId}/${projectId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+                console.log(response.data)
+                setMaterials(response.data)
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
+        getNewBills()
+    }, [refreshKey])
+
+
+    function showAllData() {
+        setShowBillModal(true)
+        setshowNewdataBillData(materials)
+    }
+    function handleclickPaymentButton(id) {
+        alert(id)
+    }
     return (
-        <div className="vendor-container">
-            <div className="vendor-header">
-                <h2>Vendor Materials</h2>
-                <button onClick={() => setShowAddMaterial(true)} className="add-material-btn">
-                    Add Material
-                </button>
-            </div>
-
-            {/* Add Material Modal */}
-            {showAddMaterial && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h3>Add New Material</h3>
-                            <button onClick={() => setShowAddMaterial(false)} className="close-btn">×</button>
-                        </div>
-                        <form onSubmit={handleSubmit} className="material-form">
-                            <div className="form-group">
-                                <label>Name:</label>
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Type:</label>
-                                <select value={type} onChange={(e) => setType(e.target.value)} required>
-                                    <option value="">Select Type</option>
-                                    <option value="MATERIAL">MATERIAL</option>
-                                    <option value="LABOUR">LABOUR</option>
-                                    <option value="OTHER">OTHER</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Quantity:</label>
-                                <input
-                                    type="number"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(Number(e.target.value))}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Bill No:</label>
-                                <input
-                                    type="text"
-                                    value={addMaterialBillNo}
-                                    onChange={(e) => setAddMaterialBillNo(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Price:</label>
-                                <input
-                                    type="text"
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                />
-                            </div>
-                            <button type="submit" className="submit-btn">Submit</button>
-                        </form>
-                    </div>
+        <>
+            <div className="vendor-container">
+                <div className="vendor-header">
+                    <h2>Vendor Materials</h2>
+                    <button onClick={() => setShowAddMaterial(true)} className="add-material-btn">
+                        Add Material
+                    </button>
                 </div>
-            )}
 
-            {/* Materials Table */}
-            <table className="vendor-table">
-                <thead>
-                    <tr>
-                        <th>Bill No</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {materials.length > 0 ? (
-                        materials.map((material) => (
-                            <tr key={material.id}>
-                                <td>{material.billNo}</td>
-                                <td className="action-buttons">
-                                    <button onClick={() => onShowBill(material.billNo)} className="view-btn">
-                                        View Bill
-                                    </button>
-                                    <button onClick={() => handleAddPayment(material.billNo)} className="payment-btn">
-                                        Add Payment
-                                    </button>
-                                    <button onClick={() => handleDeleteBill(material.billNo)} className="delete-btn">
-                                        Delete Bill
-                                    </button>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
+                {/* Add Material Modal */}
+                {showAddMaterial && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h3>Add New Material</h3>
+                                <button onClick={() => setShowAddMaterial(false)} className="close-btn">×</button>
+                            </div>
+                            <form onSubmit={handleSubmit} className="material-form">
+                                <div className="form-group">
+                                    <label>Name:</label>
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Type:</label>
+                                    <select value={type} onChange={(e) => setType(e.target.value)} required>
+                                        <option value="">Select Type</option>
+                                        <option value="MATERIAL">MATERIAL</option>
+                                        <option value="LABOUR">LABOUR</option>
+                                        <option value="OTHER">OTHER</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Quantity:</label>
+                                    <input
+                                        type="number"
+                                        value={quantity}
+                                        onChange={(e) => setQuantity(Number(e.target.value))}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Bill No:</label>
+                                    <input
+                                        type="text"
+                                        value={addMaterialBillNo}
+                                        // onChange={(e) => setAddMaterialBillNo(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Price:</label>
+                                    <input
+                                        type="text"
+                                        value={price}
+                                        onChange={(e) => setPrice(e.target.value)}
+                                    />
+                                </div>
+                                <button type="submit" className="submit-btn">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+                {materials.length > 0 && (
+                    <div style={{ textAlign: "center", color: " #015f65", margin: "20px 0", fontSize: "28px", fontWeight: "bold" }}>
+                        <h1>{materials[0].vendor.projectName}</h1> {/* Display the project name of the first item */}
+                    </div>
+                )}
+                {/* Materials Table */}
+                <table className="vendor-table">
+                    <thead>
                         <tr>
-                            <td colSpan="2" className="no-data">No materials found</td>
+                            <th>Bill No</th>
+                            <th>Vendor Name</th>
+                            <th>Vendor Phone</th>
+                            <th>Total Amount</th>
+                            <th>Paid Amount</th>
+                            <th>Remaining Amount</th>
+                            <th>Actions</th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {materials.length > 0 ? (
+                            materials.map((material, index) => (
+                                <tr key={index}>
+                                    <td>{material.billNo}</td>
+                                    <td>{material.vendor.name}</td>
+                                    <td>{material.vendor.phoneno}</td>
+                                    <td>{material.total}</td>
+                                    <td>{material.vendorPaidAmount}</td>
+                                    <td>{material.remainingAmount}</td>
+                                    <td className="action-buttons">
+                                        <button onClick={showAllData} className="view-btn">
+                                            Show Details
+                                        </button>
+                                        <button onClick={() => handleAddPayment(material.billNo)} className="payment-btn">
+                                            Add Payment
+                                        </button>
+                                        {/* <button onClick={() => handleDeleteBill(material.billNo)} className="delete-btn">
+                                        Delete Bill
+                                    </button> */}
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="2" className="no-data">No materials found</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
 
-            {/* Bill Details Modal */}
-            {showBillModal && selectedMaterial && (
-                <div className="modal-overlay">
-                    <div className="bill-modal-content">
-                        <div className="modal-header">
-                            <h3>Bill Details - {selectedMaterial.billNo}</h3>
-                            <div className="modal-actions">
-                                <button onClick={() => handleAddPayment(selectedMaterial.billNo)} className="add-payment-btn">
-                                    Add Payment
-                                </button>
-                                <button onClick={handlePrint} className="print-btn">
-                                    Print
-                                </button>
-                                <button onClick={() => setShowBillModal(false)} className="close-btn">×</button>
-                            </div>
-                        </div>
-                        <div id="billDetails" className="bill-details">
-                            <div className="bill-info">
-                                <p><strong>Bill No:</strong> {selectedMaterial.billNo}</p>
-                                <p><strong>Vendor Name:</strong> {selectedMaterial.vendor.name}</p>
-                                <p><strong>Vendor Phone:</strong> {selectedMaterial.vendor.phoneno}</p>
-                                <p><strong>Total Amount:</strong> ₹{selectedMaterial.total.toLocaleString()}</p>
-                                <p><strong>Paid Amount:</strong> ₹{selectedMaterial.vendorPaidAmount.toLocaleString()}</p>
-                                <p><strong>Remaining Amount:</strong> ₹{selectedMaterial.remainingAmount.toLocaleString()}</p>
-                            </div>
-
-                            <h4>Materials</h4>
-                            <table className="materials-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Type</th>
-                                        <th>Quantity</th>
-                                        <th>Date</th>
-                                        <th>Price</th>
-                                        <th className="action-column">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {selectedMaterial.materials.map((material) => (
-                                        <tr key={material.id}>
-                                            <td>{material.name}</td>
-                                            <td>{material.type}</td>
-                                            <td>{material.quantity}</td>
-                                            <td>{new Date(material.addedOn).toLocaleDateString("en-GB")}</td>
-                                            <td>₹{material.price.toLocaleString()}</td>
-                                            <td className="action-column">
-                                                <button onClick={() => handleEditMaterial(material.id)} className="edit-btn">Edit</button>
-                                                <button onClick={() => handleMaterialDelete(material.id)} className="delete-btn">Delete</button>
-                                            </td>
-                                        </tr>
+                {/* Bill Details Modal */}
+                {showBillModal && (
+                    <div className="modal-overlay">
+                        <div className="bill-modal-content">
+                            <div className="modal-header">
+                                <div className="modal-actions">
+                                    {materials.map((material, index) => (
+                                        <button className="add-payment-btn" onClick={() => handleAddPayment(material.billNo)} >Add Payment</button>
                                     ))}
-                                </tbody>
-                            </table>
 
-                            <h4>Payments</h4>
-                            <table className="payments-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Remark</th>
-                                        <th className="action-column">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {selectedMaterial.payment.map((pay) => (
-                                        <tr key={pay.id}>
-                                            <td>{new Date(pay.expensePayDate).toLocaleDateString("en-GB")}</td>
-                                            <td>₹{pay.expenseAmount.toLocaleString()}</td>
-                                            <td>{pay.expensePayStatus}</td>
-                                            <td>{pay.remark}</td>
-                                            <td className="action-column">
-                                                <button onClick={() => handleEditPayment(pay.id)} className="edit-btn">Edit</button>
-                                                <button onClick={() => handleDeletePayment(pay.id)} className="delete-btn">Delete</button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    <button onClick={handlePrint} className="print-btn">Print</button>
+                                    <button onClick={() => setShowBillModal(false)} className="close-btn">×</button>
+                                </div>
+                            </div>
+
+                            {showNewdataBillData.map((bill, billIndex) => (
+                                <div key={billIndex} id="billDetails" className="bill-details">
+                                    <h3 className="text-lg font-semibold mb-3">Bill No: {bill.billNo}</h3>
+
+                                    <p className="mt-6">  Material Table</p>
+                                    <table className="materials-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Quantity</th>
+                                                <th>Date</th>
+                                                <th>Price</th>
+                                                <th className="action-column">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {bill.materials?.map((material) => (
+                                                <tr key={material.id}>
+                                                    <td>{material.name}</td>
+                                                    <td>{material.type}</td>
+                                                    <td>{material.quantity}</td>
+                                                    <td>{new Date(material.addedOn).toLocaleDateString("en-GB")}</td>
+                                                    <td>₹{material.price.toLocaleString()}</td>
+                                                    <td className="action-column">
+                                                        <button onClick={() => handleEditMaterial(material.id)} className="edit-btn">Edit</button>
+                                                        <button onClick={() => handleMaterialDelete(material.id)} className="delete-btn">Delete</button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+
+                                    {/* Payments Table */}
+                                    <h4 className="mt-6">Payments</h4>
+                                    <table className="payments-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Remark</th>
+                                                <th className="action-column">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {bill.payment?.map((pay) => (
+                                                <tr key={pay.id}>
+                                                    <td>{new Date(pay.expensePayDate).toLocaleDateString("en-GB")}</td>
+                                                    <td>₹{pay.expenseAmount.toLocaleString()}</td>
+                                                    <td>{pay.expensePayStatus}</td>
+                                                    <td>{pay.remark}</td>
+                                                    <td className="action-column">
+                                                        <button onClick={() => handleEditPayment(pay.id)} className="edit-btn">Edit</button>
+                                                        <button onClick={() => handleDeletePayment(pay.id)} className="delete-btn">Delete</button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {/* Add Payment Modal */}
-            {showPaymentForm && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h3>Add Payment</h3>
-                            <button onClick={() => setShowPaymentForm(false)} className="close-btn">×</button>
-                        </div>
-                        <form onSubmit={handleAddPaymentToBill} className="payment-form">
-                            <div className="form-group">
-                                <label>Date:</label>
-                                <input
-                                    type="date"
-                                    value={billDate || new Date().toISOString().split("T")[0]}
-                                    onChange={(e) => setBillDate(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Amount:</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter Amount"
-                                    value={billAmount}
-                                    onChange={(e) => setBillAmount(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Payment Method:</label>
-                                <select
-                                    value={billStatus}
-                                    onChange={(e) => setBillStatus(e.target.value)}
-                                    required
-                                >
-                                    <option value="">Select Payment Method</option>
-                                    <option value="CASH">Cash</option>
-                                    <option value="CHECK">Cheque</option>
-                                    <option value="UPI">UPI</option>
-                                    <option value="RTGS">RTGS</option>
-                                    <option value="NEFT">NEFT</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Note:</label>
-                                <input
-                                    type="text"
-                                    placeholder="Note"
-                                    value={billRemark}
-                                    onChange={(e) => setBillRemark(e.target.value)}
-                                />
-                            </div>
-                            <button type="submit" className="submit-btn">Submit</button>
-                        </form>
-                    </div>
-                </div>
-            )}
 
-            {/* Edit Material Modal */}
-            {materialEditFormShow && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h3>Edit Material</h3>
-                            <button onClick={() => setMaterialEditFormShow(false)} className="close-btn">×</button>
-                        </div>
-                        <form onSubmit={handleUpdateMaterial} className="material-form">
-                            <div className="form-group">
-                                <label>Name:</label>
-                                <input
-                                    type="text"
-                                    value={updateMaterialName}
-                                    onChange={(e) => setUpdateMaterialName(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Type:</label>
-                                <input
-                                    type="text"
-                                    value={updateMaterialType}
-                                    onChange={(e) => setUpdateMaterialType(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Quantity:</label>
-                                <input
-                                    type="text"
-                                    value={updateMaterialQuantity}
-                                    onChange={(e) => setUpdateMaterialQuantity(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Date:</label>
-                                <input
-                                    type="date"
-                                    value={updateMaterialDate}
-                                    onChange={(e) => setUpdateMaterialDate(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Price:</label>
-                                <input
-                                    type="text"
-                                    value={updateMaterialPrice}
-                                    onChange={(e) => setUpdateMaterialPrice(e.target.value)}
-                                />
-                            </div>
-                            <button type="submit" className="submit-btn">Update</button>
-                        </form>
-                    </div>
-                </div>
-            )}
+                {
+                    showBillModal && (
+                        <>
+                            {showNewdataBillData.map((bill, index) => (
+                                <div key={index} className="mb-6">
 
-            {/* Edit Payment Modal */}
-            {showUpdatePaymentForm && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h3>Edit Payment</h3>
-                            <button onClick={() => setShowUpdatePaymentForm(false)} className="close-btn">×</button>
+                                    <table border="1" className="mb-4 w-full">
+                                        <thead>
+                                            <tr>
+                                                <th colSpan="5">Materials</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Type</th>
+                                                <th>Added On</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {bill.materials.map((mat, idx) => (
+                                                <tr key={idx}>
+                                                    <td>{mat.name}</td>
+                                                    <td>₹{mat.price}</td>
+                                                    <td>{mat.quantity}</td>
+                                                    <td>{mat.type}</td>
+                                                    <td>{mat.addedOn}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+
+
+                                    <table border="1" className="w-full">
+                                        <thead>
+                                            <tr>
+                                                <th colSpan="4">Payments</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Amount</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Remark</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {bill.payment.length > 0 ? (
+                                                bill.payment.map((pay, i) => (
+                                                    <tr key={i}>
+                                                        <td>₹{pay.expenseAmount}</td>
+                                                        <td>{pay.expensePayDate}</td>
+                                                        <td>{pay.expensePayStatus}</td>
+                                                        <td>{pay.remark}</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="4">No payment records</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ))}
+                        </>
+                    )
+                }
+
+
+
+
+
+                {/* Add Payment Modal */}
+                {showPaymentForm && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h3>Add Payment</h3>
+                                <button onClick={() => setShowPaymentForm(false)} className="close-btn">×</button>
+                            </div>
+                            <form onSubmit={handleAddPaymentToBill} className="payment-form">
+                                <div className="form-group">
+                                    <label>Date:</label>
+                                    <input
+                                        type="date"
+                                        value={billDate || new Date().toISOString().split("T")[0]}
+                                        onChange={(e) => setBillDate(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Amount:</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter Amount"
+                                        value={billAmount}
+                                        onChange={(e) => setBillAmount(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Payment Method:</label>
+                                    <select
+                                        value={billStatus}
+                                        onChange={(e) => setBillStatus(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select Payment Method</option>
+                                        <option value="CASH">Cash</option>
+                                        <option value="CHECK">Cheque</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="RTGS">RTGS</option>
+                                        <option value="NEFT">NEFT</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Note:</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Note"
+                                        value={billRemark}
+                                        onChange={(e) => setBillRemark(e.target.value)}
+                                    />
+                                </div>
+                                <button type="submit" className="submit-btn">Submit</button>
+                            </form>
                         </div>
-                        <form onSubmit={handleUpdatePayment} className="payment-form">
-                            <div className="form-group">
-                                <label>Date:</label>
-                                <input
-                                    type="date"
-                                    value={updatePaymentDate}
-                                    onChange={(e) => setUpdatePaymentDate(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Amount:</label>
-                                <input
-                                    type="text"
-                                    value={updatePaymentAmount}
-                                    onChange={(e) => setUpdatePaymentAmount(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Payment Method:</label>
-                                <select
-                                    value={updatePaymentStatus}
-                                    onChange={(e) => setUpdatePaymentStatus(e.target.value)}
-                                    required
-                                >
-                                    <option value="">Select Payment Method</option>
-                                    <option value="CASH">Cash</option>
-                                    <option value="CHECK">Cheque</option>
-                                    <option value="UPI">UPI</option>
-                                    <option value="RTGS">RTGS</option>
-                                    <option value="NEFT">NEFT</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Remark:</label>
-                                <input
-                                    type="text"
-                                    placeholder="Remark"
-                                    value={updatePaymentRemark}
-                                    onChange={(e) => setUpdatePaymentRemark(e.target.value)}
-                                />
-                            </div>
-                            <button type="submit" className="submit-btn">Update</button>
-                        </form>
                     </div>
-                </div>
-            )}
-        </div>
+                )}
+
+                {/* Edit Material Modal */}
+                {materialEditFormShow && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h3>Edit Material</h3>
+                                <button onClick={() => setMaterialEditFormShow(false)} className="close-btn">×</button>
+                            </div>
+                            <form onSubmit={handleUpdateMaterial} className="material-form">
+                                <div className="form-group">
+                                    <label>Name:</label>
+                                    <input
+                                        type="text"
+                                        value={updateMaterialName}
+                                        onChange={(e) => setUpdateMaterialName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Type:</label>
+                                    <input
+                                        type="text"
+                                        value={updateMaterialType}
+                                        onChange={(e) => setUpdateMaterialType(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Quantity:</label>
+                                    <input
+                                        type="text"
+                                        value={updateMaterialQuantity}
+                                        onChange={(e) => setUpdateMaterialQuantity(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Date:</label>
+                                    <input
+                                        type="date"
+                                        value={updateMaterialDate}
+                                        onChange={(e) => setUpdateMaterialDate(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Price:</label>
+                                    <input
+                                        type="text"
+                                        value={updateMaterialPrice}
+                                        onChange={(e) => setUpdateMaterialPrice(e.target.value)}
+                                    />
+                                </div>
+                                <button type="submit" className="submit-btn" disabled={isLoading}>
+                                    {isLoading ? "Submitting..." : "Update"}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {/* Edit Payment Modal */}
+                {showUpdatePaymentForm && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h3>Edit Payment</h3>
+                                <button onClick={() => setShowUpdatePaymentForm(false)} className="close-btn">×</button>
+                            </div>
+                            <form onSubmit={handleUpdatePayment} className="payment-form">
+                                <div className="form-group">
+                                    <label>Date:</label>
+                                    <input
+                                        type="date"
+                                        value={updatePaymentDate}
+                                        onChange={(e) => setUpdatePaymentDate(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Amount:</label>
+                                    <input
+                                        type="text"
+                                        value={updatePaymentAmount}
+                                        onChange={(e) => setUpdatePaymentAmount(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Payment Method:</label>
+                                    <select
+                                        value={updatePaymentStatus}
+                                        onChange={(e) => setUpdatePaymentStatus(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select Payment Method</option>
+                                        <option value="CASH">Cash</option>
+                                        <option value="CHECK">Cheque</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="RTGS">RTGS</option>
+                                        <option value="NEFT">NEFT</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Remark:</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Remark"
+                                        value={updatePaymentRemark}
+                                        onChange={(e) => setUpdatePaymentRemark(e.target.value)}
+                                    />
+                                </div>
+                                <button type="submit" className="submit-btn">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </>
     );
 }
 

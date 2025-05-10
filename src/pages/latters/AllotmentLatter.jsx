@@ -345,7 +345,7 @@ function AllotmentLatter() {
             {
                 ShowAllotmentLatter && singleAllotmentlatter && (
                     <div className="allotment_latter_main_container" >
-                        <button onClick={handleDownload} className='allotment_latter_downlode_button'> Downlode</button>
+                        <button onClick={handleDownload} className='allotment_latter_downlode_button'> Download</button>
                         <button onClick={() => setShowAllotmentLatter(false)} className='allotment_latter_close_button' > Close</button>
                         <div className="allotment_latter_container" ref={letterRef}>
                             <div

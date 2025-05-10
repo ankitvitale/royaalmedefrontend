@@ -319,7 +319,7 @@ function NocLetter() {
                     <>
                         <div className='noc_letter_main_wrapper' >
                             <div className="noc_downlode_buttons">
-                                <button onClick={handleDownlodeNoc} className='noc_downlode_button'> DownLode</button>
+                                <button onClick={handleDownlodeNoc} className='noc_downlode_button'> Download</button>
                                 <button onClick={() => setShowNocLetter(false)} className='noc_close_button'> Close</button>
                             </div>
                             <div className="noc_letter_wrapper" ref={loanref}>

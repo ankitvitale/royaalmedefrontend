@@ -56,7 +56,7 @@ function LatterHead() {
                     <>
                         <div className="infra_letter_head_main_wrapper">
                             <div className="downlode_button">
-                                <button onClick={handleDownlodeInfra} className='royalinfra_downlode_button'> DownLode</button>
+                                <button onClick={handleDownlodeInfra} className='royalinfra_downlode_button'> Download</button>
                                 <button onClick={() => setinfraletterHead(false)} style={{ marginLeft: "10px" }} className='royalinfra_downlode_button'> Close</button>
                             </div>
                             <div className="infraletter_head_wrapper" ref={letterref}>
@@ -124,7 +124,7 @@ function LatterHead() {
                     <>
                         <div className="loan_letter_head_main_wrapper">
                             <div className="downlode_button">
-                                <button onClick={handleDownlodeLoan} className='royalloan_downlode_button'> DownLode</button>
+                                <button onClick={handleDownlodeLoan} className='royalloan_downlode_button'> Download</button>
                                 <button style={{ marginLeft: "10px" }} className='royalloan_downlode_button' onClick={() => setLoanLeterhead(false)}> Close </button>
                             </div>
                             <div className="infraletter_head_wrapper" ref={loanref}>

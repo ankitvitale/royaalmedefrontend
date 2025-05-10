@@ -1108,10 +1108,12 @@
   border: 1px solid rgb(204, 202, 202);
 
 }
-.action-column{
+
+.action-column {
   border: 1px solid rgb(204, 202, 202);
 
 }
+
 .customer_installment_card_td {
   font-size: 14px;
   border: 1px solid rgb(204, 202, 202);
@@ -1338,4 +1340,131 @@
   .showCustomerInstallmentEditForm_heading {
     font-size: 1.2rem;
   }
+}
+
+.customer_card_flat_no {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 150px;
+
+}
+.customer_card_flat_no button {
+  width: auto;
+  padding: 10px;
+  background: #06a7b1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
+
+
+.editcustomerbookingDetailform {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 90%;
+  max-width: 800px;
+  height: 650px;
+  overflow-y: auto;
+}
+.editcustomerbookingDetailsection {
+  margin-bottom: 15px;
+}
+
+.editcustomerbookingDetailgroup {
+  margin-bottom: 10px;
+}
+
+.editcustomerbookingDetailgroup label {
+  display: block;
+  font-weight: bold;
+}
+
+.editcustomerbookingDetailinput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.editcustomerbookingDetailinput:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.editcustomerbookingDetailsubmitbutton, .editcustomerbookingDetailclosebutton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.editcustomerbookingDetailsubmitbutton {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+}
+
+.editcustomerbookingDetailclosebutton {
+  background-color: #f44336;
+  color: white;
+  margin-left: 10px;
+}
+
+.editcustomerbookingDetailclosebutton:hover, .editcustomerbookingDetailsubmitbutton:hover {
+  opacity: 0.8;
+}
+
+
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .editcustomerbookingDetailform {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .editcustomerbookingDetailinput {
+    font-size: 12px;
+  }
+
+  .editcustomerbookingDetailsubmitbutton, .editcustomerbookingDetailclosebutton {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .editcustomerbookingDetailform {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .editcustomerbookingDetailinput {
+    font-size: 12px;
+  }
+
+  .editcustomerbookingDetailsubmitbutton, .editcustomerbookingDetailclosebutton {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+.editcustomerbookingDetailclosebutton_wrapper {
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }

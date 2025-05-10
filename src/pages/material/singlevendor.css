@@ -665,7 +665,8 @@
   margin-top: 20px;
 }
 
-.vendor-table th, .vendor-table td {
+.vendor-table th,
+.vendor-table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
@@ -689,7 +690,9 @@
   gap: 8px;
 }
 
-.view-btn, .payment-btn, .delete-btn {
+.view-btn,
+.payment-btn,
+.delete-btn {
   padding: 6px 10px;
   border: none;
   border-radius: 4px;
@@ -757,9 +760,9 @@
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  width: 90%;
-  max-width: 1000px;
-  max-height: 90vh;
+  width: 95%;
+  /* max-width: 1000px; */
+  height: 90vh;
   overflow-y: auto;
 }
 
@@ -820,7 +823,8 @@
 }
 
 /* Form Styles */
-.material-form, .payment-form {
+.material-form,
+.payment-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -836,7 +840,8 @@
   font-weight: bold;
 }
 
-.form-group input, .form-group select {
+.form-group input,
+.form-group select {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -874,20 +879,24 @@
   margin: 5px 0;
 }
 
-.materials-table, .payments-table {
+.materials-table,
+.payments-table {
   width: 100%;
   border-collapse: collapse;
   margin: 15px 0;
 }
 
-.materials-table th, .materials-table td,
-.payments-table th, .payments-table td {
+.materials-table th,
+.materials-table td,
+.payments-table th,
+.payments-table td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
 }
 
-.materials-table th, .payments-table th {
+.materials-table th,
+.payments-table th {
   background-color: #f2f2f2;
   font-weight: bold;
 }
@@ -896,7 +905,7 @@
   background-color: #2196F3;
   color: white;
   border: none;
-  padding: 5px 8px;
+  padding: 10px 17px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
@@ -910,6 +919,8 @@
   background-color: #f44336;
   color: white;
   border: none;
-  padding: 5px 8px;
+  padding: 10px 17px;
   border-radius: 4px;
-  cursor:pointer }
+  cursor: pointer;
+  margin-left: 5px;
+}

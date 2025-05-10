@@ -5,7 +5,7 @@ import "./Admin.css";
 import logo from "../../assets/royal.png";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import {
- 
+
   FaBoxes,
   FaBuilding,
   FaFileAlt,
@@ -26,14 +26,14 @@ function Admin() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-   
+
   };
 
   useEffect(() => {
     const gettingRole = JSON.parse(
       localStorage.getItem("employeROyalmadeLogin")
     ) || {};
-    setRole(gettingRole.role); 
+    setRole(gettingRole.role);
   }, []);
 
   function handleLogIn() {
@@ -83,7 +83,7 @@ function Admin() {
 
               {role === "Admin" && (
                 <>
-                  <div className="link_container">
+                  <div className="link_container" >
                     <Link to="/" onClick={() => setIcon(!icon)}>
                       <FaTachometerAlt
                         style={{ color: "white", fontSize: "1.5rem" }}
@@ -190,7 +190,7 @@ function Admin() {
                       <RiFilePaper2Fill
                         style={{ color: "white", fontSize: "1.5rem" }}
                       />
-                      <p>Latter</p>
+                      <p>Letter</p>
                     </Link>
                   </div>
                 </>
@@ -212,9 +212,9 @@ function Admin() {
 
                 </>
               )}
-               {role === "Employee" && (
+              {role === "Employee" && (
                 <>
-                 <div className="link_container">
+                  <div className="link_container">
                     <Link
                       to="/lead"
                       className="click_link"

@@ -174,32 +174,42 @@ function Addmeterial() {
                 alert("vendor add successfullly")
                 setNewVendor("")
                 setnewVendorPhoneNumber("")
-                setrefreshKey(refreshKey+1)
+                setrefreshKey(refreshKey + 1)
             }
         } catch (error) {
             console.log(error)
         }
     }
-
-
     useEffect(() => {
-        async function getAllVendorList() {
+        async function getAllVendorList(id) {
             try {
-                const response = await axios.get(`${BASE_URL}/AllVendor`, {
+                const response = await axios.get(`${BASE_URL}/vendor-byProjectId/${id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
-                        "content-Type": "application/json"
+                        "Content-Type": "application/json"
                     }
-                })
-                console.log(response.data)
-                setvendorList(response.data)
-            } catch (error) {
-                console.log(error)
-            }
+                });
 
+                console.log("API full response:", response.data);
+
+                const list = Array.isArray(response.data)
+                    ? response.data
+                    : Array.isArray(response.data?.data)
+                        ? response.data.data
+                        : []; // Wrap the object in an array
+
+                console.log("Parsed Vendor List:", list);
+                setvendorList(list);
+            } catch (error) {
+                console.log("Error fetching vendor list:", error);
+                setvendorList([]);
+            }
         }
-        getAllVendorList()
-    }, [refreshKey])
+
+        if (id) {
+            getAllVendorList(id);
+        }
+    }, [refreshKey, id, token]);
 
     function handlenavigateVendor(vendorId, name) {
         navigate(`/singleVendor/${id}/${vendorId}?name=${encodeURIComponent(name)}`);
@@ -237,10 +247,16 @@ function Addmeterial() {
                     </>
                 )
             }
-
+            {vendorList.length > 0 && (
+                <div style={{ textAlign: "center", color: " #015f65", margin: "20px 0", fontSize: "28px", fontWeight: "bold" }}>
+                    <h1>{vendorList[0].project.name}</h1> {/* Display the project name of the first item */}
+                </div>
+            )}
             {/* vendor list */}
             <div className="vendor_table_container">
-                <table className="vendor_list_table">
+
+
+                <table className="vendor_list_table"  >
                     <thead>
                         <tr>
                             <th>Vendor Name</th>
@@ -249,13 +265,19 @@ function Addmeterial() {
                         </tr>
                     </thead>
                     <tbody>
-                        {vendorList.map((item, index) => (
-                            <tr key={index}>
-                                <td onClick={() => handlenavigateVendor(item.id, item.name)} style={{ cursor: "pointer" }}>{item.name}</td>
-                                <td>{item.phoneNo}</td>
-                                <td onClick={() => handlenavigateVendor(item.id)} > <button className='vendor_view'> view</button></td>
+                        {Array.isArray(vendorList) && vendorList.length > 0 ? (
+                            vendorList.map((item, index) => (
+                                <tr key={index}>
+                                    <td onClick={() => handlenavigateVendor(item.id, item.name)} style={{ cursor: "pointer" }}>{item.name}</td>
+                                    <td>{item.phoneNo}</td>
+                                    <td><button onClick={() => handlenavigateVendor(item.id,item.name)} className='vendor_view'>View</button></td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3" style={{ textAlign: "center" }}>No Vendors Available</td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>

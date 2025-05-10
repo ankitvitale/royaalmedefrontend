@@ -327,7 +327,7 @@ function DemandLetter() {
                         className="demand_latter_main_wrapper"
 
                     >
-                        <button onClick={handleDownload} className='demand_latter_dowmlode_button'> downlode</button>
+                        <button onClick={handleDownload} className='demand_latter_dowmlode_button'> Download</button>
                         <button onClick={() => setShowDemandlatter(false)} className='demand_latter_close_button'>  Close</button>
                         <div className="demand_latter_container">
                             <div

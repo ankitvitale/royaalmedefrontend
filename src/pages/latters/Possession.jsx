@@ -49,7 +49,7 @@ function Possession() {
         e.preventDefault();
 
         const formdata = {
-            fromName: from,
+            // fromName: from,
             date: date || new Date().toISOString().split("T")[0],
             toName: yourName,
             name: firstName,
@@ -89,7 +89,7 @@ function Possession() {
         }
     }
     function resetForm() {
-        setFrom("");
+        // setFrom("");
         setDate("");
         setYourName("");
         setFirstName("");
@@ -102,7 +102,7 @@ function Possession() {
     function handleEditPossession(item) {
         setIsEditMode(true);
         setEditId(item.id);
-        setFrom(item.fromName);
+        // setFrom(item.fromName);
         setDate(item.date?.split("T")[0] || "");
         setYourName(item.toName);
         setFirstName(item.name);
@@ -177,13 +177,13 @@ function Possession() {
 
             <div className="possession_letter_form_wrapper">
                 <form className="possession_letter" onSubmit={handlepossessionSubmit}>
-                    <input
+                    {/* <input
                         type="text"
                         placeholder="From"
                         className="possession_letter_input"
                         value={from}
                         onChange={(e) => setFrom(e.target.value)}
-                    />
+                    /> */}
                     <input
                         type="date"
                         className="possession_letter_input"
@@ -239,7 +239,7 @@ function Possession() {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>From Name</th>
+                            {/* <th>From Name</th> */}
                             <th>Date</th>
                             <th>To Name</th>
                             <th>Name</th>
@@ -254,7 +254,7 @@ function Possession() {
                             possesionTable.map((item, index) => (
                                 <tr key={item.id}>
                                     <td>{index}</td>
-                                    <td>{item.fromName}</td>
+                                    {/* <td>{item.fromName}</td> */}
                                     <td>{new Date(item.date).toLocaleDateString("en-GB")}</td>
                                     <td>{item.toName}</td>
                                     <td>{item.name}</td>
@@ -285,7 +285,7 @@ function Possession() {
                     <>
                         <div className="infra_letter_head_main_wrapper">
                             <div className="downlode_button">
-                                <button onClick={handleDownlodepossession} className='royalinfra_downlode_button'> DownLode</button>
+                                <button onClick={handleDownlodepossession} className='royalinfra_downlode_button'> Download</button>
                                 <button onClick={() => setshowPossession(false)} className='possion_close'>Close</button>
                             </div>
                             <div className="infraletter_head_wrapper" ref={letterref}>
@@ -456,7 +456,7 @@ function Possession() {
 
 
 
-                                <p style={{ marginTop: "25px", marginLeft: "80px" }}>From:- <b>{letterdata.fromName}   </b>      </p>
+                                {/* <p style={{ marginTop: "25px", marginLeft: "80px" }}>From:- <b>{letterdata.fromName}   </b>      </p> */}
                                 <p style={{ marginTop: "25px", marginLeft: "80px" }}>  Date: <b> {new Date(letterdata.date).toLocaleDateString("en-GB")}  </b>  </p>
                                 <p style={{ marginLeft: "80px" }}>To, </p>
                                 <p style={{ marginLeft: "80px" }}> Mr./Mrs./Ms.   </p>

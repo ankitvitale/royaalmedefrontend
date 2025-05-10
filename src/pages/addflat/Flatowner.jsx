@@ -24,6 +24,7 @@ import { CiBank } from "react-icons/ci";
 import { FaSortAmountUpAlt } from "react-icons/fa";
 import { SiAnswer } from "react-icons/si";
 import { BASE_URL } from '../../config';
+import './FlatOwner.css'
 function Flatowner() {
   const letterref = useRef()
   const { id } = useParams();
@@ -49,6 +50,32 @@ function Flatowner() {
   const [InstallmentEditFormAmount, setInstallmentEditFormAmount] = useState("");
   const [InstallmentEditFormPaymentMethod, setInstallmentEditFormPaymentMethod] = useState("");
   const [InstallmentEditFormRemark, setInstallmentEditFormRemark] = useState("");
+
+
+
+  const [ShowEditCustomerForm, setShowEditCustomerForm] = useState(false)
+  const [customerBookingUpdateId, setcustomerBookingUpdateId] = useState("")
+  const [dealPrice, setDealPrice] = useState("");
+  const [tokenAmount, setTokenAmount] = useState("");
+  const [agreementAmount, setAgreementAmount] = useState("");
+  const [stampDutyAmount, setStampDutyAmount] = useState("");
+  const [registrationAmount, setRegistrationAmount] = useState("");
+  const [gstAmount, setGstAmount] = useState("");
+  const [electricWaterAmmount, setElectricWaterAmmount] = useState("");
+  const [legalChargesAmmout, setLegalChargesAmmout] = useState("");
+  const [bookedOn, setBookedOn] = useState("");
+  const [bookingStatus, setBookingStatus] = useState("");
+
+  // Customer fields
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [aadharNumber, setAadharNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [panCard, setPanCard] = useState("");
+  const [agentName, setAgentName] = useState("");
+  const [brokerage, setBrokerage] = useState("");
+  const [customerBookingId,setcustomerBookingId]= useState("")
   useEffect(() => {
     async function customerProfile() {
       try {
@@ -58,6 +85,7 @@ function Flatowner() {
             "Content-Type": "application/json",
           },
         });
+        // console.log(response.data)
         setCustomerId(response?.data?.customer?.id)
         setCustomerDetail(response.data);
       } catch (error) {
@@ -223,7 +251,7 @@ function Flatowner() {
       })
       if (response.status === 200) {
         alert("installment updated")
-        handleShowInstallment(); 
+        handleShowInstallment();
         setshowCustomerInstallmentEditForm(false)
         setInstallmentEditFormDate("")
         setInstallmentEditFormAmount("")
@@ -266,6 +294,91 @@ function Flatowner() {
     html2pdf().from(element).save(`Customer_Installment_${customerInstallMentDeta.identifier}.pdf`);
   };
 
+
+  async function handleEditCustomerDetail(customerId,bookingId) {
+    setcustomerBookingUpdateId(customerId)
+    setcustomerBookingId(bookingId)
+    setShowEditCustomerForm(true)
+    try {
+      const response = await axios.get(`${BASE_URL}/getBookingCoustomerId/${customerId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+      console.log(response.data)
+      setAgreementAmount(response.data.agreementAmount)
+      setDealPrice(response.data.dealPrice)
+      setTokenAmount(response.data.tokenAmount)
+      setStampDutyAmount(response.data.stampDutyAmount)
+      setRegistrationAmount(response.data.registrationAmount)
+      setGstAmount(response.data.gstAmount)
+      setElectricWaterAmmount(response.data.electricWaterAmmount)
+      setLegalChargesAmmout(response.data.legalChargesAmmout)
+      setBookedOn(response.data.bookedOn)
+      setBookingStatus(response.data.bookingStatus)
+      setName(response.data?.customer?.name)
+      setPhoneNumber(response.data?.customer?.phoneNumber)
+      setEmail(response.data?.customer?.email)
+      setAadharNumber(response.data?.customer?.aadharNumber)
+      setAddress(response.data?.customer?.address)
+      setPanCard(response.data?.customer?.panCard)
+      setAgentName(response.data?.customer?.agentName)
+      setBrokerage(response.data?.customer?.brokerage)
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+  const handleUpdateCustomerDetail = async (e) => {
+    e.preventDefault();
+   
+    const payload = {
+      dealPrice,
+      tokenAmount,
+      agreementAmount,
+      stampDutyAmount,
+      registrationAmount,
+      gstAmount,
+      electricWaterAmmount,
+      legalChargesAmmout,
+      bookedOn,
+      bookingStatus,
+      customerDto: {
+        name,
+        phoneNumber,
+        email,
+        aadharNumber,
+        address,
+        panCard,
+        agentName,
+        brokerage,
+      },
+    };
+
+    console.log("Form Submitted:", payload);
+
+    try {
+      const response = await axios.put(`${BASE_URL}/updateBooking/${customerBookingId}`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+      console.log(response.data)
+      if (response.status === 200) {
+        alert("Customer Updated")
+        setRefreshKey((prev) => prev + 1)
+        setShowEditCustomerForm(false)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+
+  };
+
+
   return (
     <>
       <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "50px" }} >Flatowner Details</h2>
@@ -273,7 +386,7 @@ function Flatowner() {
       <div className="flat_owener_multi_button_wrapper">
         <button className='CustomerSlip' onClick={() => setcustomerSlip(!customerSlip)}> Customer Slip</button>
 
-        <button className='AddBankAccount' onClick={() => setshowBankDetailForm(true)}> Add Bank Account</button>
+        <button className='AddBankAccount' onClick={() => setshowBankDetailForm(true)}> Add Bank Name</button>
         <button className='AddFlatInstallment' onClick={() => setShowInstallmentForm(true)}  > Add Flat Installment</button>
 
         <button className='CancleBooking' onClick={handleCancleBooking}> Cancle Booking</button>
@@ -288,13 +401,13 @@ function Flatowner() {
 
           <div className="customer_card_flat_no">
             <p><strong> <BsBuilding /> Flat No  - </strong> {customerDetail.residency?.identifier || "NA"}</p>
+            <button onClick={() => handleEditCustomerDetail(customerDetail.customer?.id,customerDetail.id)}> Edit</button>
           </div>
 
           <div className="customer_card_name_wrapper">
             <p> <b style={{ color: "#00a4b3", fontSize: "25px" }}>  {customerDetail.customer?.name || "NA"} </b></p>
             <p> <b>{customerDetail.customer?.phoneNumber || "NA"}  </b></p>
           </div>
-
           <div className="customer_flat_owner_conatiner">
             <div className="customer_data_container">
               <h3 style={{ color: "#00a4b3" }}> <FaUser /> Customer Information</h3>
@@ -303,7 +416,13 @@ function Flatowner() {
               <p><strong><FaIdBadge /> </strong> <b>Aadhar Number:</b> {customerDetail.customer?.aadharNumber || "NA"}</p>
               <p><strong><FaAddressCard /></strong> <b>Address:</b> {customerDetail.customer?.address || "NA"}</p>
               <p><strong><FaHandshake /></strong> <b>Agent Name:</b> {customerDetail.customer?.agentName || "NA"}</p>
-              <p><strong><MdOutlineAttachMoney /></strong> <b>Brokerage:</b> {customerDetail.customer?.brokerage?.toLocaleString() || "NA"}</p>
+              <p>
+                <strong><MdOutlineAttachMoney /></strong>
+                <b>Brokerage:</b>{" "}
+                {customerDetail.customer?.brokerage
+                  ? Number(customerDetail.customer.brokerage).toLocaleString()
+                  : "NA"}
+              </p>
             </div>
             <div className="customer_data_container">
               <h3 style={{ color: "#00a4b3" }}> Customer Residency </h3>
@@ -317,7 +436,10 @@ function Flatowner() {
             </div>
             <div className="customer_data_container">
               <h3 style={{ color: "#00a4b3" }}> <RiFilePaper2Fill /> Deal Information</h3>
-              <p><strong><FaCalendarAlt /></strong> <b>Booked On:</b> {customerDetail.bookedOn || "NA"}</p>
+              <p>
+                <strong><FaCalendarAlt /></strong> <b>Booked On:</b>{" "}
+                {customerDetail.bookedOn ? new Date(customerDetail.bookedOn).toLocaleDateString('en-GB') : "NA"}
+              </p>
               <p><strong><FaBook /></strong><b>Booking Status:</b> {customerDetail.bookingStatus || "NA"}</p>
               <p><strong><FaSortAmountUp /></strong> <b>GST Amount:</b> {customerDetail.gstAmount?.toLocaleString() || "NA"}</p>
               <p><strong><MdOutlineAttachMoney /></strong> <b>Deal Price:</b> {customerDetail.dealPrice?.toLocaleString() || "NA"}</p>
@@ -336,6 +458,197 @@ function Flatowner() {
       ) : (
         <p>Loading details...</p>
       )}
+
+      {
+        ShowEditCustomerForm && (
+          <>
+
+            <form className="editcustomerbookingDetailform" onSubmit={handleUpdateCustomerDetail}>
+              <div className="editcustomerbookingDetailclosebutton_wrapper">
+                <button type="button" className="editcustomerbookingDetailclosebutton" onClick={() => setShowEditCustomerForm(false)}>Close</button>
+
+              </div>
+
+              <h2>Booking Details</h2>
+              <div className="editcustomerbookingDetailsection">
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Deal Price</label>
+                  <input
+                    type="number"
+                    value={dealPrice}
+                    onChange={(e) => setDealPrice(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Token Amount</label>
+                  <input
+                    type="number"
+                    value={tokenAmount}
+                    onChange={(e) => setTokenAmount(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Agreement Amount</label>
+                  <input
+                    type="number"
+                    value={agreementAmount}
+                    onChange={(e) => setAgreementAmount(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Stamp Duty Amount</label>
+                  <input
+                    type="number"
+                    value={stampDutyAmount}
+                    onChange={(e) => setStampDutyAmount(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Registration Amount</label>
+                  <input
+                    type="number"
+                    value={registrationAmount}
+                    onChange={(e) => setRegistrationAmount(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>GST Amount</label>
+                  <input
+                    type="number"
+                    value={gstAmount}
+                    onChange={(e) => setGstAmount(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Electric Water Amount</label>
+                  <input
+                    type="number"
+                    value={electricWaterAmmount}
+                    onChange={(e) => setElectricWaterAmmount(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Legal Charges Amount</label>
+                  <input
+                    type="number"
+                    value={legalChargesAmmout}
+                    onChange={(e) => setLegalChargesAmmout(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Booked On</label>
+                  <input
+                    type="date"
+                    value={bookedOn}
+                    onChange={(e) => setBookedOn(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Booking Status</label>
+                  <select
+                    value={bookingStatus}
+                    onChange={(e) => setBookingStatus(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  >
+                    <option value="PENDING">PENDING</option>
+                    <option value="COMPLETE">COMPLETE</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                  </select>
+                </div>
+              </div>
+
+              <h2>Customer Details</h2>
+              <div className="editcustomerbookingDetailsection">
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Phone Number</label>
+                  <input
+                    type="text"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Aadhar Number</label>
+                  <input
+                    type="text"
+                    value={aadharNumber}
+                    onChange={(e) => setAadharNumber(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Address</label>
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>PAN Card</label>
+                  <input
+                    type="text"
+                    value={panCard}
+                    onChange={(e) => setPanCard(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Agent Name</label>
+                  <input
+                    type="text"
+                    value={agentName}
+                    onChange={(e) => setAgentName(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+                <div className="editcustomerbookingDetailgroup">
+                  <label>Brokerage</label>
+                  <input
+                    type="text"
+                    value={brokerage}
+                    onChange={(e) => setBrokerage(e.target.value)}
+                    className="editcustomerbookingDetailinput"
+                  />
+                </div>
+              </div>
+
+              <button type="submit" className="editcustomerbookingDetailsubmitbutton">Submit</button>
+            </form>
+
+          </>
+        )
+      }
+
 
 
       {/* bank details form start */}
@@ -387,53 +700,83 @@ function Flatowner() {
 
 
       {/*   show Customer installment Card */}
-      {
-        showCustomerInstallMentcard && customerInstallMentDeta && (
-          <div className='customer_installment_card_wrapper'>
-            <button className='add_print_button_bill' onClick={handlePrintInstallment}> Print </button>
-            <button onClick={() => setshowCustomerInstallMentcard(false)} className='customer_installment_card_close_button'> X</button>
-            <div id="customerInstallmentCard">
-              <p> Residency Name : {customerInstallMentDeta.residencyName}</p>
-              <p> Customer name : {customerInstallMentDeta?.customerName}</p>
-              <p> Plot No : {customerInstallMentDeta.identifier}</p>
-              <p>  Flat Price : {customerInstallMentDeta.dealPrice ? customerInstallMentDeta.dealPrice.toLocaleString() : "N/A"}</p>
-              <p> Token Amount : {customerInstallMentDeta.tokenAmount.toLocaleString()}</p>
-              <p> Agreement price: {customerInstallMentDeta.agreementAmount.toLocaleString()}</p>
-              <p> Customer Remaining Amount : {customerInstallMentDeta.remainingAmount.toLocaleString()}</p>
-              <p> {customerInstallMentDeta.bookingInstallments.map((item, index) => {
-                return <>
-                  <table className='customer_installment_card_table' key={item.id}>
-                    <tr className='customer_installment_card_tr'>
-                      <th className='customer_installment_card_th'> Installment Date </th>
-                      <th className='customer_installment_card_th'> Installment Amount</th>
-                      <th className='customer_installment_card_th'> Installment Status</th>
-                      <th className='customer_installment_card_th'> Note</th>
-                      <th className='customer_installment_card_th action-column' > Action</th>
-                    </tr>
-                    <tr className='customer_installment_card_tr'>
-                      <td className='customer_installment_card_td'>{new Date(item.installmentDate).toLocaleDateString("en-GB")}  </td>
-                      <td className='customer_installment_card_td'>{item.installmentAmount.toLocaleString()} </td>
-                      <td className='customer_installment_card_td'>
-                        {item.installmentStatus}
+     {
+  showCustomerInstallMentcard && customerInstallMentDeta && (
+    <div className="customer_installment_card_wrapper">
+      <div className="customer_installment_card_header">
+        <button
+          className="add_print_button_bill"
+          onClick={handlePrintInstallment}
+        >
+          Print
+        </button>
+        <button
+          onClick={() => setshowCustomerInstallMentcard(false)}
+          className="customer_installment_card_close_button"
+        >
+          X
+        </button>
+      </div>
 
-                      </td>
-                      <td className='customer_installment_card_td'>{item.remark} </td>
-                      <td>
-                        <button className='installment_edit_button' onClick={() => handleEditInstallment(item.id)}> Edit</button> <br />
-                        <button className='installment_delete_button' onClick={() => handleDeleteInstallment(item.id)}> Delete</button>
-                      </td>
-
-                    </tr>
-                  </table>
-
-                </>
-              })}</p>
-            </div>
-          </div>
-        )
-      }
-
-
+      <div id="customerInstallmentCard" className="customer_installment_card_content">
+     <div className="residency_details_section">
+  <h1>Residency Details</h1>
+  <p><strong>Residency Name:</strong> {customerInstallMentDeta.residencyName}</p>
+  <p><strong>Customer Name:</strong> {customerInstallMentDeta?.customerName}</p>
+  <p><strong>Plot No:</strong> {customerInstallMentDeta.identifier}</p>
+  <p><strong>Flat Price:</strong> {customerInstallMentDeta.dealPrice ? customerInstallMentDeta.dealPrice.toLocaleString() : "N/A"}</p>
+  <p><strong>Token Amount:</strong> {customerInstallMentDeta.tokenAmount.toLocaleString()}</p>
+  <p><strong>Agreement Price:</strong> {customerInstallMentDeta.agreementAmount.toLocaleString()}</p>
+  <p><strong>Customer Remaining Amount:</strong> {customerInstallMentDeta.remainingAmount.toLocaleString()}</p>
+</div>
+        <table className="customer_installment_card_table">
+          <thead>
+            <tr className="customer_installment_card_tr">
+              <th className="customer_installment_card_th">Installment Date</th>
+              <th className="customer_installment_card_th">Installment Amount</th>
+              <th className="customer_installment_card_th">Installment Status</th>
+              <th className="customer_installment_card_th">Note</th>
+              <th className="customer_installment_card_th action-column">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {customerInstallMentDeta.bookingInstallments.map((item, index) => (
+              <tr key={item.id} className="customer_installment_card_tr">
+                <td className="customer_installment_card_td">
+                  {new Date(item.installmentDate).toLocaleDateString("en-GB")}
+                </td>
+                <td className="customer_installment_card_td">
+                  {item.installmentAmount.toLocaleString()}
+                </td>
+                <td className="customer_installment_card_td">
+                  {item.installmentStatus}
+                </td>
+                <td className="customer_installment_card_td">
+                  {item.remark}
+                </td>
+                <td className="customer_installment_card_td">
+                  <button
+                    className="installment_edit_button"
+                    onClick={() => handleEditInstallment(item.id)}
+                  >
+                    Edit
+                  </button>
+                  <br />
+                  <button
+                    className="installment_delete_button"
+                    onClick={() => handleDeleteInstallment(item.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
       {
         showCustomerInstallmentEditForm && (
           <>
@@ -497,7 +840,7 @@ function Flatowner() {
               <button onClick={() => setcustomerSlip(!customerSlip)} className='customer_salary_slip_close_button'>X</button>
 
 
-              <button onClick={handleDownload} className="customer_salary_slip_downlode_btn"> Downlode</button>
+              <button onClick={handleDownload} className="customer_salary_slip_downlode_btn"> Download</button>
               <div className="royaal_patment_slip_main_wrapper" ref={letterref}>
                 <div className="payment_slip_header" style={{ marginLeft: "25px" }}>
                   <img src={infraLogo} alt="" height={"80px"} width={"150px"} />
@@ -516,7 +859,8 @@ function Flatowner() {
                 />
 
                 <p style={{ marginTop: "10px", marginLeft: "25px", fontSize: "12px" }}>
-                  Date :
+                Date: {new Date().toLocaleDateString('en-GB')}
+
                 </p>
 
                 <div

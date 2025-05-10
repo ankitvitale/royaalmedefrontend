@@ -1,0 +1,110 @@
+.customer_installment_card_wrapper {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.customer_installment_card_header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.add_print_button_bill{
+     background-color:rgb(4, 115, 39);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.customer_installment_card_close_button {
+  background-color:red;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.residency_details_section {
+  background-color: #f9f9f9;
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.residency_details_section h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.residency_details_section p {
+  font-size: 17px;
+  margin: 8px 0;
+  color: #555;
+}
+
+.residency_details_section p strong {
+  color: #000;
+}
+.add_print_button_bill:hover,
+.customer_installment_card_close_button:hover {
+  background-color:rgb(67, 35, 35);
+}
+
+.customer_installment_card_content p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.customer_installment_card_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.customer_installment_card_th,
+.customer_installment_card_td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.customer_installment_card_th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.installment_edit_button,
+.installment_delete_button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.installment_delete_button {
+  background-color: #dc3545;
+}
+
+.installment_edit_button:hover {
+  background-color: #218838;
+}
+
+.installment_delete_button:hover {
+  background-color: #c82333;
+}
