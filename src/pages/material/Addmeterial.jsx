@@ -159,7 +159,8 @@ function Addmeterial() {
         e.preventDefault()
         const formdata = {
             name: newVendor,
-            phoneNo: newVendorPhoneNumber
+            phoneNo: newVendorPhoneNumber,
+            projectId:id
         }
         console.log(formdata)
         try {
@@ -175,6 +176,7 @@ function Addmeterial() {
                 setNewVendor("")
                 setnewVendorPhoneNumber("")
                 setrefreshKey(refreshKey + 1)
+                setshowVendorForm(false)
             }
         } catch (error) {
             console.log(error)
