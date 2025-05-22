@@ -686,20 +686,20 @@ function SingleVendor() {
     //     }
     // }, [vendorId, projectId, token, refreshKey]);
 
-    // async function onShowBill(billNo) {
-    //     try {
-    //         const response = await axios.get(`${BASE_URL}/SingleBill/${billNo}/${projectId}`, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //                 "Content-Type": "application/json",
-    //             },
-    //         });
-    //         setSelectedMaterial(response.data);
-    //         setShowBillModal(true);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+    async function onShowBill(billNo) {
+        try {
+            const response = await axios.get(`${BASE_URL}/SingleBill/${billNo}/${projectId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            setSelectedMaterial(response.data);
+            setShowBillModal(true);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const handleAddPayment = (billNo) => {
         setPaymentBillId(billNo);
