@@ -32,6 +32,9 @@ import Contractor from "./pages/contractor/Contractor";
 import ContractorDetail from "./pages/contractor/ContractorDetail";
 import SingleVendor from "./pages/material/SingleVendor";
 import EmployeeForm from "./Registration/EmployeeForm";
+import EnquiryDetails from "./pages/enquiryDetails/EnquiryDetails";
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -62,6 +65,9 @@ function App() {
             <Route element={<AllotmentLatter />} path="/allotment" />
             <Route element={<DemandLetter />} path="/demand" />
             <Route element={<LatterHead />} path="/letterhead" />
+
+            <Route element={<EnquiryDetails />} path="/enquiry" />
+            
             <Route
               element={<AppUserRegistration />}
               path="/appuserregistration"
@@ -70,9 +76,15 @@ function App() {
             <Route element={<NocLetter />} path="/nocletter" />
             <Route element={<Possession />} path="/possession" />
             <Route element={<Contractor />} path="/contractor" />
-            <Route element={<ContractorDetail/>} path="/contractordetail/:id"/>
-            <Route path="/singleVendor/:projectId/:vendorId" element={<SingleVendor />} />
-            <Route path="/employeregistration" element={<EmployeeForm/>}/>
+            <Route
+              element={<ContractorDetail />}
+              path="/contractordetail/:id"
+            />
+            <Route
+              path="/singleVendor/:projectId/:vendorId"
+              element={<SingleVendor />}
+            />
+            <Route path="/employeregistration" element={<EmployeeForm />} />
           </Route>
         </Route>
       </Routes>

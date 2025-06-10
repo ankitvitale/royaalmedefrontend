@@ -17,6 +17,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { RiFilePaper2Fill } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdCancel } from "react-icons/md";
+import { BiSolidUserDetail } from "react-icons/bi";
 
 
 function Admin() {
@@ -193,6 +194,20 @@ function Admin() {
                       <p>Letter</p>
                     </Link>
                   </div>
+
+                  <div className="link_container">
+                    <Link
+                      to="/enquiry"
+                      className="click_link"
+                      onClick={() => setIcon(!icon)}
+                    >
+                      <BiSolidUserDetail
+                        style={{ color: "white", fontSize: "1.5rem" }}
+                      />
+                      <p>Enquiry Details</p>
+                    </Link>
+                  </div>
+                  
                 </>
               )}
               {role === "AppUser" && (

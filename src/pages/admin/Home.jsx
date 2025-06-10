@@ -8,6 +8,7 @@ import { GiExplosiveMaterials } from "react-icons/gi";
 import { MdDashboard } from "react-icons/md";
 import { MdPersonAdd } from "react-icons/md";
 import { IoIosDocument } from "react-icons/io";
+import { BiSolidUserDetail } from "react-icons/bi";
 
 function Home() {
     const navigate = useNavigate()
@@ -44,7 +45,7 @@ function Home() {
                             <div className="lead_logo">
                                 <p><FaRegBuilding /></p>
                             </div>
-                            <h4> flat Management</h4>
+                            <h4>Flat Management</h4>
                         </div>
                         <div className="lead_container" onClick={()=>navigate("/clist")} style={{cursor:"pointer"}}>
                             <div className="lead_logo">
@@ -75,6 +76,13 @@ function Home() {
                                 <p><IoIosDocument /></p>
                             </div>
                             <h4>Letters</h4>
+                        </div>
+
+                        <div className="lead_container" onClick={()=>navigate("/enquiry")} style={{cursor:"pointer"}}>
+                            <div className="lead_logo">
+                                <p><BiSolidUserDetail /></p>
+                            </div>
+                            <h4>Enquiry Details</h4>
                         </div>
                     </div>
                 )
