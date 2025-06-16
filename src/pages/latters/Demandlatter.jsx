@@ -205,7 +205,7 @@ function DemandLetter() {
                         <input
                             type="text"
                             name="faltno"
-                            placeholder="Falt No"
+                            placeholder="Flat No"
                             value={formData.faltno}
                             onChange={handleChange}
                             required

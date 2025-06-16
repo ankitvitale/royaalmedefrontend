@@ -154,7 +154,7 @@ function Offerlatter() {
     const handleDownload = () => {
         const element = letterRef.current;
         const options = {
-            margin: 0.5,
+            margin: 0.1,
             filename: `offer_letter_${singleOffer.name}.pdf`,
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { scale: 2 },
@@ -371,13 +371,13 @@ function Offerlatter() {
 
                             <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px" }} />
                             <hr style={{ border: "3px solid rgb(167, 5, 86)" }} />
-                            <div style={{ lineHeight: "30px" }}>
+                            <div style={{ lineHeight: "25px" }}>
                                 <div
                                     style={{
                                         display: "flex",
                                         flex: "row",
                                         justifyContent: "space-between",
-                                        padding: "30px",
+                                        padding: "10px",
                                     }}
                                 >
                                     <div>
@@ -441,7 +441,7 @@ function Offerlatter() {
                                 <p>Sincerely Yours,</p>
 
                                 {/* Signature Section */}
-                                <div style={{ marginTop: "40px" }}>
+                                <div style={{ marginTop: "5px" }}>
                                     <div style={{ display: "flex", justifyContent: "center" }}>
                                         <strong>ACKNOWLEDGEMENT AND ACCEPTANCE</strong>
                                     </div>
@@ -451,8 +451,10 @@ function Offerlatter() {
                                         I hereby signify my acceptance of all the terms and conditions
                                         by returning the duplicate copy of this offer letter.
                                     </p>
-                                    <br />
-                                    {singleOffer.name}
+                                    
+                                    <p style={{marginTop:"30px"}}>
+                                        {singleOffer.name}
+                                    </p>
                                     <p>Signature</p>
                                 </div>
                             </div>

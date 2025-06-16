@@ -261,7 +261,7 @@ function Possession() {
                                     <td>{item.flatNo}</td>
                                     <td>{item.residencyName}</td>
                                     <td>{item.address}</td>
-                                    <td style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px", flexDirection: "column" }}>
+                                    <td style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px",}}>
                                         <button onClick={() => handleEditPossession(item)} className='possession_show'>Edit</button>
                                         <button onClick={() => handlepossionDelete(item.id)} className='possession_delete'> Delete</button>
                                         <button onClick={() => handleShowPossessionletter(item.id)} className='possession_show'>Show</button>
@@ -309,124 +309,7 @@ function Possession() {
                                         }}
                                         src={Logo2}
                                         alt=""
-                                    />
-                                    {/* <div
-                                        style={{
-                                            fontFamily: "Arial, sans-serif",
-                                            lineHeight: "40px",
-                                            width: "80%",
-                                            margin: "auto",
-                                            padding: "20px",
-                                            color: "#000",
-
-                                        }}
-                                    >
-                                     
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px"
-                                            }}
-                                        >
-                                            <div style={{ lineHeight: "15px", marginRight: "13px", fontSize: "14px" }}>
-                                                <p>Plot No. 28, 1st Floor, Govind Prabhau Nagar,</p>
-                                                <p>Hudkeshwar Road, Nagpur - 440034</p>
-                                            </div>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaMapMarkerAlt size={15} color="#ffff" />
-                                            </div>
-                                        </div>
-
-                                     
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "13px" }}>royaalmede@gmail.com</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaEnvelope size={15} color="#ffff" />
-                                            </div>
-                                        </div>
-
-                                       
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                                fontSize: "14px",
-
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "15px" }}>www.royaalmede.co.in</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaGlobe size={15} color="#ffff" />
-                                            </div>
-                                        </div>
-
-                                      
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "right",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-
-                                            }}
-                                        >
-                                            <p style={{ marginRight: "30px" }}>9028999253 | 9373450092</p>
-                                            <div
-                                                style={{
-                                                    backgroundColor: "#d34508",
-                                                    padding: "10px",
-                                                    borderRadius: "1px",
-                                                    height: "30px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <FaPhoneAlt size={15} color="#ffff" />
-                                            </div>
-                                        </div>
-                                    </div> */}
+                                    />               
                                     <div className="relieving_company_details">
                                         <div className="relieving_detail_row">
                                             <div className="relieving_detail_text">
@@ -453,10 +336,6 @@ function Possession() {
                                 <hr style={{ border: "1px solid rgb(167, 5, 86)", marginBottom: "2px", marginTop: "-5px" }} />
                                 <hr style={{ border: "3px solid rgb(167, 5, 86)", marginTop: "4px" }} />
 
-
-
-
-                                {/* <p style={{ marginTop: "25px", marginLeft: "80px" }}>From:- <b>{letterdata.fromName}   </b>      </p> */}
                                 <p style={{ marginTop: "25px", marginLeft: "80px" }}>  Date: <b> {new Date(letterdata.date).toLocaleDateString("en-GB")}  </b>  </p>
                                 <p style={{ marginLeft: "80px" }}>To, </p>
                                 <p style={{ marginLeft: "80px" }}> Mr./Mrs./Ms.   </p>

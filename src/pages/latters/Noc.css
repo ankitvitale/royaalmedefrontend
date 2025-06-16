@@ -100,6 +100,7 @@
   background-color: cadetblue;
   color: white;
   border: none; 
+  margin-top: 5px;
 }
 .noc_delete_button{
   height: 30px;
@@ -109,4 +110,6 @@
   color: white;
   border: none; 
   margin-left: 5px;
+  margin-top: 5px;
+
 }

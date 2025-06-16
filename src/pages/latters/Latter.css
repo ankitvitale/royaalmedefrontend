@@ -289,8 +289,8 @@ margin-left: 5px;
     max-height: 80px;
   }
 
-  .offer_latter_main_wrapper div[style*="line-height: 40px"],
-  div[style*="line-height: 30px"] {
+  .offer_latter_main_wrapper div[style*="line-height: 10px"],
+  div[style*="line-height: 10px"] {
     line-height: 25px;
     font-size: 14px;
   }
@@ -363,8 +363,8 @@ margin-left: 5px;
     padding: 5px;
   }
 
-  div[style*="line-height: 40px"] {
-    line-height: 20px;
+  div[style*="line-height: 10px"] {
+    line-height: 10px;
     font-size: 12px;
   }
 
@@ -466,11 +466,11 @@ margin-left: 5px;
       padding: 10px;
   }
 
-  .latter_show_button,
-  .latter_show_delete {
-      font-size: 10px;
-      padding: 4px 10px;
-  }
+  .latter_show_button, .latter_show_delete {
+    font-size: 10px;
+    height: 30px;
+    width: 80px;
+}
 }
 
 @media screen and (max-width: 768px) {
@@ -822,7 +822,7 @@ margin-left: 5px;
 .allotment_latter_container p,
 .allotment_latter_container h2 {
   font-size: 16px; /* Smaller font size for mobile */
-  line-height: 28px;
+  line-height: 18px;
 }
 
 .allotment_latter_heading h2 {

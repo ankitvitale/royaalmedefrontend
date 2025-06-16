@@ -39,7 +39,7 @@ function Relievinglatter() {
 
         const formdata = {
             employeeName,
-            dateOfjoing: dateofjoining|| new Date().toISOString().split("T")[0],
+            dateOfjoing: dateofjoining || new Date().toISOString().split("T")[0],
             currentDate: currentDate || new Date().toISOString().split("T")[0],
             resignationDate: resignationDate || new Date().toISOString().split("T")[0],
             lastworkingdate: lastWorkingDate || new Date().toISOString().split("T")[0],
@@ -87,18 +87,18 @@ function Relievinglatter() {
     };
 
 
-const handleEditRelievingLatter = (item) => {
-    setIsEditMode(true);
-    setEditId(item.id);
-    setEmployeeName(item.employeeName);
-    setCurrentDate(item.currentDate);
-    setdateofjoining(item.dateofjoining); // Corrected here
-    setResignationDate(item.resignationDate);
-    setLastWorkingDate(item.lastworkingdate);
-    setDesignation(item.designation);
-    setDepartment(item.department);
-    setLocation(item.location);
-};
+    const handleEditRelievingLatter = (item) => {
+        setIsEditMode(true);
+        setEditId(item.id);
+        setEmployeeName(item.employeeName);
+        setCurrentDate(item.currentDate);
+        setdateofjoining(item.dateofjoining); // Corrected here
+        setResignationDate(item.resignationDate);
+        setLastWorkingDate(item.lastworkingdate);
+        setDesignation(item.designation);
+        setDepartment(item.department);
+        setLocation(item.location);
+    };
 
     useEffect(() => {
         async function getrileving() {
@@ -154,7 +154,7 @@ const handleEditRelievingLatter = (item) => {
     const handleDownload = () => {
         const element = letterRef.current;
         const options = {
-            margin: 0.5,
+            margin: 0.2,
             filename: `Relieving_letter_ ${myrelivinglatter.employeeName}.pdf`,
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { scale: 2 },
@@ -194,7 +194,7 @@ const handleEditRelievingLatter = (item) => {
                         <input
                             type="date"
                             className="offer_latter_input"
-                            value={dateofjoining|| new Date().toISOString().split("T")[0]}
+                            value={dateofjoining || new Date().toISOString().split("T")[0]}
                             onChange={(e) => setdateofjoining(e.target.value)}
                         />
                     </div>
@@ -275,42 +275,42 @@ const handleEditRelievingLatter = (item) => {
                                 <th> Action</th>
                             </tr>
                         </thead>
-                       <tbody className="reveling_table_tbody">
-    {Revilingtabledata && Revilingtabledata.length > 0 ? (
-        Revilingtabledata.map((item, index) => (
-            <tr key={item.id}>
-                <td>{index}</td>
-                <td>{item.employeeName}</td>
-                <td>{new Date(item.currentDate).toLocaleDateString("en-GB")}</td>
-                <td>{new Date(item.dateOfjoing).toLocaleDateString("en-GB")}</td> {/* Corrected here */}
-                <td>{new Date(item.resignationDate).toLocaleDateString("en-GB")}</td>
-                <td>
-                    {item.lastworkingdate
-                        ? new Date(item.lastworkingdate).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "2-digit",
-                            year: "numeric",
-                        })
-                        : "N/A"}
-                </td>
-                <td>{item.designation}</td>
-                <td>{item.department}</td>
-                <td>{item.location}</td>
-                <td>
-                    <button onClick={() => handleshowrevilingletter(item.id)} className='latter_show_button'> Show</button>
-                    <button onClick={() => handledeleteRelivingLatter(item.id)} className='latter_show_delete'> Delete</button>
-                    <button onClick={() => handleEditRelievingLatter(item)} className='latter_show_button'>Edit</button>
-                </td>
-            </tr>
-        ))
-    ) : (
-        <tr>
-            <td colSpan="8" style={{ textAlign: "center" }}>
-                No data available
-            </td>
-        </tr>
-    )}
-</tbody>
+                        <tbody className="reveling_table_tbody">
+                            {Revilingtabledata && Revilingtabledata.length > 0 ? (
+                                Revilingtabledata.map((item, index) => (
+                                    <tr key={item.id}>
+                                        <td>{index}</td>
+                                        <td>{item.employeeName}</td>
+                                        <td>{new Date(item.currentDate).toLocaleDateString("en-GB")}</td>
+                                        <td>{new Date(item.dateOfjoing).toLocaleDateString("en-GB")}</td> {/* Corrected here */}
+                                        <td>{new Date(item.resignationDate).toLocaleDateString("en-GB")}</td>
+                                        <td>
+                                            {item.lastworkingdate
+                                                ? new Date(item.lastworkingdate).toLocaleDateString("en-GB", {
+                                                    day: "2-digit",
+                                                    month: "2-digit",
+                                                    year: "numeric",
+                                                })
+                                                : "N/A"}
+                                        </td>
+                                        <td>{item.designation}</td>
+                                        <td>{item.department}</td>
+                                        <td>{item.location}</td>
+                                        <td>
+                                            <button onClick={() => handleshowrevilingletter(item.id)} className='latter_show_button'> Show</button>
+                                            <button onClick={() => handledeleteRelivingLatter(item.id)} className='latter_show_delete'> Delete</button>
+                                            <button onClick={() => handleEditRelievingLatter(item)} className='latter_show_button'>Edit</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="8" style={{ textAlign: "center" }}>
+                                        No data available
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
                     </table>
                 </div>
             }
@@ -361,15 +361,15 @@ const handleEditRelievingLatter = (item) => {
                             <div className="relieving_employee_info">
                                 <p>Date: <strong>{new Date(myrelivinglatter.currentDate).toLocaleDateString("en-GB")}</strong></p>
                                 <p>Name: <strong>{myrelivinglatter.employeeName}</strong></p>
-                               
+
                             </div>
 
                             <p className="relieving_paragraph">Dear <span>{myrelivinglatter.employeeName}</span>,</p>
 
                             <p className="relieving_paragraph">
                                 With reference to your resignation dated <b>{new Date(myrelivinglatter.resignationDate).toLocaleDateString("en-GB")}</b>,
-                                the same has been accepted, and you are relieved from your services w.e.f the close of business hours of
-                                <b> {myrelivinglatter.lastworkingdate || "N/A"} </b>
+                                the same has been accepted, and you are relieved from your services w.e.f the close of business hours of 
+                                <b> {new Date(myrelivinglatter.lastworkingdate || "N/A").toLocaleDateString("en-GB")} </b>
                             </p>
 
                             <p className="relieving_paragraph">The details of your employment with Royaalmede Jan Dhan Multi Urban Nidhi LID are as below:</p>
@@ -387,7 +387,7 @@ const handleEditRelievingLatter = (item) => {
                             <p className="relieving_paragraph">For Royaalmede Jan Dhan Multi Urban Nidhi LID</p>
 
                             <div className="relieving_signature">
-                               
+
                                 <p>Chief Executive Officer</p>
                             </div>
                         </div>

@@ -232,7 +232,7 @@ function NocLetter() {
     function handleDownlodeNoc() {
         const element = loanref.current;
         const options = {
-            margin: 0.5,
+            margin: 0.2,
             filename: "Noc_letter.pdf",
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { scale: 2 },
@@ -416,11 +416,11 @@ function NocLetter() {
                                     6. After creation of proper charge/mortgage and after receipt of the copies there of and after
                                     receipt of proper nomination in favor of the Bank, from the said purchasers, we are agreeable
                                     to accept  {nocSingleLetter.bankName}  as a nominee of the above named purchaser for the property
-                                    described above and once the nomination favoring the Bank has been registered and advice
+                                    described above and  once the nomination favoring the Bank has been registered and advice
                                     sent to the Bank of having done so, I/We note not to change the same without the written
                                     NOC of the Bank.
                                 </p>
-                                <p style={{ marginLeft: "40px" }}>
+                                <p style={{ marginLeft: "40px", marginTop:"25px" }}>
                                     7. After creation of charge/mortgage and after receipt of the copies thereof and after receipt
                                     of the proper nomination in favor of the Bank, from the above named purchaser, I/We undertake
                                     to inform the society about the Bank’s charge on the said flat as and when the society is formed.
