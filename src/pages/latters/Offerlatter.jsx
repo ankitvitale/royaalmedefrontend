@@ -167,7 +167,7 @@ function Offerlatter() {
     return (
         <>
             <h1 style={{ textAlign: "center", marginTop: "50px" }} className='offer_letter_heading'>
-                Offerlatter
+                Offer letter
             </h1>
 
             <div className="offer_latter_form_wrapper">
