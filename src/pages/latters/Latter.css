@@ -466,7 +466,7 @@ margin-left: 5px;
       padding: 10px;
   }
 
-  .latter_show_button, .latter_show_delete {
+  .latter_show_button, .latter_show_delete , .latter_show_edit {
     font-size: 10px;
     height: 30px;
     width: 80px;
@@ -746,12 +746,12 @@ margin-left: 5px;
 }
 
 .allotment_table td button {
-  margin-right: 10px;
-  padding: 8px 16px;
-  border: none;
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
+    margin-right: 10px;
+    padding: 8px 16px;
+    border: none;
+    background-color: cadetblue;
+    color: white;
+    cursor: pointer;
 }
 
 .allotment_table td button.latter_show_delete {
@@ -1082,8 +1082,9 @@ margin-left: 5px;
 }
 
 .latter_show_button {
-  background-color: #4CAF50;
-  color: white;
+    background-color: cadetblue;
+    color: white;
+
 }
 
 .latter_show_button:hover {
@@ -1111,11 +1112,11 @@ margin-left: 5px;
     font-size: 12px;
   }
 
-  .demand_latter_table button {
+.demand_latter_table button {
     font-size: 12px;
     padding: 6px 12px;
-  }
-
+    margin-top: 5px;
+}
   .demand_latter_table_wrapper {
     padding: 10px;
   }

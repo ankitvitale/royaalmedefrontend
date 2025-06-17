@@ -235,7 +235,7 @@ function DemandLetter() {
                         <input
                             type="text"
                             name="favorOf"
-                            placeholder="Favor Of"
+                            placeholder="Favour Of"
                             value={formData.favorOf}
                             onChange={handleChange}
                             required

@@ -523,9 +523,9 @@ function FlatList() {
                                         <option value="BOOKED">BOOKED</option>
                                     </select>
                                     <label className='add_flat_label'> Floor Number</label>
-                                    <input className='add_flat_input' type="text" value={floorNumber} onChange={(e) => setFloorNumber(e.target.value)} />
+                                    <input className='add_flat_input' type="number" value={floorNumber} onChange={(e) => setFloorNumber(e.target.value)} />
                                     <label className='add_flat_label' > Flat Number</label>
-                                    <input className='add_flat_input' type="text" value={FlatNumber} onChange={(e) => setflatNumber(e.target.value)} />
+                                    <input className='add_flat_input' type="number" value={FlatNumber} onChange={(e) => setflatNumber(e.target.value)} />
                                     <label className='add_flat_label'> Price</label>
                                     <input className='add_flat_input' type="text" value={flatPrice} onChange={(e) => setFlatprice(e.target.value)} />
                                     <button className='add_flat_button_submit' type='submit'>Add Flat</button>
