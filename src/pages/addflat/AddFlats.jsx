@@ -107,38 +107,6 @@ function Flat() {
     getingCount()
   }, [])
 
-  // const confirmDelete = async (id) => {
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     text: "You won't be able to revert this!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, delete it!",
-  //   }).then(async (result) => {
-  //     if (result.isConfirmed) {
-  //       try {
-  //         await axios.delete(`${BASE_URL}/deleteProject/${id}`, {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         });
-  //         setCount((prevCount) => prevCount + 1);
-
-  //         Swal.fire("Deleted!", "The residency has been deleted.", "success");
-  //       } catch (error) {
-  //         console.error(error);
-  //         Swal.fire(
-  //           "Error!",
-  //           "Something went wrong while deleting the residency.",
-  //           "error"
-  //         );
-  //       }
-  //     }
-  //   });
-  // };
 
 
   async function handleEdit(id) {
@@ -274,7 +242,7 @@ function Flat() {
           <div className="AddSchemeForm_wrapper">
             <button className="add_scheme_cross_button" onClick={() => {
               setShowEditSchemeForm(false);
-              setAddScheme(false); 
+              setAddScheme(false);
             }}>X</button>
             <form onSubmit={handleeditScheme} className="AddSchemeForm">
               <div>

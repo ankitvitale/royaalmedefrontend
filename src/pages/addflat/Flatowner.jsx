@@ -75,7 +75,7 @@ function Flatowner() {
   const [panCard, setPanCard] = useState("");
   const [agentName, setAgentName] = useState("");
   const [brokerage, setBrokerage] = useState("");
-  const [customerBookingId,setcustomerBookingId]= useState("")
+  const [customerBookingId, setcustomerBookingId] = useState("")
   useEffect(() => {
     async function customerProfile() {
       try {
@@ -295,7 +295,7 @@ function Flatowner() {
   };
 
 
-  async function handleEditCustomerDetail(customerId,bookingId) {
+  async function handleEditCustomerDetail(customerId, bookingId) {
     setcustomerBookingUpdateId(customerId)
     setcustomerBookingId(bookingId)
     setShowEditCustomerForm(true)
@@ -332,7 +332,7 @@ function Flatowner() {
   }
   const handleUpdateCustomerDetail = async (e) => {
     e.preventDefault();
-   
+
     const payload = {
       dealPrice,
       tokenAmount,
@@ -401,7 +401,7 @@ function Flatowner() {
 
           <div className="customer_card_flat_no">
             <p><strong> <BsBuilding /> Flat No  - </strong> {customerDetail.residency?.identifier || "NA"}</p>
-            <button onClick={() => handleEditCustomerDetail(customerDetail.customer?.id,customerDetail.id)}> Edit</button>
+            <button onClick={() => handleEditCustomerDetail(customerDetail.customer?.id, customerDetail.id)}> Edit</button>
           </div>
 
           <div className="customer_card_name_wrapper">
@@ -700,83 +700,84 @@ function Flatowner() {
 
 
       {/*   show Customer installment Card */}
-     {
-  showCustomerInstallMentcard && customerInstallMentDeta && (
-    <div className="customer_installment_card_wrapper">
-      <div className="customer_installment_card_header">
-        <button
-          className="add_print_button_bill"
-          onClick={handlePrintInstallment}
-        >
-          Print
-        </button>
-        <button
-          onClick={() => setshowCustomerInstallMentcard(false)}
-          className="customer_installment_card_close_button"
-        >
-          X
-        </button>
-      </div>
+      {
+        showCustomerInstallMentcard && customerInstallMentDeta && (
+          <div className="customer_installment_card_wrapper">
+            <div className="customer_installment_card_header">
+              <button
+                className="add_print_button_bill"
+                onClick={handlePrintInstallment}
+              >
+                Print
+              </button>
+              <button
+                onClick={() => setshowCustomerInstallMentcard(false)}
+                className="customer_installment_card_close_button"
+              >
+                X
+              </button>
+            </div>
 
-      <div id="customerInstallmentCard" className="customer_installment_card_content">
-     <div className="residency_details_section">
-  <h1>Residency Details</h1>
-  <p><strong>Residency Name:</strong> {customerInstallMentDeta.residencyName}</p>
-  <p><strong>Customer Name:</strong> {customerInstallMentDeta?.customerName}</p>
-  <p><strong>Plot No:</strong> {customerInstallMentDeta.identifier}</p>
-  <p><strong>Flat Price:</strong> {customerInstallMentDeta.dealPrice ? customerInstallMentDeta.dealPrice.toLocaleString() : "N/A"}</p>
-  <p><strong>Token Amount:</strong> {customerInstallMentDeta.tokenAmount.toLocaleString()}</p>
-  <p><strong>Agreement Price:</strong> {customerInstallMentDeta.agreementAmount.toLocaleString()}</p>
-  <p><strong>Customer Remaining Amount:</strong> {customerInstallMentDeta.remainingAmount.toLocaleString()}</p>
-</div>
-        <table className="customer_installment_card_table">
-          <thead>
-            <tr className="customer_installment_card_tr">
-              <th className="customer_installment_card_th">Installment Date</th>
-              <th className="customer_installment_card_th">Installment Amount</th>
-              <th className="customer_installment_card_th">Installment Status</th>
-              <th className="customer_installment_card_th">Note</th>
-              <th className="customer_installment_card_th action-column">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customerInstallMentDeta.bookingInstallments.map((item, index) => (
-              <tr key={item.id} className="customer_installment_card_tr">
-                <td className="customer_installment_card_td">
-                  {new Date(item.installmentDate).toLocaleDateString("en-GB")}
-                </td>
-                <td className="customer_installment_card_td">
-                  {item.installmentAmount.toLocaleString()}
-                </td>
-                <td className="customer_installment_card_td">
-                  {item.installmentStatus}
-                </td>
-                <td className="customer_installment_card_td">
-                  {item.remark}
-                </td>
-                <td className="customer_installment_card_td">
-                  <button
-                    className="installment_edit_button"
-                    onClick={() => handleEditInstallment(item.id)}
-                  >
-                    Edit
-                  </button>
-                  <br />
-                  <button
-                    className="installment_delete_button"
-                    onClick={() => handleDeleteInstallment(item.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  )
-}
+            <div id="customerInstallmentCard" className="customer_installment_card_content">
+              <div className="residency_details_section">
+                <h1> Royaal Infra</h1>
+                <h2>Residency Details</h2>
+                <p><strong>Residency Name:</strong> {customerInstallMentDeta.residencyName}</p>
+                <p><strong>Customer Name:</strong> {customerInstallMentDeta?.customerName}</p>
+                <p><strong>Plot No:</strong> {customerInstallMentDeta.identifier}</p>
+                <p><strong>Flat Price:</strong> {customerInstallMentDeta.dealPrice ? customerInstallMentDeta.dealPrice.toLocaleString() : "N/A"}</p>
+                <p><strong>Token Amount:</strong> {customerInstallMentDeta.tokenAmount.toLocaleString()}</p>
+                <p><strong>Agreement Price:</strong> {customerInstallMentDeta.agreementAmount.toLocaleString()}</p>
+                <p><strong>Customer Remaining Amount:</strong> {customerInstallMentDeta.remainingAmount.toLocaleString()}</p>
+              </div>
+              <table className="customer_installment_card_table">
+                <thead>
+                  <tr className="customer_installment_card_tr">
+                    <th className="customer_installment_card_th">Installment Date</th>
+                    <th className="customer_installment_card_th">Installment Amount</th>
+                    <th className="customer_installment_card_th">Installment Status</th>
+                    <th className="customer_installment_card_th">Note</th>
+                    <th className="customer_installment_card_th action-column">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {customerInstallMentDeta.bookingInstallments.map((item, index) => (
+                    <tr key={item.id} className="customer_installment_card_tr">
+                      <td className="customer_installment_card_td">
+                        {new Date(item.installmentDate).toLocaleDateString("en-GB")}
+                      </td>
+                      <td className="customer_installment_card_td">
+                        {item.installmentAmount.toLocaleString()}
+                      </td>
+                      <td className="customer_installment_card_td">
+                        {item.installmentStatus}
+                      </td>
+                      <td className="customer_installment_card_td">
+                        {item.remark}
+                      </td>
+                      <td className="customer_installment_card_td">
+                        <button
+                          className="installment_edit_button"
+                          onClick={() => handleEditInstallment(item.id)}
+                        >
+                          Edit
+                        </button>
+                        <br />
+                        <button
+                          className="installment_delete_button"
+                          onClick={() => handleDeleteInstallment(item.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+      }
       {
         showCustomerInstallmentEditForm && (
           <>
@@ -859,7 +860,7 @@ function Flatowner() {
                 />
 
                 <p style={{ marginTop: "10px", marginLeft: "25px", fontSize: "12px" }}>
-                Date: {new Date().toLocaleDateString('en-GB')}
+                  Date: {new Date().toLocaleDateString('en-GB')}
 
                 </p>
 

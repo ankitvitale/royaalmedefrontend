@@ -4,7 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../config";
 function ContractorDetail() {
-    const { id } = useParams();
+    const { id , name} = useParams();
     const [showPopup, setShowPopup] = useState(false);
     const [contractors, setContractors] = useState([]);
     const [contractorData, setContractorData] = useState(null);
@@ -319,6 +319,7 @@ function ContractorDetail() {
 
                 {/* Contractors Table */}
                 <div className="contractor_table_container">
+                    <h1>{name}</h1>
                     <h2 className="contractor_table_heading">Contractor List</h2>
                     <div className="table-responsive">
                         <table className="contractor_table">

@@ -28,8 +28,8 @@ function Contractor() {
   }, [])
 
 
-  function handleclick(id){
-   navigate(`/contractordetail/${id}`)
+  function handleclick(id, name) {
+   navigate(`/contractordetail/${id}/${name}`)
   }
 
   return (
@@ -42,7 +42,7 @@ function Contractor() {
               myLand.map((item, index) => (
                 <div
                   key={index}
-                  onClick={() => handleclick(item.id)}
+                  onClick={() => handleclick(item.id,item.name)}
                   className="show_building_name_material"
                 >
                   <BsFillBuildingsFill size={80} color="rgb(6, 151, 177)" />

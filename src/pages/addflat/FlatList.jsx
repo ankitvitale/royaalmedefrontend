@@ -44,9 +44,13 @@ function FlatList() {
     const [agentName, setAgentName] = useState("");
     const [brokerage, setBrokerage] = useState();
     const [loan, setloan] = useState("");
+    const [facing, setFacing] = useState("");
+    const [area, setArea] = useState("");
 
     const [customerId, setCustomerId] = useState("")
-    console.log(customerId)
+
+    const [flatDetailEditId, setFlatDetailEditId] = useState("")
+    const [flatDetailEditForm, setFlatDetailEditForm] = useState(false)
     function handleAddFlat() {
         setShowFlat(!showFlat)
     }
@@ -69,7 +73,9 @@ function FlatList() {
             floorNumber: floorNumber,
             identifier: FlatNumber,
             price: flatPrice.replace(/,/g, ""),
-            projectId: id
+            projectId: id,
+            area: area,
+            facing: facing
         };
 
         console.log("Request Object:", obj);
@@ -88,6 +94,9 @@ function FlatList() {
             setFloorNumber("")
             setflatNumber("")
             setFlatprice("")
+            setFacing("")
+            setArea("")
+            setShowFlat(false)
             setRefreshKey(refreshKey + 1)
 
         } catch (error) {
@@ -265,12 +274,87 @@ function FlatList() {
 
 
 
+    async function handleEditFlatDetail(id) {
+        setFlatDetailEditId(id)
+        setFlatDetailEditForm(true)
+        setflatDetailpopUp(false)
+
+        try {
+            const response = await axios.get(`${BASE_URL}/allResidencybyid/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+            console.log(response.data)
+            const flatData = response.data;
+            setName(flatData.name);
+            setFlatType(flatData.flatType);
+            setResidency(flatData.residencyType);
+            setAvailability(flatData.availabilityStatus);
+            setFloorNumber(flatData.floorNumber);
+            setflatNumber(flatData.identifier);
+            setFlatprice(flatData.price);
+            setFacing(flatData.facing);
+            setArea(flatData.area);
+            setFlatId(id);
+
+        } catch (error) {
+            console.error("Error fetching flat details:", error);
+        }
+
+    }
+
+    async function handleUpdateFlatDetail(e) {
+        e.preventDefault();
+
+        if (!Residency || !flatType || !Availability || !floorNumber || !FlatNumber || !flatPrice) {
+            return alert("Please fill in all fields before submitting!");
+        }
+
+        const obj = {
+            id: flatDetailEditId,
+            name: newname,
+            residencyType: Residency,
+            flatType: flatType,
+            availabilityStatus: Availability,
+            floorNumber: floorNumber,
+            identifier: FlatNumber,
+            price: String(flatPrice).replace(/,/g, ""),
+            area: area,
+            facing: facing
+        };
+
+        try {
+            const response = await axios.put(`${BASE_URL}/updateresidency/${flatDetailEditId}`, obj, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log("Response:", response);
+            alert("Flat details updated successfully");
+            setName("");
+            setFlatType("");
+            setResidency("");
+            setAvailability("");
+            setFloorNumber("");
+            setflatNumber("");
+            setFlatprice("");
+            setFacing("");
+            setArea("");
+            setFlatId("");
+            setFlatDetailEditForm(false);
+            setRefreshKey(refreshKey + 1);
+        } catch (error) {
+            console.error("Error updating flat details:", error);
+        }
+    }
     return (
         <>
 
             <div className="add_flat_button" >
                 <button onClick={handleAddFlat} > Add Flat</button> <br />
-
             </div>
 
             <div className="flat_number_container">
@@ -298,12 +382,11 @@ function FlatList() {
             </div>
 
 
-
-
             <div className={`flat_Detail_Container ${flatDetailpopUp ? 'visible' : ''}`}>
                 {flatDetailpopUp && singledata && (
                     <div className="flat-detail-card">
                         <button className="singleflat_close_button" onClick={handlecloseflat}>✖</button>
+                        <button style={{ height: "30px", marginLeft: "10px", width: "50px", background: "#0476a7", color: "white", border: "none", borderRadius: "4px" }} onClick={() => handleEditFlatDetail(singledata.id)}>Edit</button>
                         <h3 className="flat-title"> <FaEye /> Flat Details</h3>
                         <div className="flat-info">
                             {/* <p><strong>Scheme ID:</strong> {singledata.id}</p> */}
@@ -314,9 +397,11 @@ function FlatList() {
                             <p><strong ><FaLayerGroup style={{ color: "#0476a7", fontSize: "20px" }} /> Floor Number:</strong> {singledata.floorNumber}</p>
                             <p><strong> <FaMoneyBillWave style={{ color: "#0476a7", fontSize: "20px" }} /> Price:</strong> ₹{singledata.price ? singledata.price.toLocaleString() : "N/A"}</p>
                             <p><strong >  <FaBuilding style={{ color: "#0476a7", fontSize: "20px" }} /> Residency Type:</strong> {singledata.residencyType}</p>
+                            <p><strong > <FaHashtag style={{ color: "#0476a7", fontSize: "20px" }} />  Facing:</strong> {singledata.facing} </p>
+                            <p><strong >  <FaBuilding style={{ color: "#0476a7", fontSize: "20px" }} /> Area:</strong> {singledata.area} Sq.ft</p>
                         </div>
                         {
-                            singledata.availabilityStatus === "BOOKED" ? <button className='coustomer_view_button ' onClick={() => handlepassId(singledata?.booking.id)} > <FaEye style={{ fontSize: "20px" }} /> View Customer</button> :
+                            singledata.availabilityStatus === "BOOKED" ? <button className='coustomer_view_button' onClick={() => handlepassId(singledata?.booking.id)} > <FaEye style={{ fontSize: "20px" }} /> View Customer</button> :
                                 <button className="add-customer-button" onClick={handleShowCustomerForm}>
                                     <FaUserPlus style={{ fontSize: "18px" }} />  Add Customer
                                 </button>
@@ -493,6 +578,7 @@ function FlatList() {
                     showFlat && (
                         <>
 
+
                             <div className="add_flat">
                                 <div className="AddFlatClose">
                                     <button onClick={closeAddflat}> x</button>
@@ -522,12 +608,17 @@ function FlatList() {
                                         <option value="AVAILABLE">AVAILABLE</option>
                                         <option value="BOOKED">BOOKED</option>
                                     </select>
-                                    <label className='add_flat_label'> Floor Number</label>
+                                    <label className='add_flat_label'>Area</label>
+                                    <input className='add_flat_input' type="text" value={area} onChange={(e) => setArea(e.target.value)} />
+                                    <label className='add_flat_label'>Facing</label>
+                                    <input className='add_flat_input' type="text" value={facing} onChange={(e) => setFacing(e.target.value)} />
+                                    <label className='add_flat_label'>Floor Number</label>
                                     <input className='add_flat_input' type="number" value={floorNumber} onChange={(e) => setFloorNumber(e.target.value)} />
-                                    <label className='add_flat_label' > Flat Number</label>
+                                    <label className='add_flat_label'>Flat Number</label>
                                     <input className='add_flat_input' type="number" value={FlatNumber} onChange={(e) => setflatNumber(e.target.value)} />
-                                    <label className='add_flat_label'> Price</label>
+                                    <label className='add_flat_label'>Price</label>
                                     <input className='add_flat_input' type="text" value={flatPrice} onChange={(e) => setFlatprice(e.target.value)} />
+
                                     <button className='add_flat_button_submit' type='submit'>Add Flat</button>
                                 </form>
                             </div>
@@ -538,6 +629,59 @@ function FlatList() {
             {/* *************  End New flat */}
 
 
+
+
+            {
+                flatDetailEditForm && (
+                    <div className='add_newflat_container'>
+                        <div className="add_flat">
+                            <div className="AddFlatClose">
+                                <button onClick={() => setFlatDetailEditForm(false)}> x</button>
+                            </div>
+                            <h2> Edit Flat Details</h2>
+                            <form className='add_flat_form' onSubmit={handleUpdateFlatDetail} >
+                                <label className='add_flat_label' htmlFor="">Name:</label>
+                                <input className='add_flat_input' type="text" value={newname} onChange={(e) => setName(e.target.value)} />
+                                <label className='add_flat_label' htmlFor=""> Residency Type</label>
+                                <select className='add_flat_select' name="" id="" value={Residency} onChange={(e) => setResidency(e.target.value)}>
+                                    <option value=""> Select Type</option>
+                                    <option value="FLAT">Flat</option>
+                                    <option value="HOUSE"> HOUSE</option>
+                                    <option value="OTHER">other</option>
+                                </select>
+                                <label className='add_flat_label' htmlFor=""> flat Type</label>
+                                <select className='add_flat_select' name="" id="" value={flatType} onChange={(e) => setFlatType(e.target.value)}>
+                                    <option value=""> Select flat Type</option>
+                                    <option value="ONE_BHK">1 BHK</option>
+                                    <option value="TWO_BHK">2 BHK</option>
+                                    <option value="THREE_BHK">3 BHK</option>
+                                    <option value="FOUR_BHK">4 BHK</option>
+                                    <option value="FIVE_BHK">5 BHK</option>
+                                </select>
+                                <label className='add_flat_label'> Availability Status</label>
+                                <select className='add_flat_select' name="" id="" value={Availability} onChange={(e) => setAvailability(e.target.value)}>
+                                    <option value=""> Select Available</option>
+                                    <option value="AVAILABLE">AVAILABLE</option>
+                                    <option value="BOOKED">BOOKED</option>
+                                </select>
+                                <label className='add_flat_label'>Area</label>
+                                <input className='add_flat_input' type="text" value={area} onChange={(e) => setArea(e.target.value)} />
+                                <label className='add_flat_label'>Facing</label>
+                                <input className='add_flat_input' type="text" value={facing} onChange={(e) => setFacing(e.target.value)} />
+                                <label className='add_flat_label'>Floor Number</label>
+                                <input className='add_flat_input' type="number" value={floorNumber} onChange={(e) => setFloorNumber(e.target.value)} />
+                                <label className='add_flat_label'>Flat Number</label>
+                                <input className='add_flat_input' type="number" value={FlatNumber} onChange={(e) => setflatNumber(e.target.value)} />
+                                <label className='add_flat_label'>Price</label>
+                                <input className='add_flat_input' type="text" value={flatPrice} onChange={(e) => setFlatprice(e.target.value)} />
+
+                                <button className='add_flat_button_submit' type='submit'>Update Flat</button>
+                            </form>
+                        </div>
+                    </div>
+
+                )
+            }
 
         </>
     )

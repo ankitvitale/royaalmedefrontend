@@ -11,7 +11,7 @@ import {
 import logo from "../../assets/royal.png"
 import { useRef } from "react";
 import html2pdf from "html2pdf.js";
-import "@fontsource/roboto"; // Default weight
+import "@fontsource/roboto";
 import { BASE_URL } from '../../config';
 function Offerlatter() {
     const letterRef = useRef();
@@ -67,7 +67,7 @@ function Offerlatter() {
 
             setIsEditing(false);
             setEditId(null);
-            setRefreshKey(refreshKey + 1); // refresh table
+            setRefreshKey(refreshKey + 1);
 
             // Reset form
             setAddress("");
@@ -163,7 +163,6 @@ function Offerlatter() {
 
         html2pdf().set(options).from(element).save();
     };
-
     return (
         <>
             <h1 style={{ textAlign: "center", marginTop: "50px" }} className='offer_letter_heading'>
@@ -451,8 +450,8 @@ function Offerlatter() {
                                         I hereby signify my acceptance of all the terms and conditions
                                         by returning the duplicate copy of this offer letter.
                                     </p>
-                                    
-                                    <p style={{marginTop:"30px"}}>
+
+                                    <p style={{ marginTop: "30px" }}>
                                         {singleOffer.name}
                                     </p>
                                     <p>Signature</p>

@@ -78,7 +78,7 @@ function App() {
             <Route element={<Contractor />} path="/contractor" />
             <Route
               element={<ContractorDetail />}
-              path="/contractordetail/:id"
+              path="/contractordetail/:id/:name"
             />
             <Route
               path="/singleVendor/:projectId/:vendorId"
