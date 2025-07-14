@@ -85,6 +85,10 @@
   background-color: #f2f2f2;
   font-weight: bold;
 }
+.token_slip{
+  display:none;
+}
+
 
 .installment_edit_button,
 .installment_delete_button {

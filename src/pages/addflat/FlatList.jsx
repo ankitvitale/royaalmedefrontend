@@ -356,7 +356,7 @@ function FlatList() {
             <div className="add_flat_button" >
                 <button onClick={handleAddFlat} > Add Flat</button> <br />
             </div>
-
+             <div><h1>{showflatNumber.length > 0 ? showflatNumber[0].name : "Loading..."}</h1></div>
             <div className="flat_number_container">
                 {sortedFloors.map((floor) => (
                     <div key={floor}>

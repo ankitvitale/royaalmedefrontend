@@ -4,7 +4,19 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../config";
 function ContractorDetail() {
-    const { id , name} = useParams();
+
+    const obj = [{
+        name: "faizan",
+        age: 20
+    }, {
+        name: "ali",
+        age: 21
+    },
+    {
+        name: "sajid",
+        age: 22
+    }]
+    const { id, name } = useParams();
     const [showPopup, setShowPopup] = useState(false);
     const [contractors, setContractors] = useState([]);
     const [contractorData, setContractorData] = useState(null);
@@ -82,7 +94,7 @@ function ContractorDetail() {
                 setContractors((prev) =>
                     [response.data, ...prev].sort((a, b) => Date.parse(b.addedOn) - Date.parse(a.addedOn))
                 );
-                
+
                 setContractorName("");
                 setSideName("");
                 setType("");
